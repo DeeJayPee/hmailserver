@@ -99,6 +99,7 @@
     <Compile Include="SMTP\Basics.cs" />
     <Compile Include="SMTP\RcptToParsing.cs" />
     <Compile Include="SMTP\MailFromParsing.cs" />
+    <Compile Include="SMTP\XOriginalRcptHeaderTests.cs" />
     <Compile Include="SSL\SslTlsVersionTests.cs" />
     <Compile Include="SSL\SslServerTests.cs" />
     <Compile Include="Infrastructure\TCPIP.cs" />

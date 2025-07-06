@@ -24,7 +24,7 @@ namespace HM
    private:
 
       String GenerateReceivedHeader_(const String &overriden_received_ip);
-      String JoinWithFolding_(const std::vector<String> &sVector, const String &sSeperator, int initialLineLength);
+      String JoinWithFolding_(const std::set<String> &items, const String &separator, int initialLineLength);
 
       String username_;
       AnsiString remote_ip_address_;

@@ -88,25 +88,22 @@ namespace HM
       if (IniFileSettings::Instance()->GetAddXOriginalRcptToHeader() && message_)
       {
          auto recipients = message_->GetRecipients()->GetVector();
-         auto recipientIter = recipients.begin();
 
-         std::vector<String> originalLocalAddresses;
+         std::set<String> originalLocalAddresses;
 
-         while (recipientIter != recipients.end())
+         for (auto recipientIter = recipients.begin(); recipientIter != recipients.end(); ++recipientIter)
          {
-            auto recipient = *recipientIter;
+             auto recipient = *recipientIter;
 
-            if (recipient->GetIsLocalName())
-            {
-               auto originalAddress = recipient->GetOriginalAddress();
+             if (recipient->GetIsLocalName())
+             {
+                 auto originalAddress = recipient->GetOriginalAddress();
 
-               if (!originalAddress.IsEmpty())
-               {
-                  originalLocalAddresses.push_back(originalAddress);
-               }
-            }
-
-            recipientIter++;
+                 if (!originalAddress.IsEmpty())
+                 {
+                     originalLocalAddresses.insert(originalAddress);
+                 }
+             }
          }
 
          if (originalLocalAddresses.size() > 0)
@@ -183,23 +180,26 @@ namespace HM
    }
 
    String
-   SMTPMessageHeaderCreator::JoinWithFolding_(const std::vector<String> &sVector, const String &sSeperator, int initialLineLength)
+   SMTPMessageHeaderCreator::JoinWithFolding_(const std::set<String> &items, const String &separator, int initialLineLength)
    //---------------------------------------------------------------------------()
    // DESCRIPTION:
    // Joins contents of a vector into a string, with a separator. If the join string exceeds the max
    // line length, it will be split across multiple lines.
    //---------------------------------------------------------------------------()
    {
-      auto iterVec = sVector.begin();
-      auto iterEnd = sVector.end();
-
       String result;
 
       const int maxLineLength = 70;
       int currentLineLength = initialLineLength;
 
-      for (; iterVec != iterEnd; iterVec++)
+      for (auto iterVec = items.begin(); iterVec != items.end(); iterVec++)
       {
+         if (!result.IsEmpty())
+         {
+             result += separator;
+             currentLineLength += separator.GetLength();
+         }
+
          String value = (*iterVec);
          int valueLength = value.GetLength();
 
@@ -212,12 +212,6 @@ namespace HM
 
          result += value;
          currentLineLength += valueLength;
-
-         if (iterVec + 1 != iterEnd)
-         {
-            result += sSeperator;
-            currentLineLength += sSeperator.GetLength();
-         }
       }
 
       return result;
