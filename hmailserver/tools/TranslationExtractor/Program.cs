@@ -13,7 +13,7 @@ namespace TranslationExtractor
       private static string TranslationFolder;
 
       private static string TranslationScript =
-         "http://www.hmailserver.com/devnet/translation_getlanguage.php?language={0}";
+         "https://www.hmailserver.com/devnet/translation_getlanguage.php?language={0}";
 
       private static void Main(string[] args)
       {
