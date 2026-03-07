@@ -83,6 +83,8 @@
     <Compile Include="Infrastructure\Persistence\AccountNameValidation.cs" />
     <Compile Include="Infrastructure\Persistence\AliasNameValidation.cs" />
     <Compile Include="Infrastructure\Persistence\DomainNameValidation.cs" />
+    <None Include="Resources\MessageWithInvalidDkim.eml" />
+    <None Include="Resources\MessageWithValidDkim.eml" />
     <Compile Include="Shared\DeliveryFailedException.cs" />
     <Compile Include="Shared\RetryableAssert.cs" />
     <Compile Include="Shared\ServiceRestartDetector.cs" />
@@ -106,6 +108,7 @@
     <Compile Include="SMTP\ESmtpTests.cs" />
     <Compile Include="SMTP\RcptToParsing.cs" />
     <Compile Include="SMTP\MailFromParsing.cs" />
+    <Compile Include="SMTP\XOriginalRcptHeaderTests.cs" />
     <Compile Include="SSL\SslTlsVersionTests.cs" />
     <Compile Include="SSL\SslServerTests.cs" />
     <Compile Include="Infrastructure\TCPIP.cs" />
@@ -231,6 +234,7 @@
     <EmbeddedResource Include="TestResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TestResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

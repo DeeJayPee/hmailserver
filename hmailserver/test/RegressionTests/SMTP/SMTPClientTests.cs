@@ -111,8 +111,8 @@ namespace RegressionTests.SMTP
             TCPIPPort testPort = ports[i];
             if (testPort.Protocol == eSessionType.eSTIMAP)
                testPort.PortNumber = 14300;
-            else if (testPort.Protocol == eSessionType.eSTSMTP)
-               testPort.PortNumber = 11000;
+            else if (testPort.Protocol == eSessionType.eSTSMTP && testPort.PortNumber != 587) // Only change 1 of the 2 default SMTP ports.
+               testPort.PortNumber = 11001;
             else if (testPort.Protocol == eSessionType.eSTPOP3)
                testPort.PortNumber = 2500;
 
@@ -136,7 +136,7 @@ namespace RegressionTests.SMTP
             TestSetup.AddRoutePointingAtLocalhost(5, smtpServerPort, false);
 
             // Send message to this route.
-            var sim = new SmtpClientSimulator(false, 11000);
+            var sim = new SmtpClientSimulator(false, 11001);
             sim.Send("test@test.com", "user@dummy-example.com", "Test", "Test message");
 
 

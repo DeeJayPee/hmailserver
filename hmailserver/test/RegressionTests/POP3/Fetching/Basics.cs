@@ -315,6 +315,7 @@ namespace RegressionTests.POP3.Fetching
             fa.ServerAddress = "localhost";
             fa.Port = port;
             fa.ProcessMIMERecipients = true;
+            fa.MIMERecipientHeaders = "To,CC,X-RCPT-TO,X-Envelope-To";
             fa.Save();
 
             fa.DownloadNow();
@@ -384,6 +385,7 @@ namespace RegressionTests.POP3.Fetching
                fa.ServerAddress = "localhost";
                fa.Port = port;
                fa.ProcessMIMERecipients = true;
+               fa.MIMERecipientHeaders = "To,CC,X-RCPT-TO,X-Envelope-To";
                fa.EnableRouteRecipients = true;
                fa.Save();
 
@@ -449,6 +451,7 @@ namespace RegressionTests.POP3.Fetching
             fa.ServerAddress = "localhost";
             fa.Port = port;
             fa.ProcessMIMERecipients = true;
+            fa.MIMERecipientHeaders = "To,CC,X-RCPT-TO,X-Envelope-To";
             fa.EnableRouteRecipients = true;
             fa.Save();
 
@@ -504,6 +507,7 @@ namespace RegressionTests.POP3.Fetching
             fa.ServerAddress = "localhost";
             fa.Port = port;
             fa.ProcessMIMERecipients = true;
+            fa.MIMERecipientHeaders = "To,CC,X-RCPT-TO,X-Envelope-To";
             fa.Save();
 
             fa.DownloadNow();
@@ -997,12 +1001,12 @@ namespace RegressionTests.POP3.Fetching
 
          var messages = new List<string>();
 
-         string message = "Received: from example.com (example.com [1.2.3]) by mail.example.com\r\n" +
-                          "From: example@example.com\r\n" +
+         string message = "Received: from nonexistent.hmailserver.com (nonexistent.hmailserver.com [1.2.3]) by nonexistent.hmailserver.com\r\n" +
+                          "From: example@nonexistent.hmailserver.com\r\n" +
                           "To: Martin@example.com\r\n" +
                           "Subject: Test\r\n" +
                           "\r\n" +
-                          "Should be blocked by SPF.";
+                          "Should NOT be blocked by SPF.";
 
          messages.Add(message);
 
