@@ -584,7 +584,7 @@ namespace HM
       if (StringParser::IsValidEmailAddress("some one@test.co.uk")) throw;
       if (StringParser::IsValidEmailAddress("<someone@test.co.uk>")) throw;
       if (StringParser::IsValidEmailAddress("va ff@test.co.uk")) throw;
-      if (!StringParser::IsValidEmailAddress("test@test.com")) throw;
+      if (!StringParser::IsValidEmailAddress("test@example.test")) throw;
       if (!StringParser::IsValidEmailAddress("test@hmailserver.com")) throw;
       if (!StringParser::IsValidEmailAddress("test_test@hmailserver.com")) throw;
       if (!StringParser::IsValidEmailAddress("bill@microsoft.com")) throw;
@@ -599,13 +599,13 @@ namespace HM
       if (StringParser::ExtractAddress("t'est@test.co.uk").Compare(_T("t'est")) != 0) throw;
       if (StringParser::ExtractAddress("\"t@es@\"@test.co.uk").Compare(_T("\"t@es@\"")) != 0) throw;
       if (StringParser::ExtractAddress("test@test").Compare(_T("test")) != 0) throw;
-      if (StringParser::ExtractAddress("t\"est@test.com").Compare(_T("t\"est")) != 0) throw;
+      if (StringParser::ExtractAddress("t\"est@example.test").Compare(_T("t\"est")) != 0) throw;
 
-      if (StringParser::ExtractDomain("t\"est@test.com").Compare(_T("test.com")) != 0) throw;
+      if (StringParser::ExtractDomain("t\"est@example.test").Compare(_T("example.test")) != 0) throw;
       if (StringParser::ExtractDomain("t'est@test.co.uk").Compare(_T("test.co.uk")) != 0) throw;
       if (StringParser::ExtractDomain("\"t@est\"@test.co.uk").Compare(_T("test.co.uk")) != 0) throw;
       if (StringParser::ExtractDomain("\"t@es@\"@test.co.uk").Compare(_T("test.co.uk")) != 0) throw;
-      if (StringParser::ExtractDomain("test@test.com").Compare(_T("test.com")) != 0) throw;
+      if (StringParser::ExtractDomain("test@example.test").Compare(_T("example.test")) != 0) throw;
 
       if (!StringParser::WildcardMatch("Test", "Test")) throw;
       if (!StringParser::WildcardMatch("", "")) throw;
@@ -634,9 +634,9 @@ namespace HM
      if (!StringParser::WildcardMatch(_T("標*"), _T("標準語"))) throw;
 
      // Matching email addresses
-     if (!StringParser::WildcardMatch("test@*", "test@test.com")) throw;
+     if (!StringParser::WildcardMatch("test@*", "test@example.test")) throw;
      if (!StringParser::WildcardMatch("test@test.co.*", "test@test.co.uk")) throw;
-     if (StringParser::WildcardMatch("test@test.co.*", "test@test.com")) throw;
+     if (StringParser::WildcardMatch("test@test.co.*", "test@example.test")) throw;
      if (StringParser::WildcardMatch("test@test.co.*", "test@test.co")) throw;
 
      // Long strings.

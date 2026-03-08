@@ -17,7 +17,7 @@ namespace RegressionTests.SMTP
       {
          _status = _application.Status;
 
-         _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
       }
 
       [Test]
@@ -37,7 +37,7 @@ namespace RegressionTests.SMTP
 
             // Send message to this route.
             var smtp = new SmtpClientSimulator();
-            smtp.Send("test@test.com", "test@dummy-example.com", "Test", "Test message");
+            smtp.Send("test@example.test", "test@dummy-example.com", "Test", "Test message");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -67,7 +67,7 @@ namespace RegressionTests.SMTP
 
             // Send message to this route.
             var smtp = new SmtpClientSimulator();
-            smtp.Send("test@test.com", "test@dummy-example.com", "Test", "Test message");
+            smtp.Send("test@example.test", "test@dummy-example.com", "Test", "Test message");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -97,7 +97,7 @@ namespace RegressionTests.SMTP
 
             // Send message to this route.
             var smtp = new SmtpClientSimulator();
-            smtp.Send("test@test.com", "test@dummy-example.com", "Test", "Test message");
+            smtp.Send("test@example.test", "test@dummy-example.com", "Test", "Test message");
                
 
             // Wait for the client to disconnect.
@@ -128,7 +128,7 @@ namespace RegressionTests.SMTP
 
             // Send message to this route.
             var smtp = new SmtpClientSimulator();
-            smtp.Send("test@test.com", "test@dummy-example.com", "Test", "Test message");
+            smtp.Send("test@example.test", "test@dummy-example.com", "Test", "Test message");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -165,7 +165,7 @@ namespace RegressionTests.SMTP
 
             // Send message to this route.
 
-            SmtpClientSimulator.StaticSend("test@test.com", "user1@dummy-example.com", "Test", "Test message");
+            SmtpClientSimulator.StaticSend("test@example.test", "user1@dummy-example.com", "Test", "Test message");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -198,14 +198,14 @@ namespace RegressionTests.SMTP
 
             // Send message to this route.
 
-            SmtpClientSimulator.StaticSend("test@test.com", "user1@dummy-example.com", "Test", "Test message");
+            SmtpClientSimulator.StaticSend("test@example.test", "user1@dummy-example.com", "Test", "Test message");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
 
             CustomAsserts.AssertRecipientsInDeliveryQueue(0, true);
 
-            var msg = Pop3ClientSimulator.AssertGetFirstMessageText("test@test.com", "test");
+            var msg = Pop3ClientSimulator.AssertGetFirstMessageText("test@example.test", "test");
             Assert.IsTrue(msg.Contains("Server does not support EHLO command."));
          }
       }

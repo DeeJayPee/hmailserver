@@ -32,7 +32,7 @@ namespace RegressionTests.Security
 
       private Status _status;
 
-      private const string _username = "NonSecretUser@test.com";
+      private const string _username = "NonSecretUser@example.test";
       private const string _password = "SecretPassword";
 
       private string EncodeBase64(string s)
@@ -153,7 +153,7 @@ namespace RegressionTests.Security
          {
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -191,7 +191,7 @@ namespace RegressionTests.Security
       [Test]
       public void TestSMTPClient()
       {
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          Assert.AreEqual(0, _status.UndeliveredMessages.Length);
 
@@ -211,7 +211,7 @@ namespace RegressionTests.Security
 
             // Send message to this route.
             var smtp = new SmtpClientSimulator();
-            smtp.Send("test@test.com", "test@dummy-example.com", "Test", "Test message");
+            smtp.Send("test@example.test", "test@dummy-example.com", "Test", "Test message");
 
             CustomAsserts.AssertRecipientsInDeliveryQueue(0);
 

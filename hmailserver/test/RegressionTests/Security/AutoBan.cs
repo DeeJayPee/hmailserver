@@ -30,7 +30,7 @@ namespace RegressionTests.Security
          _settings.MaxInvalidLogonAttemptsWithin = 5;
          _settings.AutoBanMinutes = 3;
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var sim = new Pop3ClientSimulator();
          Assert.IsTrue(sim.ConnectAndLogon(account.Address, "test"));
@@ -61,7 +61,7 @@ namespace RegressionTests.Security
          _settings.MaxInvalidLogonAttemptsWithin = 5;
          _settings.AutoBanMinutes = 3;
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var sim = new ImapClientSimulator();
          Assert.IsTrue(sim.ConnectAndLogon(account.Address, "test"));
@@ -100,7 +100,7 @@ namespace RegressionTests.Security
 
          Assert.AreEqual(2, _settings.SecurityRanges.Count);
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var sim = new Pop3ClientSimulator();
          Assert.IsTrue(sim.ConnectAndLogon(account.Address, "test"));
@@ -125,7 +125,7 @@ namespace RegressionTests.Security
          Assert.IsTrue(sim.GetWelcomeMessage().Length == 0);
 
          Assert.AreEqual(3, _settings.SecurityRanges.Count);
-         Assert.AreEqual("Auto-ban: test@test.com", _settings.SecurityRanges[2].Name);
+         Assert.AreEqual("Auto-ban: test@example.test", _settings.SecurityRanges[2].Name);
       }
 
       [Test]
@@ -136,7 +136,7 @@ namespace RegressionTests.Security
          _settings.MaxInvalidLogonAttemptsWithin = 5;
          _settings.AutoBanMinutes = 3;
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "te'st@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "te'st@example.test", "test");
 
          var sim = new Pop3ClientSimulator(TestSetup.GetLocalIpAddress(), false, 110);
          Assert.IsTrue(sim.ConnectAndLogon(account.Address, "test"));
@@ -172,13 +172,13 @@ namespace RegressionTests.Security
          _settings.MaxInvalidLogonAttemptsWithin = 5;
          _settings.AutoBanMinutes = 3;
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var sim = new SmtpClientSimulator();
 
-         //test@test.com / test
+         //test@example.test / test
          string errorMessage;
-         sim.ConnectAndLogon("dGVzdEB0ZXN0LmNvbQ==", "dGVzdA==", out errorMessage);
+         sim.ConnectAndLogon("dGVzdEBleGFtcGxlLnRlc3Q=", "dGVzdA==", out errorMessage);
          sim.Disconnect();
 
          // confirm that we can retrieve welcome message.
@@ -187,7 +187,7 @@ namespace RegressionTests.Security
          // fail to log on 3 times.
          for (int i = 0; i < 2; i++)
          {
-            CustomAsserts.Throws<System.Exception>(() => sim.ConnectAndLogon("dGVzdEB0ZXN0LmNvbQ==", "Vaffe==", out errorMessage));
+            CustomAsserts.Throws<System.Exception>(() => sim.ConnectAndLogon("dGVzdEBleGFtcGxlLnRlc3Q=", "Vaffe==", out errorMessage));
             sim.Disconnect();
 
             if (i == 2)

@@ -13,13 +13,13 @@ namespace RegressionTests.Infrastructure.Persistence
       [Test]
       public void TestAccountContainingBackwardSlashInMailbox()
       {
-         AssertInvalidEmailAddress("\\@test.com");
+         AssertInvalidEmailAddress("\\@example.test");
       }
 
       [Test]
       public void TestAccountContainingForwardSlashInMailbox()
       {
-         AssertInvalidEmailAddress("/@test.com");
+         AssertInvalidEmailAddress("/@example.test");
       }
 
       [Test]
@@ -38,61 +38,61 @@ namespace RegressionTests.Infrastructure.Persistence
       [Test]
       public void TestAccountContainingSpaceInMailboxNameWithoutQuotes()
       {
-         AssertInvalidEmailAddress("John Smith@test.com");
+         AssertInvalidEmailAddress("John Smith@example.test");
       }
 
       [Test]
       public void TestAccountContainingSpaceInMailboxNameWithQuotes()
       {
-         AssertInvalidEmailAddress("\"JohnSmith\"@test.com", "Failed to save object. The account address may not contain spaces or quotes.");
+         AssertInvalidEmailAddress("\"JohnSmith\"@example.test", "Failed to save object. The account address may not contain spaces or quotes.");
       }
 
       [Test]
       public void TestAccountContainingSpaceInMailboxNameWithQuoteAndSpace()
       {
-         AssertInvalidEmailAddress("\"John Smith\"@test.com", "Failed to save object. The account address may not contain spaces or quotes.");
+         AssertInvalidEmailAddress("\"John Smith\"@example.test", "Failed to save object. The account address may not contain spaces or quotes.");
       }
 
       [Test]
       public void TestAccountContainingSlashInMailboxNameWithQuotes()
       {
-         AssertInvalidEmailAddress("\"John\\Smith\"@test.com");
+         AssertInvalidEmailAddress("\"John\\Smith\"@example.test");
       }
 
       [Test]
       public void TestAccountContainingSpecialCharacters1()
       {
-         AssertValidEmailAddress("user+mailbox@test.com");
+         AssertValidEmailAddress("user+mailbox@example.test");
       }
 
       [Test]
       public void TestAccountContainingSpecialCharacters2()
       {
-         AssertInvalidEmailAddress("customer/department=shipping@test.com");
+         AssertInvalidEmailAddress("customer/department=shipping@example.test");
       }
 
       [Test]
       public void TestAccountContainingSpecialCharacters3()
       {
-         AssertValidEmailAddress("$A12345@test.com");
+         AssertValidEmailAddress("$A12345@example.test");
       }
 
       [Test]
       public void TestAccountContainingSpecialCharacters4()
       {
-         AssertValidEmailAddress("!def!xyz%abc@test.com");
+         AssertValidEmailAddress("!def!xyz%abc@example.test");
       }
 
       [Test]
       public void TestAccountContainingSpecialCharacters5()
       {
-         AssertValidEmailAddress("_somename@test.com");
+         AssertValidEmailAddress("_somename@example.test");
       }
 
       [Test]
       public void TestAccountContainingSpecialCharacters6()
       {
-         AssertInvalidEmailAddress("!#$%&'*+-/=?^_`.{|}~@test.com");
+         AssertInvalidEmailAddress("!#$%&'*+-/=?^_`.{|}~@example.test");
       }
 
       [Test]

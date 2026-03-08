@@ -18,7 +18,7 @@ namespace RegressionTests.Stress
       [Test]
       public void TestLongLineInData()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          var sb = new StringBuilder();
          for (int i = 0; i < 11000; i++)
          {
@@ -26,7 +26,7 @@ namespace RegressionTests.Stress
          }
 
          var sim = new SmtpClientSimulator();
-         CustomAsserts.Throws<DeliveryFailedException>(() => sim.SendRaw("test@test.com", "test@test.com", sb.ToString()));
+         CustomAsserts.Throws<DeliveryFailedException>(() => sim.SendRaw("test@example.test", "test@example.test", sb.ToString()));
       }
 
 
@@ -195,9 +195,9 @@ namespace RegressionTests.Stress
       [Test]
       public void TestOverlappingBoundaryNames()
       {
-         string content = "Return-Path: <check@test.com>\r\n" +
-                          "From: \"test\" <check@test.com>\r\n" +
-                          "To: \"Test\" <test@test.com>\r\n" +
+         string content = "Return-Path: <check@example.test>\r\n" +
+                          "From: \"test\" <check@example.test>\r\n" +
+                          "To: \"Test\" <test@example.test>\r\n" +
                           "Subject: rtest\r\n" +
                           "Date: Thu, 22 Jan 2009 13:20:32 +0100\r\n" +
                           "MIME-Version: 1.0\r\n" +
@@ -242,7 +242,7 @@ namespace RegressionTests.Stress
 
 
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mimetest@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mimetest@example.test", "test");
 
          Rule rule = account.Rules.Add();
          rule.Name = "Criteria test";
@@ -268,9 +268,9 @@ namespace RegressionTests.Stress
          var smtpClientSimulator = new SmtpClientSimulator();
 
          // Spam folder
-         smtpClientSimulator.SendRaw("mimetest@test.com", "mimetest@test.com", content);
+         smtpClientSimulator.SendRaw("mimetest@example.test", "mimetest@example.test", content);
 
-         string sContents = Pop3ClientSimulator.AssertGetFirstMessageText("mimetest@test.com", "test");
+         string sContents = Pop3ClientSimulator.AssertGetFirstMessageText("mimetest@example.test", "test");
 
          Assert.IsTrue(sContents.IndexOf("SomeHeader: SomeValue") > 0);
          Assert.IsTrue(sContents.IndexOf("------=_NextPart_000_000D_01C97C94.33D5E670.ALT--") > 0);

@@ -20,7 +20,7 @@ namespace RegressionTests.Stress
       {
          Application application = SingletonProvider<TestSetup>.Instance.GetApp();
          string deletedMessageText = _settings.ServerMessages.get_ItemByName("MESSAGE_FILE_MISSING").Text;
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "SampleBody");
          IMAPFolder inbox = account.IMAPFolders.get_ItemByName("Inbox");
 
@@ -47,7 +47,7 @@ namespace RegressionTests.Stress
          var watch = new Stopwatch();
 
          Application application = SingletonProvider<TestSetup>.Instance.GetApp();
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var sb = new StringBuilder();
          for (int i = 0; i < 1000; i++)
@@ -111,7 +111,7 @@ namespace RegressionTests.Stress
          Application application = SingletonProvider<TestSetup>.Instance.GetApp();
          string deletedMessageText = _settings.ServerMessages.get_ItemByName("MESSAGE_FILE_MISSING").Text;
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "SampleBody");
 
@@ -136,7 +136,7 @@ namespace RegressionTests.Stress
          Application application = SingletonProvider<TestSetup>.Instance.GetApp();
          string deletedMessageText = _settings.ServerMessages.get_ItemByName("MESSAGE_FILE_MISSING").Text;
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "SampleBody");
 
@@ -163,7 +163,7 @@ namespace RegressionTests.Stress
          Application application = SingletonProvider<TestSetup>.Instance.GetApp();
          string deletedMessageText = _settings.ServerMessages.get_ItemByName("MESSAGE_FILE_MISSING").Text;
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "SampleBody");
 

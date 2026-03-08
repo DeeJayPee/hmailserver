@@ -24,7 +24,7 @@ namespace RegressionTests.AntiSpam
          // Enable spam assassin
          hMailServer.AntiSpam antiSpam = _settings.AntiSpam;
 
-         account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sa@test.com", "test");
+         account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sa@example.test", "test");
 
          // Disallow incorrect line endings.
          antiSpam.SpamMarkThreshold = 1;
@@ -302,7 +302,7 @@ namespace RegressionTests.AntiSpam
          // First white-list the sender address
          WhiteListAddress address = _settings.AntiSpam.WhiteListAddresses.Add();
          address.Description = "TestWhiteList";
-         address.EmailAddress = "test-sender@test.com";
+         address.EmailAddress = "test-sender@example.test";
          address.LowerIPAddress = "0.0.0.0";
          address.UpperIPAddress = "255.255.255.255";
          address.Save();
@@ -310,7 +310,7 @@ namespace RegressionTests.AntiSpam
 
          // Send a messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("test-sender@test.com", account.Address, "SA test",
+         smtpClientSimulator.Send("test-sender@example.test", account.Address, "SA test",
                     "This is a test message with spam.\r\n XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X.");
 
          string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");

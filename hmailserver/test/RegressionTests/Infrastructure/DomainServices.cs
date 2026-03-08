@@ -19,7 +19,7 @@ namespace RegressionTests.Infrastructure
          oDomainAlias.AliasName = "alias.com";
          oDomainAlias.Save();
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "domain-alias-test@test.com",
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "domain-alias-test@example.test",
                                                                              "test");
 
          // Send 5 messages to this account.
@@ -31,15 +31,15 @@ namespace RegressionTests.Infrastructure
 
          {
             account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
-                                                                        "domain-alias-test-account@test.com", "test");
+                                                                        "domain-alias-test-account@example.test", "test");
 
             // Set up an alias pointing at the domain alias.
-            SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "datestalias@test.com",
+            SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "datestalias@example.test",
                                                            "domain-alias-test-account@alias.com");
 
             // Send to the alias
             for (int i = 0; i < 5; i++)
-               smtpClientSimulator.Send(account.Address, "datestalias@test.com", "INBOX", "Plus addressing message");
+               smtpClientSimulator.Send(account.Address, "datestalias@example.test", "INBOX", "Plus addressing message");
             // Wait for completion
 
             Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 5);
@@ -52,8 +52,8 @@ namespace RegressionTests.Infrastructure
       {
          Domains domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@test.com", "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test2@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "test");
+         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test2@example.test", "test");
 
          Domain domain2 = SingletonProvider<TestSetup>.Instance.AddDomain(domains, "test2.com");
 
@@ -61,8 +61,8 @@ namespace RegressionTests.Infrastructure
          Account account4 = SingletonProvider<TestSetup>.Instance.AddAccount(domain2, "test2@test2.com", "test");
 
          var smtpSimulator = new SmtpClientSimulator();
-         smtpSimulator.Send("test@alias.com", account1.Address, "Test", "test1@test.com");
-         smtpSimulator.Send("test@alias.com", account2.Address, "Test", "test2@test.com");
+         smtpSimulator.Send("test@alias.com", account1.Address, "Test", "test1@example.test");
+         smtpSimulator.Send("test@alias.com", account2.Address, "Test", "test2@example.test");
          smtpSimulator.Send("test@alias.com", account3.Address, "Test", "test1@test1.com");
          smtpSimulator.Send("test@alias.com", account4.Address, "Test", "test2@test1.com");
 
@@ -84,38 +84,38 @@ namespace RegressionTests.Infrastructure
          // Save the change
          _domain.Save();
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "plustest@test.com", "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "plustest2@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "plustest@example.test", "test");
+         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "plustest2@example.test", "test");
 
          // Send 5 messages to this account, without using plus addressing.
          var smtpClientSimulator = new SmtpClientSimulator();
          for (int i = 0; i < 5; i++)
-            smtpClientSimulator.Send("plustest@test.com", "plustest2@test.com", "INBOX", "Plus addressing message");
+            smtpClientSimulator.Send("plustest@example.test", "plustest2@example.test", "INBOX", "Plus addressing message");
          // Wait for completion
 
          // Check using POP3 that 5 messages exists.
-         Pop3ClientSimulator.AssertMessageCount("plustest2@test.com", "test", 5);
+         Pop3ClientSimulator.AssertMessageCount("plustest2@example.test", "test", 5);
 
          // Send using plus addressing
          for (int i = 0; i < 5; i++)
-            smtpClientSimulator.Send("plustest@test.com", "plustest2+hejsan@test.com", "INBOX", "Plus addressing message");
+            smtpClientSimulator.Send("plustest@example.test", "plustest2+hejsan@example.test", "INBOX", "Plus addressing message");
          // Wait for completion
 
-         Pop3ClientSimulator.AssertMessageCount("plustest2@test.com", "test", 10);
+         Pop3ClientSimulator.AssertMessageCount("plustest2@example.test", "test", 10);
 
          {
-            Account account3 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "plustest3@test.com",
+            Account account3 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "plustest3@example.test",
                                                                                  "test");
 
-            SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "plusalias@test.com",
-                                                           "plustest3+hejsan@test.com");
+            SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "plusalias@example.test",
+                                                           "plustest3+hejsan@example.test");
 
             // Send to the alias
             for (int i = 0; i < 5; i++)
-               smtpClientSimulator.Send("plustest@test.com", "plusalias@test.com", "INBOX", "Plus addressing message");
+               smtpClientSimulator.Send("plustest@example.test", "plusalias@example.test", "INBOX", "Plus addressing message");
             // Wait for completion
 
-            Pop3ClientSimulator.AssertMessageCount("plustest3@test.com", "test", 5);
+            Pop3ClientSimulator.AssertMessageCount("plustest3@example.test", "test", 5);
          }
 
          _domain.PlusAddressingEnabled = false;

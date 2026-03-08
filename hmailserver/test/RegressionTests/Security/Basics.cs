@@ -16,7 +16,7 @@ namespace RegressionTests.Security
       [Test]
       public void TestEmptyPassword()
       {
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "");
 
          string message;
          var sim = new Pop3ClientSimulator();

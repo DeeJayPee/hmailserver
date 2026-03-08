@@ -33,7 +33,7 @@ namespace RegressionTests.SSL
       [SetUp]
       public new void SetUp()
       {
-         _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
       }
 
       [Test]

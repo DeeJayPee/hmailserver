@@ -37,7 +37,7 @@ namespace RegressionTests.POP3.Fetching
 
             LogHandler.DeleteCurrentDefaultLog();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -111,7 +111,7 @@ namespace RegressionTests.POP3.Fetching
 
             LogHandler.DeleteCurrentDefaultLog();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -128,7 +128,7 @@ namespace RegressionTests.POP3.Fetching
             fa.DownloadNow();
             pop3Server.WaitForCompletion();
 
-            Pop3ClientSimulator.AssertMessageCount("user@test.com", "test", 1);
+            Pop3ClientSimulator.AssertMessageCount("user@example.test", "test", 1);
 
             fa.Delete();
          }
@@ -155,7 +155,7 @@ namespace RegressionTests.POP3.Fetching
 
             LogHandler.DeleteCurrentDefaultLog();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -216,7 +216,7 @@ namespace RegressionTests.POP3.Fetching
 
             LogHandler.DeleteCurrentDefaultLog();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -233,7 +233,7 @@ namespace RegressionTests.POP3.Fetching
             fa.DownloadNow();
             pop3Server.WaitForCompletion();
 
-            Pop3ClientSimulator.AssertMessageCount("user@test.com", "test", 1);
+            Pop3ClientSimulator.AssertMessageCount("user@example.test", "test", 1);
 
             fa.Delete();
          }
@@ -260,7 +260,7 @@ namespace RegressionTests.POP3.Fetching
 
             LogHandler.DeleteCurrentDefaultLog();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -277,7 +277,7 @@ namespace RegressionTests.POP3.Fetching
             fa.DownloadNow();
             pop3Server.WaitForCompletion();
 
-            Pop3ClientSimulator.AssertMessageCount("user@test.com", "test", 1);
+            Pop3ClientSimulator.AssertMessageCount("user@example.test", "test", 1);
 
             fa.Delete();
          }
@@ -304,7 +304,7 @@ namespace RegressionTests.POP3.Fetching
 
             LogHandler.DeleteCurrentDefaultLog();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -321,7 +321,7 @@ namespace RegressionTests.POP3.Fetching
             fa.DownloadNow();
             pop3Server.WaitForCompletion();
 
-            Pop3ClientSimulator.AssertMessageCount("user@test.com", "test", 1);
+            Pop3ClientSimulator.AssertMessageCount("user@example.test", "test", 1);
 
             fa.Delete();
          }

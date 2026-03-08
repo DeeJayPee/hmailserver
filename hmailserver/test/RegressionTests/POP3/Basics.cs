@@ -45,7 +45,7 @@ namespace RegressionTests.POP3
       {
          string[] testFiles = GetTestFiles();
 
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          foreach (string testFile in testFiles)
          {
@@ -54,17 +54,17 @@ namespace RegressionTests.POP3
             string fileHash = GetFileHash(testFile);
 
             var mail = new MailMessage();
-            mail.From = new MailAddress("test@test.com");
-            mail.To.Add("test@test.com");
+            mail.From = new MailAddress("test@example.test");
+            mail.To.Add("test@example.test");
             mail.Subject = "Test";
             mail.Attachments.Add(new Attachment(testFile));
 
             SendMessage(mail);
 
-            Pop3ClientSimulator.AssertMessageCount("test@test.com", "test", 1);
+            Pop3ClientSimulator.AssertMessageCount("test@example.test", "test", 1);
 
             var sim = new Pop3ClientSimulator();
-            sim.ConnectAndLogon("test@test.com", "test");
+            sim.ConnectAndLogon("test@example.test", "test");
             string fileContent = sim.RETR(1);
             sim.DELE(1);
             sim.QUIT();
@@ -94,21 +94,21 @@ namespace RegressionTests.POP3
       {
          // Create a test account
          // Fetch the default domain
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "pop3user@test.com", "test");
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "pop3user@example.test", "test");
 
          // Send 5 messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
          for (int i = 0; i < 5; i++)
-            smtpClientSimulator.Send("test@test.com", "pop3user@test.com", "INBOX", "POP3 test message");
+            smtpClientSimulator.Send("test@example.test", "pop3user@example.test", "INBOX", "POP3 test message");
 
 
-         Pop3ClientSimulator.AssertMessageCount("pop3user@test.com", "test", 5);
+         Pop3ClientSimulator.AssertMessageCount("pop3user@example.test", "test", 5);
       }
 
       [Test]
       public void TestDELEInvalid()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          for (int i = 1; i <= 10; i++)
             SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i.ToString());
@@ -127,7 +127,7 @@ namespace RegressionTests.POP3
       [Test]
       public void TestLIST()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody1");
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody2");
@@ -149,7 +149,7 @@ namespace RegressionTests.POP3
       [Test]
       public void TestLISTInvalid()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          for (int i = 1; i <= 10; i++)
             SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i.ToString());
@@ -169,7 +169,7 @@ namespace RegressionTests.POP3
       [Test]
       public void TestLISTSpecific()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody1");
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody2");
@@ -190,7 +190,7 @@ namespace RegressionTests.POP3
       [Test]
       public void TestLISTWithDeleted()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          for (int i = 1; i <= 10; i++)
             SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i.ToString());
@@ -214,7 +214,7 @@ namespace RegressionTests.POP3
       [Description("Test to log on a mailbox containing a message which has been marked as deleted using IMAP")]
       public void TestLogonMailboxWithDeletedMessage()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          for (int i = 1; i <= 3; i++)
             SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test",
@@ -252,7 +252,7 @@ namespace RegressionTests.POP3
       [Test]
       public void TestPOP3TransactionSafety()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody");
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
@@ -281,7 +281,7 @@ namespace RegressionTests.POP3
       [Test]
       public void TestRETR()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody1");
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
@@ -308,7 +308,7 @@ namespace RegressionTests.POP3
       [Test]
       public void TestTOPInvalid()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          for (int i = 1; i <= 10; i++)
             SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i.ToString());
@@ -325,7 +325,7 @@ namespace RegressionTests.POP3
       [Test]
       public void TestTOPSpecificEntire()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          for (int i = 1; i <= 10; i++)
             SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i.ToString());
@@ -343,7 +343,7 @@ namespace RegressionTests.POP3
       [Test]
       public void TestTOPSpecificPartial()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          for (int i = 1; i <= 10; i++)
             SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test",
@@ -365,7 +365,7 @@ namespace RegressionTests.POP3
       [Test]
       public void TestTopDotOnOtherwiseEmptyLineShouldBeEscaped()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test",
                                           "Line1\r\nLine2\r\n..\r\nLine4\r\n..A\r\n.B\r\nLine6\r\n");
@@ -382,7 +382,7 @@ namespace RegressionTests.POP3
       [Test]
       public void TestUIDLInvalid()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          for (int i = 1; i <= 10; i++)
             SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i.ToString());
@@ -402,7 +402,7 @@ namespace RegressionTests.POP3
       [Test]
       public void TestUIDLSpecific()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody1");
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody2");
@@ -423,7 +423,7 @@ namespace RegressionTests.POP3
       [Test]
       public void TestUIDLWithDeleted()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          for (int i = 1; i <= 10; i++)
             SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i.ToString());

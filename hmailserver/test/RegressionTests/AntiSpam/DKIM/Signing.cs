@@ -46,7 +46,7 @@ namespace RegressionTests.AntiSpam.DKIM
 
       private string SendMessage(string body)
       {
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@example.com"] = 250;
@@ -65,7 +65,7 @@ namespace RegressionTests.AntiSpam.DKIM
             var smtp = new SmtpClientSimulator();
             var recipients = new List<string>();
             recipients.Add("test@example.com");
-            smtp.Send("test@test.com", recipients, "Test", body);
+            smtp.Send("test@example.test", recipients, "Test", body);
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();

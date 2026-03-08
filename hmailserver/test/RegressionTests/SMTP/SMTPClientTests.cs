@@ -21,7 +21,7 @@ namespace RegressionTests.SMTP
          _queue = _application.GlobalObjects.DeliveryQueue;
          _status = _application.Status;
          // add an account to send from
-         _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
       }
 
       #endregion
@@ -57,7 +57,7 @@ namespace RegressionTests.SMTP
             var smtp = new SmtpClientSimulator();
             var recipients = new List<string>();
             recipients.Add("test@dummy-example.com");
-            smtp.Send("test@test.com", recipients, "Test", "Test message");
+            smtp.Send("test@example.test", recipients, "Test", "Test message");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -83,12 +83,12 @@ namespace RegressionTests.SMTP
          TestSetup.AddRoutePointingAtLocalhost(1, 25, false);
 
          // Send message to this route.
-         SmtpClientSimulator.StaticSend("test@test.com", "test@dummy-example.com", "subject", "body");
+         SmtpClientSimulator.StaticSend("test@example.test", "test@dummy-example.com", "subject", "body");
 
          for (int i = 0; i < 40; i++)
          {
             string s = _status.UndeliveredMessages;
-            if (s.Contains("\t\ttest@test.com"))
+            if (s.Contains("\t\ttest@example.test"))
                break;
 
             Thread.Sleep(250);
@@ -97,7 +97,7 @@ namespace RegressionTests.SMTP
          // Wait for the bounce message to be delivered.
          CustomAsserts.AssertRecipientsInDeliveryQueue(0, true);
 
-         string message = Pop3ClientSimulator.AssertGetFirstMessageText("test@test.com", "test");
+         string message = Pop3ClientSimulator.AssertGetFirstMessageText("test@example.test", "test");
          Assert.IsTrue(message.Contains("this would mean connecting to myself."));
       }
 
@@ -137,7 +137,7 @@ namespace RegressionTests.SMTP
 
             // Send message to this route.
             var sim = new SmtpClientSimulator(false, 11001);
-            sim.Send("test@test.com", "user@dummy-example.com", "Test", "Test message");
+            sim.Send("test@example.test", "user@dummy-example.com", "Test", "Test message");
 
 
             // Wait for the client to disconnect.
@@ -181,7 +181,7 @@ namespace RegressionTests.SMTP
             for (int i = 0; i < 250; i++)
                recipients.Add("user" + i.ToString() + "@dummy-example.com");
 
-            smtp.Send("test@test.com", recipients, "Test", "Test message");
+            smtp.Send("test@example.test", recipients, "Test", "Test message");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -219,7 +219,7 @@ namespace RegressionTests.SMTP
             for (int i = 0; i < 50; i++)
                recipients.Add("user" + i.ToString() + "@dummy-example.com");
 
-            smtp.Send("test@test.com", recipients, "Test", "Test message");
+            smtp.Send("test@example.test", recipients, "Test", "Test message");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -257,7 +257,7 @@ namespace RegressionTests.SMTP
             var smtp = new SmtpClientSimulator();
             var recipients = new List<string>();
             recipients.Add("test@dummy-example.com");
-            smtp.Send("test@test.com", recipients, "Test", "DisconnectAfterAcceptBeforeQuit");
+            smtp.Send("test@example.test", recipients, "Test", "DisconnectAfterAcceptBeforeQuit");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -290,7 +290,7 @@ namespace RegressionTests.SMTP
             var smtp = new SmtpClientSimulator();
             var recipients = new List<string>();
             recipients.Add("test@dummy-example.com");
-            smtp.Send("test@test.com", recipients, "Test", "Test message");
+            smtp.Send("test@example.test", recipients, "Test", "Test message");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -327,7 +327,7 @@ namespace RegressionTests.SMTP
             var smtp = new SmtpClientSimulator();
             var recipients = new List<string>();
             recipients.Add("test@dummy-example.com");
-            smtp.Send("test@test.com", recipients, "Test", messageBody);
+            smtp.Send("test@example.test", recipients, "Test", messageBody);
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -364,7 +364,7 @@ namespace RegressionTests.SMTP
             var smtp = new SmtpClientSimulator();
             var recipients = new List<string>();
             recipients.Add("test@dummy-example.com");
-            smtp.Send("test@test.com", recipients, "Test", "DeliverySuccessNoQuitResponse");
+            smtp.Send("test@example.test", recipients, "Test", "DeliverySuccessNoQuitResponse");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -399,7 +399,7 @@ namespace RegressionTests.SMTP
             var smtp = new SmtpClientSimulator();
             var recipients = new List<string>();
             recipients.Add("test@dummy-example.com");
-            smtp.Send("test@test.com", recipients, "Test", "Test message");
+            smtp.Send("test@example.test", recipients, "Test", "Test message");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -408,7 +408,7 @@ namespace RegressionTests.SMTP
 
             string bounceMessage = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
 
-            Assert.IsTrue(bounceMessage.Contains("MAIL FROM:<test@test.com>"));
+            Assert.IsTrue(bounceMessage.Contains("MAIL FROM:<test@example.test>"));
             Assert.IsTrue(bounceMessage.Contains("Remote server replied: 561"));
          }
       }
@@ -482,7 +482,7 @@ namespace RegressionTests.SMTP
             var smtp = new SmtpClientSimulator();
             var recipients = new List<string>();
             recipients.Add("test@dummy-example.com");
-            smtp.Send("test@test.com", recipients, "Test", "test of error after accepted delivery");
+            smtp.Send("test@example.test", recipients, "Test", "test of error after accepted delivery");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -604,7 +604,7 @@ namespace RegressionTests.SMTP
             var smtp = new SmtpClientSimulator();
             var recipients = new List<string>();
             recipients.Add("test@dummy-example.com");
-            smtp.Send("test@test.com", recipients, "Test", "Test message");
+            smtp.Send("test@example.test", recipients, "Test", "Test message");
 
             string undeliveredMessages = _status.UndeliveredMessages;
 
@@ -616,7 +616,7 @@ namespace RegressionTests.SMTP
             {
                Assert.IsFalse(i == 40);
 
-               if (_status.UndeliveredMessages.Contains("\ttest@test.com") || _status.UndeliveredMessages.Length == 0)
+               if (_status.UndeliveredMessages.Contains("\ttest@example.test") || _status.UndeliveredMessages.Length == 0)
                   break;
 
                Thread.Sleep(250);
@@ -670,7 +670,7 @@ namespace RegressionTests.SMTP
             recipients.Add("user2@dummy-example.com");
             recipients.Add("user3@dummy-example.com");
 
-            smtp.Send("test@test.com", recipients, "Test", "Accepted message");
+            smtp.Send("test@example.test", recipients, "Test", "Accepted message");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -716,7 +716,7 @@ namespace RegressionTests.SMTP
             recipients.Add("user2@dummy-example.com");
             recipients.Add("user3@dummy-example.com");
 
-            smtp.Send("test@test.com", recipients, "Test", "Test message");
+            smtp.Send("test@example.test", recipients, "Test", "Test message");
 
 
             // Wait for the client to disconnect.
@@ -741,7 +741,7 @@ namespace RegressionTests.SMTP
 
             server.WaitForCompletion();
 
-            string bounceMessage = Pop3ClientSimulator.AssertGetFirstMessageText("test@test.com", "test");
+            string bounceMessage = Pop3ClientSimulator.AssertGetFirstMessageText("test@example.test", "test");
 
             Assert.IsFalse(bounceMessage.Contains("user1@dummy-example.com"));
             Assert.IsFalse(bounceMessage.Contains("user2@dummy-example.com"));
@@ -786,7 +786,7 @@ namespace RegressionTests.SMTP
             recipients.Add("user2@dummy-example.com");
             recipients.Add("user3@dummy-example.com");
 
-            smtp.Send("test@test.com", recipients, "Test", "Accepted message");
+            smtp.Send("test@example.test", recipients, "Test", "Accepted message");
 
 
 
@@ -828,7 +828,7 @@ namespace RegressionTests.SMTP
             recipients.Add("user2@dummy-example.com");
             recipients.Add("user3@dummy-example.com");
 
-            smtp.Send("test@test.com", recipients, "Test", "Test message");
+            smtp.Send("test@example.test", recipients, "Test", "Test message");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -852,7 +852,7 @@ namespace RegressionTests.SMTP
             CustomAsserts.AssertRecipientsInDeliveryQueue(0);
             server.WaitForCompletion();
             
-            string bounceMessage = Pop3ClientSimulator.AssertGetFirstMessageText("test@test.com", "test");
+            string bounceMessage = Pop3ClientSimulator.AssertGetFirstMessageText("test@example.test", "test");
 
             Assert.IsTrue(bounceMessage.Contains("400 user3@dummy-example.com"));
             Assert.IsTrue(bounceMessage.Contains("Tried 2 time(s)"));
@@ -883,7 +883,7 @@ namespace RegressionTests.SMTP
             var smtp = new SmtpClientSimulator();
             var recipients = new List<string>();
             recipients.Add("test@dummy-example.com");
-            smtp.Send("test@test.com", recipients, "Test", "Test message");
+            smtp.Send("test@example.test", recipients, "Test", "Test message");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -920,7 +920,7 @@ namespace RegressionTests.SMTP
             var smtp = new SmtpClientSimulator();
             var recipients = new List<string>();
             recipients.Add("test@dummy-example.com");
-            smtp.Send("test@test.com", recipients, "Test", "Test message");
+            smtp.Send("test@example.test", recipients, "Test", "Test message");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -970,7 +970,7 @@ namespace RegressionTests.SMTP
             TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false, eConnectionSecurity.eCSNone);
 
             
-            SmtpClientSimulator.StaticSend("test@test.com", "user1@dummy-example.com", "Test", "Test message");
+            SmtpClientSimulator.StaticSend("test@example.test", "user1@dummy-example.com", "Test", "Test message");
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -1003,7 +1003,7 @@ namespace RegressionTests.SMTP
 
             // Send message to this route.
 
-            SmtpClientSimulator.StaticSend("test@test.com", "user1@dummy-example.com", "Test", "Test message");
+            SmtpClientSimulator.StaticSend("test@example.test", "user1@dummy-example.com", "Test", "Test message");
 
 
             // Wait for the client to disconnect.
@@ -1011,7 +1011,7 @@ namespace RegressionTests.SMTP
 
             CustomAsserts.AssertRecipientsInDeliveryQueue(0, true);
 
-            var msg = Pop3ClientSimulator.AssertGetFirstMessageText("test@test.com", "test");
+            var msg = Pop3ClientSimulator.AssertGetFirstMessageText("test@example.test", "test");
             Assert.IsTrue(msg.Contains("Remote server replied: 550 Command HELO not recognized."));
          }
       }

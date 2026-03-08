@@ -35,7 +35,7 @@ namespace RegressionTests.AntiSpam.DKIM
 
          
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          CustomAsserts.Throws<DeliveryFailedException>(() => SmtpClientSimulator.StaticSendRaw(account1.Address, account1.Address, TestResources.MessageWithInvalidDkim));
       }
 
@@ -48,7 +48,7 @@ namespace RegressionTests.AntiSpam.DKIM
          _antiSpam.DKIMVerificationEnabled = true;
          _antiSpam.DKIMVerificationFailureScore = 6;
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSendRaw(account1.Address, account1.Address, TestResources.MessageWithInvalidDkim);
          string text = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
 
@@ -62,7 +62,7 @@ namespace RegressionTests.AntiSpam.DKIM
          _antiSpam.DKIMVerificationEnabled = true;
          _antiSpam.DKIMVerificationFailureScore = 100;
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          CustomAsserts.Throws<DeliveryFailedException>(() => SmtpClientSimulator.StaticSendRaw(account1.Address, account1.Address, TestResources.MessageWithInvalidDkim));
       }
 
@@ -73,7 +73,7 @@ namespace RegressionTests.AntiSpam.DKIM
          _antiSpam.DKIMVerificationEnabled = true;
          _antiSpam.DKIMVerificationFailureScore = 100;
          
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSendRaw(account1.Address, account1.Address, TestResources.MessageWithValidDkim);
          string text = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
       }

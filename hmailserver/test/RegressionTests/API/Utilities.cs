@@ -18,13 +18,13 @@ namespace RegressionTests.API
       public void TestImportDuplicateMessage()
       {
          string @messageText =
-            "From: test@test.com\r\n" +
+            "From: test@example.test\r\n" +
             "\r\n" +
             "Test\r\n";
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
-         string domainPath = Path.Combine(_application.Settings.Directories.DataDirectory, "test.com");
+         string domainPath = Path.Combine(_application.Settings.Directories.DataDirectory, "example.test");
          string accountPath = Path.Combine(domainPath, "test");
 
          Directory.CreateDirectory(accountPath);
@@ -36,7 +36,7 @@ namespace RegressionTests.API
          Assert.IsTrue(_application.Utilities.ImportMessageFromFile(fileName, account.ID));
          Assert.IsFalse(_application.Utilities.ImportMessageFromFile(fileName, account.ID));
 
-         Pop3ClientSimulator.AssertMessageCount("test@test.com", "test", 1);
+         Pop3ClientSimulator.AssertMessageCount("test@example.test", "test", 1);
       }
 
       [Test]
@@ -44,13 +44,13 @@ namespace RegressionTests.API
       public void TestImportOfMessageInInvalidSubName()
       {
          string @messageText =
-            "From: test@test.com\r\n" +
+            "From: test@example.test\r\n" +
             "\r\n" +
             "Test\r\n";
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
-         string domainPath = Path.Combine(_application.Settings.Directories.DataDirectory, "test.com");
+         string domainPath = Path.Combine(_application.Settings.Directories.DataDirectory, "example.test");
          string accountPath = Path.Combine(domainPath, "test");
          Directory.CreateDirectory(accountPath);
 
@@ -75,11 +75,11 @@ namespace RegressionTests.API
       public void TestImportOfMessageInPublicFolder()
       {
          string @messageText =
-            "From: test@test.com\r\n" +
+            "From: test@example.test\r\n" +
             "\r\n" +
             "Test\r\n";
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          string publicFolder = Path.Combine(_application.Settings.Directories.DataDirectory, "#Public");
 
          if (!Directory.Exists(publicFolder))
@@ -97,13 +97,13 @@ namespace RegressionTests.API
       public void TestImportOfMessageInSubdirectory()
       {
          string @messageText =
-            "From: test@test.com\r\n" +
+            "From: test@example.test\r\n" +
             "\r\n" +
             "Test\r\n";
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
-         string domainPath = Path.Combine(_application.Settings.Directories.DataDirectory, "test.com");
+         string domainPath = Path.Combine(_application.Settings.Directories.DataDirectory, "example.test");
          string accountPath = Path.Combine(domainPath, "test");
          Directory.CreateDirectory(accountPath);
 
@@ -126,13 +126,13 @@ namespace RegressionTests.API
       public void TestImportOfMessageIntoInbox()
       {
          string @messageText =
-            "From: test@test.com\r\n" +
+            "From: test@example.test\r\n" +
             "\r\n" +
             "Test\r\n";
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
-         string domainPath = Path.Combine(_application.Settings.Directories.DataDirectory, "test.com");
+         string domainPath = Path.Combine(_application.Settings.Directories.DataDirectory, "example.test");
          string accountPath = Path.Combine(domainPath, "test");
 
          Directory.CreateDirectory(accountPath);
@@ -143,7 +143,7 @@ namespace RegressionTests.API
 
          Assert.IsTrue(_application.Utilities.ImportMessageFromFile(fileName, account.ID));
 
-         string text = Pop3ClientSimulator.AssertGetFirstMessageText("test@test.com", "test");
+         string text = Pop3ClientSimulator.AssertGetFirstMessageText("test@example.test", "test");
          Assert.IsTrue(text.Contains(messageText));
       }
 
@@ -152,13 +152,13 @@ namespace RegressionTests.API
       public void TestImportOfMessageIntoInbox2()
       {
          string @messageText =
-            "From: test@test.com\r\n" +
+            "From: test@example.test\r\n" +
             "\r\n" +
             "Test\r\n";
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
-         string domainPath = Path.Combine(_application.Settings.Directories.DataDirectory, "test.com");
+         string domainPath = Path.Combine(_application.Settings.Directories.DataDirectory, "example.test");
          string accountPath = Path.Combine(domainPath, "test");
 
          Directory.CreateDirectory(accountPath);
@@ -169,7 +169,7 @@ namespace RegressionTests.API
 
          Assert.IsTrue(_application.Utilities.ImportMessageFromFileToIMAPFolder(fileName, account.ID, "Inbox"));
 
-         string text = Pop3ClientSimulator.AssertGetFirstMessageText("test@test.com", "test");
+         string text = Pop3ClientSimulator.AssertGetFirstMessageText("test@example.test", "test");
          Assert.IsTrue(text.Contains(messageText));
       }
 
@@ -178,15 +178,15 @@ namespace RegressionTests.API
       public void TestImportOfMessageIntoOtherFolder()
       {
          string @messageText =
-            "From: test@test.com\r\n" +
+            "From: test@example.test\r\n" +
             "\r\n" +
             "Test\r\n";
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          account.IMAPFolders.Add("Woho");
 
-         string domainPath = Path.Combine(_application.Settings.Directories.DataDirectory, "test.com");
+         string domainPath = Path.Combine(_application.Settings.Directories.DataDirectory, "example.test");
          string accountPath = Path.Combine(domainPath, "test");
 
          Directory.CreateDirectory(accountPath);
@@ -196,9 +196,9 @@ namespace RegressionTests.API
 
          Assert.IsTrue(_application.Utilities.ImportMessageFromFileToIMAPFolder(fileName, account.ID, "Woho"));
 
-         Pop3ClientSimulator.AssertMessageCount("test@test.com", "test", 0);
+         Pop3ClientSimulator.AssertMessageCount("test@example.test", "test", 0);
          var sim = new ImapClientSimulator();
-         sim.ConnectAndLogon("test@test.com", "test");
+         sim.ConnectAndLogon("test@example.test", "test");
          Assert.AreEqual(1, sim.GetMessageCount("Woho"));
          sim.Disconnect();
       }
@@ -208,7 +208,7 @@ namespace RegressionTests.API
       public void TestReplaceFullPathInPublicFolderWithPartialPath()
       {
          Application application = SingletonProvider<TestSetup>.Instance.GetApp();
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account8@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account8@example.test", "test");
 
          IMAPFolders publicFolders = _settings.PublicFolders;
          IMAPFolder folder = publicFolders.Add("Share1");
@@ -242,7 +242,7 @@ namespace RegressionTests.API
       [Description("Let the importer replace the full path in the database with a partial path")]
       public void TestReplaceFullPathWithPartialPath()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test message", "Test body");
 
          IMAPFolder folder = account.IMAPFolders.get_ItemByName("Inbox");
@@ -282,7 +282,7 @@ namespace RegressionTests.API
       [Description("Let the importer replace the full path in the database with a partial path")]
       public void TestReplaceInvalidPathWithCorrectPath()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test message", "Test body");
 
          IMAPFolder folder = account.IMAPFolders.get_ItemByName("Inbox");

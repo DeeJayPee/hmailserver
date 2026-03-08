@@ -50,9 +50,9 @@ namespace RegressionTests.IMAP
          var message = new Message();
 
          message.Charset = "UTF-8";
-         message.AddRecipient("test", "meta'data@test.com");
+         message.AddRecipient("test", "meta'data@example.test");
          message.From = "Test";
-         message.FromAddress = "meta'data@test.com";
+         message.FromAddress = "meta'data@example.test";
          message.Subject = subject;
          message.set_HeaderValue("To", to);
          message.set_HeaderValue("cc", cc);
@@ -64,7 +64,7 @@ namespace RegressionTests.IMAP
       [Description("Test message metadata date")]
       public void TestMetaDataSortCC()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
 
          // disable...
          SendMessage("Test C", "Body", "", "ÄÄÄ");
@@ -112,7 +112,7 @@ namespace RegressionTests.IMAP
       public void TestMetaDataSortDate()
       {
          Application application = SingletonProvider<TestSetup>.Instance.GetApp();
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
 
          // disable...
          SendMessage("Test A", "Body", "", "");
@@ -153,7 +153,7 @@ namespace RegressionTests.IMAP
       public void TestMetaDataSortSubjectAnsi()
       {
          Application application = SingletonProvider<TestSetup>.Instance.GetApp();
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
 
          // disable...
          SendMessage("Test 1", "Body", "", "");
@@ -186,7 +186,7 @@ namespace RegressionTests.IMAP
       public void TestMetaDataSortSubjectGreek()
       {
          Application application = SingletonProvider<TestSetup>.Instance.GetApp();
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
 
          // disable...
          SendMessage("Test Σ", "Body", "", "");
@@ -236,7 +236,7 @@ namespace RegressionTests.IMAP
       public void TestMetaDataSortSubjectSwedish()
       {
          Application application = SingletonProvider<TestSetup>.Instance.GetApp();
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
 
          // disable...
          SendMessage("Test Ä", "Body", "", "");
@@ -283,7 +283,7 @@ namespace RegressionTests.IMAP
       public void TestMetaDataSortSubjectTurkish()
       {
          Application application = SingletonProvider<TestSetup>.Instance.GetApp();
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
 
          // disable...
          SendMessage("Test Ç", "Body", "", "");
@@ -329,7 +329,7 @@ namespace RegressionTests.IMAP
       public void TestMetaDataSortTo()
       {
          Application application = SingletonProvider<TestSetup>.Instance.GetApp();
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
 
          // disable...
          SendMessage("Test A", "Body", "ÅÅÅ", "");

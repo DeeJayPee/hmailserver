@@ -24,7 +24,7 @@ namespace RegressionTests.SSL.StartTls
       [SetUp]
       public new void SetUp()
       {
-         _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
       }
 
       [Test]
@@ -81,7 +81,7 @@ namespace RegressionTests.SSL.StartTls
          pop3Simulator.Handshake();
 
          // run over TLS.
-         var result = pop3Simulator.User("test@test.com");
+         var result = pop3Simulator.User("test@example.test");
          Assert.IsTrue(result.StartsWith("+OK"));
       }
 
@@ -94,7 +94,7 @@ namespace RegressionTests.SSL.StartTls
          pop3Simulator.ReceiveBanner(out banner);
 
          // run over TLS.
-         var result = pop3Simulator.User("test@test.com");
+         var result = pop3Simulator.User("test@example.test");
          Assert.IsTrue(result.StartsWith("-ERR STLS is required."));
       }
 
@@ -111,7 +111,7 @@ namespace RegressionTests.SSL.StartTls
          pop3Simulator.ReceiveBanner(out banner);
 
          // run over TLS.
-         var result = pop3Simulator.User("test@test.com");
+         var result = pop3Simulator.User("test@example.test");
          Assert.IsTrue(result.StartsWith("-ERR A SSL/TLS-connection is required for authentication."));
       }
    }

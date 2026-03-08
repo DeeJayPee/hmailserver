@@ -21,11 +21,11 @@ namespace RegressionTests.API
       [Test]
       public void DeletingSingleMessageShouldNotAffectOtherMessages()
       {
-         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          // Add 3 messages to the inbox
          var imapClientSimulator = new ImapClientSimulator();
-         imapClientSimulator.ConnectAndLogon("test@test.com", "test");
+         imapClientSimulator.ConnectAndLogon("test@example.test", "test");
          for (int i = 0; i < 3; i++)
             imapClientSimulator.SendSingleCommandWithLiteral("A01 APPEND INBOX {4}", "ABCD");
          imapClientSimulator.Disconnect();
@@ -42,7 +42,7 @@ namespace RegressionTests.API
          Assert.AreEqual(firstId, messages[0].ID);
          Assert.AreEqual(thirdId, messages[1].ID);
 
-         imapClientSimulator.ConnectAndLogon("test@test.com", "test");
+         imapClientSimulator.ConnectAndLogon("test@example.test", "test");
          var imapMessageCount = imapClientSimulator.GetMessageCount("Inbox");
          Assert.AreEqual(imapMessageCount, messages.Count);
 
@@ -51,10 +51,10 @@ namespace RegressionTests.API
       [Test]
       public void DeletingMultipleMessagesShouldSucceed()
       {
-         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var imapClientSimulator = new ImapClientSimulator();
-         imapClientSimulator.ConnectAndLogon("test@test.com", "test");
+         imapClientSimulator.ConnectAndLogon("test@example.test", "test");
          for (int i = 0; i < 10; i++)
             imapClientSimulator.SendSingleCommandWithLiteral("A01 APPEND INBOX {4}", "ABCD");
          imapClientSimulator.Disconnect();

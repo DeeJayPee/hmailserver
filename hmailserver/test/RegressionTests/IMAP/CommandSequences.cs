@@ -14,7 +14,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestBatchOfCommands()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "batch@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "batch@example.test", "test");
 
          var simulator = new ImapClientSimulator();
          string sWelcomeMessage = simulator.Connect();
@@ -49,7 +49,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestLongCommand()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "batch@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "batch@example.test", "test");
 
          var simulator = new ImapClientSimulator();
          string sWelcomeMessage = simulator.Connect();

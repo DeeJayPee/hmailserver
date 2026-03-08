@@ -67,7 +67,7 @@ namespace RegressionTests.IMAP
       [Description("Confirm that new messages receive new UIDs")]
       public void TestBasicIncrements()
       {
-         Account testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@test.com",
+         Account testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@example.test",
                                                                                 "test");
 
          SmtpClientSimulator.StaticSend(testAccount.Address, testAccount.Address, "Test", "Test");
@@ -95,7 +95,7 @@ namespace RegressionTests.IMAP
       [Description("Confirm that deletion of messages does not effect UID sequence")]
       public void TestBasicIncrementsWithDeletion()
       {
-         Account testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@test.com",
+         Account testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@example.test",
                                                                                 "test");
 
          SmtpClientSimulator.StaticSend(testAccount.Address, testAccount.Address, "Test", "Test");
@@ -126,7 +126,7 @@ namespace RegressionTests.IMAP
       [Description("Confirm that moving a message to a new folder generates an UID specific to that folder.")]
       public void TestMoveMessageWithAccountLevelRule()
       {
-         Account testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@test.com",
+         Account testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@example.test",
                                                                                 "test");
 
          // First deliver two messages to the inbox.
@@ -161,7 +161,7 @@ namespace RegressionTests.IMAP
       [Description("Confirm that moving a message to a new folder generates an UID specific to that folder.")]
       public void TestMoveMessageWithGlobalRule()
       {
-         Account testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@test.com",
+         Account testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@example.test",
                                                                                 "test");
 
          // First deliver two messages to the inbox.
@@ -202,7 +202,7 @@ namespace RegressionTests.IMAP
          _settings.Scripting.Enabled = true;
          _settings.Scripting.Reload();
 
-         Account testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@test.com",
+         Account testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@example.test",
                                                                                 "test");
 
          var sim = new ImapClientSimulator();
@@ -252,7 +252,7 @@ namespace RegressionTests.IMAP
       {
          _settings.Scripting.Enabled = true;
 
-         Account testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@test.com",
+         Account testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@example.test",
                                                                                 "test");
 
          var sim = new ImapClientSimulator();

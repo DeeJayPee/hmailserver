@@ -14,7 +14,7 @@ namespace RegressionTests.SSL
       [Test]
       public void SmtpServerSupportingSSL()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@example.test", "test");
 
          // Set up a server listening on port 250 which accepts email for test@otherdomain.com
          var deliveryResults = new Dictionary<string, int>();
@@ -44,7 +44,7 @@ namespace RegressionTests.SSL
       [Test]
       public void SmtpServerSupportingStartTls_StartTlsRequired()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@example.test", "test");
 
          // Set up a server listening on port 250 which accepts email for test@otherdomain.com
          var deliveryResults = new Dictionary<string, int>();
@@ -73,7 +73,7 @@ namespace RegressionTests.SSL
       [Test]
       public void SmtpServerSupportingStartTls_StartTlsOptional()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@example.test", "test");
 
          // Set up a server listening on port 250 which accepts email for test@otherdomain.com
          var deliveryResults = new Dictionary<string, int>();
@@ -102,7 +102,7 @@ namespace RegressionTests.SSL
       [Test]
       public void SmtpServerNOTSupportingStartTls_StartTlsRequired()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@example.test", "test");
 
          // Set up a server listening on port 250 which accepts email for test@otherdomain.com
          var deliveryResults = new Dictionary<string, int>();
@@ -125,7 +125,7 @@ namespace RegressionTests.SSL
             // This should now be processed via the rule -> route -> external server we've set up.
             server.WaitForCompletion();
 
-            var msg = Pop3ClientSimulator.AssertGetFirstMessageText("sender@test.com", "test");
+            var msg = Pop3ClientSimulator.AssertGetFirstMessageText("sender@example.test", "test");
 
             Assert.IsTrue(msg.Contains("Server does not support STARTTLS"));
          }
@@ -134,7 +134,7 @@ namespace RegressionTests.SSL
       [Test]
       public void SmtpServerNOTSupportingStartTls_StartTlsOptional()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@example.test", "test");
 
          // Set up a server listening on port 250 which accepts email for test@otherdomain.com
          var deliveryResults = new Dictionary<string, int>();

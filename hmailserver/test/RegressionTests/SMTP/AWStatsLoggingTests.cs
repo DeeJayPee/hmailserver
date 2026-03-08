@@ -33,19 +33,19 @@ namespace RegressionTests.SMTP
       [Test]
       public void SuccessfulDeliveriesShouldBeLogged()
       {
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          IPAddress localAddress = TestSetup.GetLocalIpAddress();
          var smtpClientSimulator = new SmtpClientSimulator(false, 25, localAddress);
 
          // Delivery from external to local.
-         smtpClientSimulator.Send("test@external.com", "test@test.com", "Mail 1", "Mail 1");
-         Pop3ClientSimulator.AssertMessageCount("test@test.com", "test", 1);
+         smtpClientSimulator.Send("test@external.com", "test@example.test", "Mail 1", "Mail 1");
+         Pop3ClientSimulator.AssertMessageCount("test@example.test", "test", 1);
          
          // Verify that the delivery is logged
          string contents = TestSetup.ReadExistingTextFile(_logging.CurrentAwstatsLog);
          CustomAsserts.AssertDeleteFile(_logging.CurrentAwstatsLog);
-         string expectedString = string.Format("\ttest@external.com\ttest@test.com\t{0}\t127.0.0.1\tSMTP\t?\t250\t", localAddress);
+         string expectedString = string.Format("\ttest@external.com\ttest@example.test\t{0}\t127.0.0.1\tSMTP\t?\t250\t", localAddress);
          StringAssert.Contains(expectedString, contents);
          
          // Verify there's just 1 logged line
@@ -55,19 +55,19 @@ namespace RegressionTests.SMTP
       [Test]
       public void FailedDeliveriesDueToAuthErrorShouldBeLogged()
       {
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          IPAddress localAddress = TestSetup.GetLocalIpAddress();
          var smtpClientSimulator = new SmtpClientSimulator(false, 25, localAddress);
 
          // Failed delivery from local to local.
          CustomAsserts.Throws<DeliveryFailedException>(() =>
-            smtpClientSimulator.Send("test@test.com", "test@test.com", "Mail 1", "Mail 1"));
+            smtpClientSimulator.Send("test@example.test", "test@example.test", "Mail 1", "Mail 1"));
 
          // Verify that the failed delivery is logged
          string contents = TestSetup.ReadExistingTextFile(_logging.CurrentAwstatsLog);
          CustomAsserts.AssertDeleteFile(_logging.CurrentAwstatsLog);
-         string expectedString = string.Format("\ttest@test.com\ttest@test.com\t{0}\t127.0.0.1\tSMTP\t?\t530\t", localAddress);
+         string expectedString = string.Format("\ttest@example.test\ttest@example.test\t{0}\t127.0.0.1\tSMTP\t?\t530\t", localAddress);
          StringAssert.Contains(expectedString, contents);
 
          // Verify there's just 1 logged line
@@ -77,17 +77,17 @@ namespace RegressionTests.SMTP
       [Test]
       public void FailedDeliveriesDueToGlobalRulesShouldBeLogged()
       {
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          CreateDeleteAllMailRule();
 
          // Failed delivery from local to local.
-         SmtpClientSimulator.StaticSend("test@test.com", "test@test.com", "Mail 1", "Mail 1");
+         SmtpClientSimulator.StaticSend("test@example.test", "test@example.test", "Mail 1", "Mail 1");
 
          // Verify that the failed delivery is logged
          string contents = TestSetup.ReadExistingTextFile(_logging.CurrentAwstatsLog);
          CustomAsserts.AssertDeleteFile(_logging.CurrentAwstatsLog);
-         string expectedString = string.Format("\ttest@test.com\ttest@test.com\t127.0.0.1\t127.0.0.1\tSMTP\t?\t550\t");
+         string expectedString = string.Format("\ttest@example.test\ttest@example.test\t127.0.0.1\t127.0.0.1\tSMTP\t?\t550\t");
          StringAssert.Contains(expectedString, contents);
 
          // Verify there's just 1 logged line

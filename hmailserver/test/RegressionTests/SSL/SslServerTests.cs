@@ -57,7 +57,7 @@ namespace RegressionTests.SSL
       {
          LogHandler.DeleteCurrentDefaultLog();
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "imap-ssl@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "imap-ssl@example.test", "test");
 
          for (int i = 0; i < 30; i++)
          {
@@ -84,10 +84,10 @@ namespace RegressionTests.SSL
       [Test]
       public void TestPOP3Server()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "pop3-ssl@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "pop3-ssl@example.test", "test");
 
          var smtpSim = new SmtpClientSimulator();
-         smtpSim.Send("test@test.com", account.Address, "Test", "MyBody");
+         smtpSim.Send("test@example.test", account.Address, "Test", "MyBody");
 
          for (int i = 0; i < 10; i++)
          {
@@ -116,7 +116,7 @@ namespace RegressionTests.SSL
       [Test]
       public void TestSMTPServer()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "smtp-ssl@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "smtp-ssl@example.test", "test");
 
          int i = 0;
          for (i = 0; i < 10; i++)
@@ -124,7 +124,7 @@ namespace RegressionTests.SSL
             try
             {
                var smtpSim = new SmtpClientSimulator(true, 25001);
-               smtpSim.Send("test@test.com", account.Address, "Test", "MyBody");
+               smtpSim.Send("test@example.test", account.Address, "Test", "MyBody");
 
                break;
             }

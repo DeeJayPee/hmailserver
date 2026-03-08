@@ -27,7 +27,7 @@ namespace RegressionTests.Infrastructure.Persistence
 
          try
          {
-            da.AliasName = "test.com";
+            da.AliasName = "example.test";
             da.Save();
          }
          catch (Exception)
@@ -43,7 +43,7 @@ namespace RegressionTests.Infrastructure.Persistence
          Domains domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
 
          DomainAlias da = _domain.DomainAliases.Add();
-         da.AliasName = "test.com";
+         da.AliasName = "example.test";
 
          try
          {
@@ -62,7 +62,7 @@ namespace RegressionTests.Infrastructure.Persistence
          _domain.MaxAccountSize = 25;
          _domain.Save();
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@test.com", "secret1", 1);
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "secret1", 1);
          account.Save();
       }
 
@@ -74,7 +74,7 @@ namespace RegressionTests.Infrastructure.Persistence
 
          try
          {
-            SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@test.com", "secret1", 32);
+            SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "secret1", 32);
          }
          catch (Exception)
          {
@@ -92,7 +92,7 @@ namespace RegressionTests.Infrastructure.Persistence
 
          try
          {
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@test.com", "secret1",
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "secret1",
                                                                                0);
          }
          catch (Exception)
@@ -110,13 +110,13 @@ namespace RegressionTests.Infrastructure.Persistence
          _domain.MaxNumberOfAccounts = 3;
          _domain.Save();
 
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@test.com", "secret1");
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test2@test.com", "secret1");
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test3@test.com", "secret1");
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "secret1");
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test2@example.test", "secret1");
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test3@example.test", "secret1");
 
          try
          {
-            SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test4@test.com", "secret1");
+            SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test4@example.test", "secret1");
          }
          catch (Exception)
          {
@@ -133,14 +133,14 @@ namespace RegressionTests.Infrastructure.Persistence
          _domain.MaxNumberOfAliases = 4;
          _domain.Save();
 
-         SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "test1@test.com", "test@test.com");
-         SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "test2@test.com", "test@test.com");
-         SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "test3@test.com", "test@test.com");
-         SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "test4@test.com", "test@test.com");
+         SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "test1@example.test", "test@example.test");
+         SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "test2@example.test", "test@example.test");
+         SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "test3@example.test", "test@example.test");
+         SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "test4@example.test", "test@example.test");
 
          try
          {
-            SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "test5@test.com", "test@test.com");
+            SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "test5@example.test", "test@example.test");
          }
          catch (Exception)
          {
@@ -158,12 +158,12 @@ namespace RegressionTests.Infrastructure.Persistence
          _domain.Save();
 
          var recipients = new List<string>();
-         SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "test1@test.com", recipients);
-         SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "test2@test.com", recipients);
+         SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "test1@example.test", recipients);
+         SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "test2@example.test", recipients);
 
          try
          {
-            SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "test3@test.com", recipients);
+            SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "test3@example.test", recipients);
          }
          catch (Exception)
          {
@@ -179,7 +179,7 @@ namespace RegressionTests.Infrastructure.Persistence
          _domain.MaxMessageSize = 0;
          _domain.Save();
 
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "secret1", 0);
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "secret1", 0);
          var message = new StringBuilder();
 
          for (int i = 0; i < 10000; i++)
@@ -187,13 +187,13 @@ namespace RegressionTests.Infrastructure.Persistence
             message.Append("ABCDEFGH");
          }
 
-         SmtpClientSimulator.StaticSend("test@test.com", "test@test.com", "TestSubject",
+         SmtpClientSimulator.StaticSend("test@example.test", "test@example.test", "TestSubject",
                                                       message.ToString());
-         Pop3ClientSimulator.AssertMessageCount("test@test.com", "secret1", 1);
+         Pop3ClientSimulator.AssertMessageCount("test@example.test", "secret1", 1);
          _domain.MaxMessageSize = 50;
          _domain.Save();
 
-         CustomAsserts.Throws<DeliveryFailedException>(() => SmtpClientSimulator.StaticSend("test@test.com", "test@test.com", "TestSubject",
+         CustomAsserts.Throws<DeliveryFailedException>(() => SmtpClientSimulator.StaticSend("test@example.test", "test@example.test", "TestSubject",
                                                        message.ToString()));
       }
 
@@ -204,14 +204,14 @@ namespace RegressionTests.Infrastructure.Persistence
          _domain.MaxSize = 30;
          _domain.Save();
 
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@test.com", "secret1", 10);
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test2@test.com", "secret1", 10);
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test3@test.com", "secret1", 10);
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "secret1", 10);
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test2@example.test", "secret1", 10);
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test3@example.test", "secret1", 10);
 
 
          try
          {
-            SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test4@test.com", "secret1", 10);
+            SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test4@example.test", "secret1", 10);
          }
          catch (Exception)
          {
@@ -229,7 +229,7 @@ namespace RegressionTests.Infrastructure.Persistence
 
          try
          {
-            SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@test.com", "secret1", 0);
+            SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "secret1", 0);
          }
          catch (Exception)
          {
@@ -263,7 +263,7 @@ namespace RegressionTests.Infrastructure.Persistence
          Domains domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
          Domain domain = SingletonProvider<TestSetup>.Instance.AddDomain(domains, "test2.com");
 
-         domain.Name = "test.com";
+         domain.Name = "example.test";
 
          try
          {
@@ -304,11 +304,11 @@ namespace RegressionTests.Infrastructure.Persistence
          Routes routes = app.Settings.Routes;
 
          Route route = routes.Add();
-         route.DomainName = "test.com";
+         route.DomainName = "example.test";
          route.Save();
 
          Route route2 = routes.Add();
-         route2.DomainName = "test.com";
+         route2.DomainName = "example.test";
 
          var ex = Assert.Throws<COMException>(() => route2.Save());
          StringAssert.Contains("Another route with this name already exists.", ex.Message);
@@ -317,11 +317,11 @@ namespace RegressionTests.Infrastructure.Persistence
       [Test]
       public void TestNameDuplicateAccount()
       {
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "secret1");
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "secret1");
 
          try
          {
-            SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "secret2");
+            SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "secret2");
          }
          catch (Exception)
          {
@@ -333,11 +333,11 @@ namespace RegressionTests.Infrastructure.Persistence
       [Test]
       public void TestNameDuplicateAlias()
       {
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "secret1");
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "secret1");
 
          try
          {
-            SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "test@test.com", "secret2");
+            SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "test@example.test", "secret2");
          }
          catch (Exception)
          {
@@ -349,13 +349,13 @@ namespace RegressionTests.Infrastructure.Persistence
       [Test]
       public void TestNameDuplicateDistributionList()
       {
-         SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "test@test.com", "test2@test.com");
+         SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "test@example.test", "test2@example.test");
 
          var recipients = new List<string>();
 
          try
          {
-            SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "test@test.com", recipients);
+            SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "test@example.test", recipients);
          }
          catch (Exception)
          {
@@ -367,11 +367,11 @@ namespace RegressionTests.Infrastructure.Persistence
       [Test]
       public void TestNameDuplicateGroup()
       {
-         SingletonProvider<TestSetup>.Instance.AddGroup("test@test.com");
+         SingletonProvider<TestSetup>.Instance.AddGroup("test@example.test");
 
          try
          {
-            SingletonProvider<TestSetup>.Instance.AddGroup("test@test.com");
+            SingletonProvider<TestSetup>.Instance.AddGroup("test@example.test");
          }
          catch (Exception)
          {

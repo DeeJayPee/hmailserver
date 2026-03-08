@@ -17,15 +17,15 @@ namespace RegressionTests.Infrastructure
       public void SizeAfterSend()
       {
          Domain domain = SingletonProvider<TestSetup>.Instance.AddTestDomain();
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@test.com",
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test",
                                                                             "test");
 
          // Send a message
          for (int i = 0; i < 30; i++)
-            SmtpClientSimulator.StaticSend("test@test.com", "test@test.com", "Test message",
+            SmtpClientSimulator.StaticSend("test@example.test", "test@example.test", "Test message",
                                            "123456789012345678901234567890123456789012345678901234567890");
 
-         ImapClientSimulator.AssertMessageCount("test@test.com", "test", "Inbox", 30);
+         ImapClientSimulator.AssertMessageCount("test@example.test", "test", "Inbox", 30);
 
          float size = account.Size;
          if (size == 0)
@@ -38,7 +38,7 @@ namespace RegressionTests.Infrastructure
       public void SizeBeforeSend()
       {
          Domain domain = SingletonProvider<TestSetup>.Instance.AddTestDomain();
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test", "test");
 
          if ((int) account.Size != 0)
             throw new Exception("Account is not empty");
@@ -50,19 +50,19 @@ namespace RegressionTests.Infrastructure
       public void SizeIncreasedWhenMessageReceived()
       {
          Domain domain = SingletonProvider<TestSetup>.Instance.AddTestDomain();
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@test.com",
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test",
                                                                             "test");
 
          string body = TestSetup.CreateLargeDummyMailBody();
 
          // Send a message
-         SmtpClientSimulator.StaticSend("test@test.com", "test@test.com", "Test message", body);
-         ImapClientSimulator.AssertMessageCount("test@test.com", "test", "Inbox", 1);
+         SmtpClientSimulator.StaticSend("test@example.test", "test@example.test", "Test message", body);
+         ImapClientSimulator.AssertMessageCount("test@example.test", "test", "Inbox", 1);
 
          float sizeBefore = account.Size;
 
-         SmtpClientSimulator.StaticSend("test@test.com", "test@test.com", "Test message", body);
-         ImapClientSimulator.AssertMessageCount("test@test.com", "test", "Inbox", 2);
+         SmtpClientSimulator.StaticSend("test@example.test", "test@example.test", "Test message", body);
+         ImapClientSimulator.AssertMessageCount("test@example.test", "test", "Inbox", 2);
 
          float sizeAfter = account.Size;
 

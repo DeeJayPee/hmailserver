@@ -506,7 +506,7 @@ namespace RegressionTests.Shared
       {
          ClearDomains();
 
-         Domain domain = AddDomain(application.Domains, "test.com");
+         Domain domain = AddDomain(application.Domains, "example.test");
          return domain;
       }
 

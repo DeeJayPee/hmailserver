@@ -15,7 +15,7 @@ namespace RegressionTests.IMAP
       public void ConfirmFileAddedToCorrectAccountFolder()
       {
          TestSetup testSetup = SingletonProvider<TestSetup>.Instance;
-         Account account = testSetup.AddAccount(_domain, "check@test.com", "test");
+         Account account = testSetup.AddAccount(_domain, "check@example.test", "test");
          var simulator = new ImapClientSimulator();
 
          // Confirm that the public folder is empty before we start our test.
@@ -24,7 +24,7 @@ namespace RegressionTests.IMAP
 
          // Add a message to the inbox.
          simulator.Connect();
-         simulator.LogonWithLiteral("check@test.com", "test");
+         simulator.LogonWithLiteral("check@example.test", "test");
          simulator.SendSingleCommandWithLiteral("A01 APPEND INBOX {4}", "ABCD");
 
          // Confirm it exists in the IMAP folder.
@@ -43,7 +43,7 @@ namespace RegressionTests.IMAP
       public void ConfirmFileAddedToCorrectPublicFolder()
       {
          TestSetup testSetup = SingletonProvider<TestSetup>.Instance;
-         Account account = testSetup.AddAccount(_domain, "check@test.com", "test");
+         Account account = testSetup.AddAccount(_domain, "check@example.test", "test");
          var simulator = new ImapClientSimulator();
 
          // Confirm that the public folder is empty before we start our test.
@@ -64,7 +64,7 @@ namespace RegressionTests.IMAP
 
          // Add the message to the public folder.
          simulator.Connect();
-         simulator.LogonWithLiteral("check@test.com", "test");
+         simulator.LogonWithLiteral("check@example.test", "test");
          simulator.SendSingleCommandWithLiteral("A01 APPEND #Public.Share {4}", "ABCD");
 
          // Confirm that the message exists in the public folder and not in the inbox.
@@ -83,11 +83,11 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestAppend()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "check@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "check@example.test", "test");
          var simulator = new ImapClientSimulator();
 
          string sWelcomeMessage = simulator.Connect();
-         simulator.LogonWithLiteral("check@test.com", "test");
+         simulator.LogonWithLiteral("check@example.test", "test");
          simulator.SendSingleCommandWithLiteral("A01 APPEND INBOX {4}", "ABCD");
          Assert.AreEqual(1, simulator.GetMessageCount("INBOX"));
          simulator.Disconnect();
@@ -96,7 +96,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestDomainMaxMessageSizeLimitDisabled()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test", 0);
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test", 0);
          var message = new StringBuilder();
 
          // ~2 kb string
@@ -107,7 +107,7 @@ namespace RegressionTests.IMAP
          _domain.MaxMessageSize = 0; // 1 kb
          _domain.Save();
 
-         var imapSim = new ImapClientSimulator("test@test.com", "test", "INBOX");
+         var imapSim = new ImapClientSimulator("test@example.test", "test", "INBOX");
          string result = imapSim.SendSingleCommandWithLiteral("A01 APPEND INBOX {" + message.Length + "}",
                                                               message.ToString());
          imapSim.Logout();
@@ -118,7 +118,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestDomainMaxMessageSizeLimitEnabled()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test", 0);
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test", 0);
          var message = new StringBuilder();
 
          // ~2 kb string
@@ -129,7 +129,7 @@ namespace RegressionTests.IMAP
          _domain.MaxMessageSize = 1; // 1 kb
          _domain.Save();
 
-         var imapSim = new ImapClientSimulator("test@test.com", "test", "INBOX");
+         var imapSim = new ImapClientSimulator("test@example.test", "test", "INBOX");
          string result = imapSim.SendSingleCommandWithLiteral("A01 APPEND INBOX {" + message.Length + "}",
                                                               message.ToString());
          imapSim.Logout();
@@ -140,7 +140,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestGlobalMaxMessageSizeLimitDisabled()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test", 0);
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test", 0);
          var message = new StringBuilder();
 
          // ~2 kb string
@@ -150,7 +150,7 @@ namespace RegressionTests.IMAP
 
          _settings.MaxMessageSize = 0;
 
-         var imapSim = new ImapClientSimulator("test@test.com", "test", "INBOX");
+         var imapSim = new ImapClientSimulator("test@example.test", "test", "INBOX");
          string result = imapSim.SendSingleCommandWithLiteral("A01 APPEND INBOX {" + message.Length + "}",
                                                               message.ToString());
          imapSim.Logout();
@@ -161,7 +161,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestGlobalMaxMessageSizeLimitEnabled()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test", 0);
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test", 0);
          var message = new StringBuilder();
 
          // ~2 kb string
@@ -171,7 +171,7 @@ namespace RegressionTests.IMAP
 
          _settings.MaxMessageSize = 1;
 
-         var imapSim = new ImapClientSimulator("test@test.com", "test", "INBOX");
+         var imapSim = new ImapClientSimulator("test@example.test", "test", "INBOX");
          string result = imapSim.SendSingleCommandWithLiteral("A01 APPEND INBOX {" + message.Length + "}",
                                                               message.ToString());
          imapSim.Logout();

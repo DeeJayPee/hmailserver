@@ -175,7 +175,7 @@ namespace RegressionTests.SMTP
          Assert.IsTrue(smtpClientSimulator.Receive().StartsWith("220"));
          smtpClientSimulator.Send("HELO test\r\n");
          Assert.IsTrue(smtpClientSimulator.Receive().StartsWith("250"));
-         smtpClientSimulator.Send("MAIL FROM: <test@test.com>\r\n");
+         smtpClientSimulator.Send("MAIL FROM: <test@example.test>\r\n");
          Assert.IsTrue(smtpClientSimulator.Receive().StartsWith("250"));
 
          string result = smtpClientSimulator.SendAndReceive(command+ "\r\n");
@@ -192,7 +192,7 @@ namespace RegressionTests.SMTP
          Assert.IsTrue(smtpClientSimulator.Receive().StartsWith("220"));
          smtpClientSimulator.Send("HELO test\r\n");
          Assert.IsTrue(smtpClientSimulator.Receive().StartsWith("250"));
-         smtpClientSimulator.Send("MAIL FROM: <test@test.com>\r\n");
+         smtpClientSimulator.Send("MAIL FROM: <test@example.test>\r\n");
          Assert.IsTrue(smtpClientSimulator.Receive().StartsWith("250"));
 
          string result = smtpClientSimulator.SendAndReceive(comamnd + "\r\n");

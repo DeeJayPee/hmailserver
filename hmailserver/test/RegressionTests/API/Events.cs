@@ -35,7 +35,7 @@ namespace RegressionTests.API
          scripting.Reload();
 
          // Add an account and send a message to it.
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account1.Address, account1.Address, "Test", "SampleBody");
 
@@ -69,7 +69,7 @@ namespace RegressionTests.API
          scripting.Reload();
 
          // Add an account and send a message to it.
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account1.Address, account1.Address, "Test", "SampleBody");
 
@@ -111,11 +111,11 @@ namespace RegressionTests.API
          scripting.Reload();
 
          // Add an account and send a message to it.
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          try
          {
-            SmtpClientSimulator.StaticSend(account1.Address, "nonexistent@test.com", "Test", "SampleBody");
+            SmtpClientSimulator.StaticSend(account1.Address, "nonexistent@example.test", "Test", "SampleBody");
          }
          catch (DeliveryFailedException)
          {
@@ -152,7 +152,7 @@ namespace RegressionTests.API
          scripting.Reload();
 
          // Add an account and send a message to it.
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var client = new SmtpClientSimulator();
          client.Connect();
@@ -375,7 +375,7 @@ namespace RegressionTests.API
          scripting.Reload();
 
          // Add an account and send a message to it.
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account1.Address, account1.Address, "Test", "SampleBody");
 
@@ -408,7 +408,7 @@ namespace RegressionTests.API
          scripting.Reload();
 
          // Add an account and send a message to it.
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSend(account1.Address, "user@dummy.example.com", "Test", "SampleBody");
 
          // Make sure that the message is deliverd and bounced.
@@ -440,7 +440,7 @@ namespace RegressionTests.API
          scripting.Reload();
 
          // Add an account and send a message to it.
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSend(account1.Address, "user@dummy.example.com", "Test", "SampleBody");
 
          // Make sure that the message is deliverd and bounced.
@@ -471,7 +471,7 @@ namespace RegressionTests.API
          scripting.Enabled = true;
          scripting.Reload();
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "SampleBody");
 
          // Wait for the message to be delivered.
@@ -501,7 +501,7 @@ namespace RegressionTests.API
          scripting.Enabled = true;
          scripting.Reload();
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          IMAPFolder inbox = account.IMAPFolders.get_ItemByName("Inbox");
 
 
@@ -539,7 +539,7 @@ namespace RegressionTests.API
          scripting.Enabled = true;
          scripting.Reload();
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          IMAPFolder inbox = account.IMAPFolders.get_ItemByName("Inbox");
 
 
@@ -606,7 +606,7 @@ namespace RegressionTests.API
          scripting.Enabled = true;
          scripting.Reload();
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
 
          FetchAccount fa;
 
@@ -678,7 +678,7 @@ namespace RegressionTests.API
       public void TestOnClientLogon_POP3()
       {
          var domain = SingletonProvider<TestSetup>.Instance.AddTestDomain();
-         SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@test.com", "test");
+         SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test", "test");
 
          Application app = SingletonProvider<TestSetup>.Instance.GetApp();
          Scripting scripting = app.Settings.Scripting;
@@ -699,7 +699,7 @@ namespace RegressionTests.API
             File.Delete(eventLogFile);
 
          // Log on once to trigger event.
-         Pop3ClientSimulator.AssertMessageCount("test@test.com", "test", 0);
+         Pop3ClientSimulator.AssertMessageCount("test@example.test", "test", 0);
 
          // Check that the message exists
          string message = TestSetup.ReadExistingTextFile(eventLogFile);
@@ -707,14 +707,14 @@ namespace RegressionTests.API
          Assert.IsNotEmpty(message);
          Assert.IsTrue(message.Contains("OnClientLogin-POP3"));
          Assert.IsTrue(message.Contains("IsAuthenticated: True"));
-         Assert.IsTrue(message.Contains("Username: test@test.com")); // Should be empty, Username isn't available at this time.
+         Assert.IsTrue(message.Contains("Username: test@example.test")); // Should be empty, Username isn't available at this time.
       }
 
       [Test]
       public void TestOnClientLogon_IMAP()
       {
          var domain = SingletonProvider<TestSetup>.Instance.AddTestDomain();
-         SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@test.com", "test");
+         SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test", "test");
 
          Application app = SingletonProvider<TestSetup>.Instance.GetApp();
          Scripting scripting = app.Settings.Scripting;
@@ -735,7 +735,7 @@ namespace RegressionTests.API
             File.Delete(eventLogFile);
 
          // Log on once to trigger event.
-         ImapClientSimulator.AssertMessageCount("test@test.com", "test", "Inbox", 0);
+         ImapClientSimulator.AssertMessageCount("test@example.test", "test", "Inbox", 0);
 
          // Check that the message exists
          string message = TestSetup.ReadExistingTextFile(eventLogFile);
@@ -743,14 +743,14 @@ namespace RegressionTests.API
          Assert.IsNotEmpty(message);
          Assert.IsTrue(message.Contains("OnClientLogin-IMAP"));
          Assert.IsTrue(message.Contains("IsAuthenticated: True"));
-         Assert.IsTrue(message.Contains("Username: test@test.com")); // Should be empty, Username isn't available at this time.
+         Assert.IsTrue(message.Contains("Username: test@example.test")); // Should be empty, Username isn't available at this time.
       }
 
       [Test]
       public void TestOnClientLogon_SMTP()
       {
          var domain = SingletonProvider<TestSetup>.Instance.AddTestDomain();
-         SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@test.com", "test");
+         SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test", "test");
 
          Application app = SingletonProvider<TestSetup>.Instance.GetApp();
          Scripting scripting = app.Settings.Scripting;
@@ -772,7 +772,7 @@ namespace RegressionTests.API
 
          // Log on once to trigger event.
 
-         string base64Username = System.Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes("test@test.com"));
+         string base64Username = System.Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes("test@example.test"));
          string base64Password = System.Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes("test"));
 
          var clientSimulator = new SmtpClientSimulator();
@@ -785,14 +785,14 @@ namespace RegressionTests.API
          Assert.IsNotEmpty(message);
          Assert.IsTrue(message.Contains("OnClientLogin-SMTP"));
          Assert.IsTrue(message.Contains("IsAuthenticated: True"));
-         Assert.IsTrue(message.Contains("Username: test@test.com")); // Should be empty, Username isn't available at this time.
+         Assert.IsTrue(message.Contains("Username: test@example.test")); // Should be empty, Username isn't available at this time.
       }
 
       [Test]
       public void TestOnHelo_WithHelo()
       {
          var domain = SingletonProvider<TestSetup>.Instance.AddTestDomain();
-         SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@test.com", "test");
+         SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test", "test");
 
          Application app = SingletonProvider<TestSetup>.Instance.GetApp();
          Scripting scripting = app.Settings.Scripting;
@@ -828,7 +828,7 @@ namespace RegressionTests.API
       public void TestOnHelo_WithEhlo()
       {
          var domain = SingletonProvider<TestSetup>.Instance.AddTestDomain();
-         SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@test.com", "test");
+         SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test", "test");
 
          Application app = SingletonProvider<TestSetup>.Instance.GetApp();
          Scripting scripting = app.Settings.Scripting;
@@ -863,11 +863,11 @@ namespace RegressionTests.API
       [Test]
       public void TestOnClientValidatePasswordVBScript_ValidPassword()
       {
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          // First verify log on works with proper password ("test") but fails with incorrect ("MySecretPassword")
-         Assert.IsTrue(ImapClientSimulator.ValidatePassword("test@test.com", "test"));
-         Assert.IsFalse(ImapClientSimulator.ValidatePassword("test@test.com", "MySecretPassword"));
+         Assert.IsTrue(ImapClientSimulator.ValidatePassword("test@example.test", "test"));
+         Assert.IsFalse(ImapClientSimulator.ValidatePassword("test@example.test", "MySecretPassword"));
 
          // Create a script which override password validation to allow MySecretPassword as valid password
          Application app = SingletonProvider<TestSetup>.Instance.GetApp();
@@ -891,11 +891,11 @@ namespace RegressionTests.API
          scripting.Reload();
 
          // Now verify we can log on using the new password
-         Assert.IsTrue(ImapClientSimulator.ValidatePassword("test@test.com", "MySecretPassword"));
-         Assert.IsFalse(ImapClientSimulator.ValidatePassword("test@test.com", "test"));
+         Assert.IsTrue(ImapClientSimulator.ValidatePassword("test@example.test", "MySecretPassword"));
+         Assert.IsFalse(ImapClientSimulator.ValidatePassword("test@example.test", "test"));
 
          string eventLogText = TestSetup.ReadExistingTextFile(app.Settings.Logging.CurrentEventLog);
-         Assert.IsTrue(eventLogText.Contains("Account: test@test.com"));
+         Assert.IsTrue(eventLogText.Contains("Account: test@example.test"));
          Assert.IsTrue(eventLogText.Contains("Password: MySecretPassword"));
       }
 

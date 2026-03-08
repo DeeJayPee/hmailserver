@@ -12,9 +12,9 @@ namespace RegressionTests.IMAP
       [Description("Assert that it's not possible to change flags while in READONLY-mode")]
       public void TestChangeFlags()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "examine@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "examine@example.test", "test");
 
-         SmtpClientSimulator.StaticSend("test@test.com", account.Address, "Test", "test");
+         SmtpClientSimulator.StaticSend("test@example.test", account.Address, "Test", "test");
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
 
          var simulator = new ImapClientSimulator();
@@ -28,9 +28,9 @@ namespace RegressionTests.IMAP
          "Assert that the \\RECENT flag isn't automatically changed when accessing a folder in READONLY-mode")]
       public void TestChangeRecentFlag()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "examine@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "examine@example.test", "test");
 
-         SmtpClientSimulator.StaticSend("test@test.com", account.Address, "Test", "test");
+         SmtpClientSimulator.StaticSend("test@example.test", account.Address, "Test", "test");
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
 
          var simulator = new ImapClientSimulator();
@@ -60,9 +60,9 @@ namespace RegressionTests.IMAP
          )]
       public void TestChangeSeenFlag()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "examine@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "examine@example.test", "test");
 
-         SmtpClientSimulator.StaticSend("test@test.com", account.Address, "Test", "test");
+         SmtpClientSimulator.StaticSend("test@example.test", account.Address, "Test", "test");
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
 
          var simulator = new ImapClientSimulator();
@@ -91,7 +91,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestExamine()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "examine@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "examine@example.test", "test");
 
          var simulator = new ImapClientSimulator();
 
@@ -108,9 +108,9 @@ namespace RegressionTests.IMAP
       [Description("Assert that it's not possible to EXPUNGE while in READONLY-mode")]
       public void TestExpunge()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "examine@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "examine@example.test", "test");
 
-         SmtpClientSimulator.StaticSend("test@test.com", account.Address, "Test", "test");
+         SmtpClientSimulator.StaticSend("test@example.test", account.Address, "Test", "test");
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
 
          var simulator = new ImapClientSimulator();

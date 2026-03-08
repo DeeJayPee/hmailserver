@@ -28,7 +28,7 @@ namespace RegressionTests.AntiSpam
          "the mark threshold is reached.")]
       public void TestDeleteThresholdLowerThanMarkThreshold()
       {
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "multihit@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "multihit@example.test", "test");
 
          hMailServer.AntiSpam antiSpam = _settings.AntiSpam;
 
@@ -68,7 +68,7 @@ namespace RegressionTests.AntiSpam
       [Description("Test that only one result header is added if one test passes and one fails.")]
       public void TestOneFailOnePass()
       {
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "multihit@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "multihit@example.test", "test");
 
          _settings.AntiSpam.SpamMarkThreshold = 1;
          _settings.AntiSpam.SpamDeleteThreshold = 100;
@@ -107,7 +107,7 @@ namespace RegressionTests.AntiSpam
       {
          CustomAsserts.AssertSpamAssassinIsRunning();  
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mult'ihit@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mult'ihit@example.test", "test");
 
          _settings.AntiSpam.SpamMarkThreshold = 1;
          _settings.AntiSpam.SpamDeleteThreshold = 2;

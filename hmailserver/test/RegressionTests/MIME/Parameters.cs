@@ -14,10 +14,10 @@ namespace RegressionTests.MIME
       [Description("Issue 238, If charset parameter contains double quotes, the string isn't parsed properly.")]
       public void TestFetchCharsetInQuotesWithSpaceAfter()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSendRaw(account.Address, account.Address,
-                                           "From: test@test.com\r\n" +
+                                           "From: test@example.test\r\n" +
                                            "Content-Type: text/plain; charset =\"iso-8859-1\" \r\n" +
                                            "\r\n" +
                                            "Test\r\n");
@@ -35,10 +35,10 @@ namespace RegressionTests.MIME
       [Description("Issue 238, If charset parameter contains double quotes, the string isn't parsed properly.")]
       public void TestFetchCharsetInQuotesWithSpaceBefore()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSendRaw(account.Address, account.Address,
-                                           "From: test@test.com\r\n" +
+                                           "From: test@example.test\r\n" +
                                            "Content-Type: text/plain; charset = \"iso-8859-1\"\r\n" +
                                            "\r\n" +
                                            "Test\r\n");
@@ -56,10 +56,10 @@ namespace RegressionTests.MIME
       [Description("Issue 238, If charset parameter contains double quotes, the string isn't parsed properly.")]
       public void TestFetchCharsetInQuotesWithoutQuotesWithSpace()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSendRaw(account.Address, account.Address,
-                                           "From: test@test.com\r\n" +
+                                           "From: test@example.test\r\n" +
                                            "Content-Type: text/plain; charset = iso-8859-1 \r\n" +
                                            "\r\n" +
                                            "Test\r\n");
@@ -77,10 +77,10 @@ namespace RegressionTests.MIME
       [Description("Issue 238, If charset parameter contains double quotes, the string isn't parsed properly.")]
       public void TestFetchCharsetInQuotesWithoutQuotesWithoutSpace()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSendRaw(account.Address, account.Address,
-                                           "From: test@test.com\r\n" +
+                                           "From: test@example.test\r\n" +
                                            "Content-Type: text/plain; charset=iso-8859-1 \r\n" +
                                            "\r\n" +
                                            "Test\r\n");
@@ -98,10 +98,10 @@ namespace RegressionTests.MIME
       [Description("Issue 238, If charset parameter contains double quotes, the string isn't parsed properly.")]
       public void TestFetchCharsetInQuotesWithoutSpace()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSendRaw(account.Address, account.Address,
-                                           "From: test@test.com\r\n" +
+                                           "From: test@example.test\r\n" +
                                            "Content-Type: text/plain; charset =\"iso-8859-1\"\r\n" +
                                            "\r\n" +
                                            "Test\r\n");

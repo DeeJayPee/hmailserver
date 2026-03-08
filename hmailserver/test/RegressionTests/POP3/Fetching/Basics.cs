@@ -51,7 +51,7 @@ namespace RegressionTests.POP3.Fetching
          {
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = CreateFetchAccount(account, port, false, false);
 
             fa.DownloadNow();
@@ -85,7 +85,7 @@ namespace RegressionTests.POP3.Fetching
          {
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = CreateFetchAccount(account, port, false, true);
 
             fa.DownloadNow();
@@ -120,7 +120,7 @@ namespace RegressionTests.POP3.Fetching
          {
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -150,7 +150,7 @@ namespace RegressionTests.POP3.Fetching
       [Test]
       public void TestFetchFromInvalidHostName()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
          FetchAccount fa = account.FetchAccounts.Add();
 
          fa.Enabled = true;
@@ -197,7 +197,7 @@ namespace RegressionTests.POP3.Fetching
          {
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -246,7 +246,7 @@ namespace RegressionTests.POP3.Fetching
          {
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -281,7 +281,7 @@ namespace RegressionTests.POP3.Fetching
          var messages = new List<string>();
 
          string message = "From: Martin@example.com\r\n" +
-                          "To: \"Test\" <test1@test.com>, \"ExternalGuy\" <external@dummy-example.com>\r\n" +
+                          "To: \"Test\" <test1@example.test>, \"ExternalGuy\" <external@dummy-example.com>\r\n" +
                           "Subject: Test\r\n" +
                           "\r\n" +
                           "Hello!";
@@ -296,9 +296,9 @@ namespace RegressionTests.POP3.Fetching
             var deliveryResults = new Dictionary<string, int>();
             deliveryResults["external@dummy-example.com"] = 250;
 
-            Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
-            Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@test.com", "test");
-            Account catchallAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "catchall@test.com",
+            Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+            Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "test");
+            Account catchallAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "catchall@example.test",
                                                                                        "test");
 
             _domain.Postmaster = catchallAccount.Address;
@@ -340,7 +340,7 @@ namespace RegressionTests.POP3.Fetching
          var messages = new List<string>();
 
          string message = "From: Martin@example.com\r\n" +
-                          "To: \"Test\" <test1@test.com>, \"ExternalGuy\" <external@dummy-example.com>\r\n" +
+                          "To: \"Test\" <test1@example.test>, \"ExternalGuy\" <external@dummy-example.com>\r\n" +
                           "Subject: Test\r\n" +
                           "\r\n" +
                           "Hello!";
@@ -366,9 +366,9 @@ namespace RegressionTests.POP3.Fetching
                route.TreatSecurityAsLocalDomain = true;
                route.Save();
 
-               Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
-               Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@test.com", "test");
-               Account catchallAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "catchall@test.com",
+               Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+               Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "test");
+               Account catchallAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "catchall@example.test",
                                                                                           "test");
 
                _domain.Postmaster = catchallAccount.Address;
@@ -419,7 +419,7 @@ namespace RegressionTests.POP3.Fetching
          var messages = new List<string>();
 
          string message = "From: Martin@example.com\r\n" +
-                          "To: \"Test\" <test1@test.com>, \"ExternalGuy\" <external@dummy-example.com>\r\n" +
+                          "To: \"Test\" <test1@example.test>, \"ExternalGuy\" <external@dummy-example.com>\r\n" +
                           "Subject: Test\r\n" +
                           "\r\n" +
                           "Hello!";
@@ -431,10 +431,10 @@ namespace RegressionTests.POP3.Fetching
          {
             pop3Server.StartListen();
 
-            Account userAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
-            Account recipientAccount1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@test.com",
+            Account userAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+            Account recipientAccount1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test",
                                                                                          "test");
-            Account catchallAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "catchall@test.com",
+            Account catchallAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "catchall@example.test",
                                                                                        "test");
 
             _domain.Postmaster = catchallAccount.Address;
@@ -474,7 +474,7 @@ namespace RegressionTests.POP3.Fetching
          var messages = new List<string>();
 
          string message = "From: Martin@example.com\r\n" +
-                          "To: \"Test\" <test1@test.com>, \"Test 2\" <test2@test.com>\r\n" +
+                          "To: \"Test\" <test1@example.test>, \"Test 2\" <test2@example.test>\r\n" +
                           "Subject: Test\r\n" +
                           "\r\n" +
                           "Hello!";
@@ -486,10 +486,10 @@ namespace RegressionTests.POP3.Fetching
          {
             pop3Server.StartListen();
 
-            Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
-            Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@test.com", "test");
-            Account account3 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test2@test.com", "test");
-            Account catchallAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "catchall@test.com",
+            Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+            Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "test");
+            Account account3 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test2@example.test", "test");
+            Account catchallAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "catchall@example.test",
                                                                                        "test");
 
             _domain.Postmaster = catchallAccount.Address;
@@ -547,7 +547,7 @@ namespace RegressionTests.POP3.Fetching
             pop3Server.SupportsUIDL = false;
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -605,7 +605,7 @@ namespace RegressionTests.POP3.Fetching
          {
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -669,7 +669,7 @@ namespace RegressionTests.POP3.Fetching
          {
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -727,7 +727,7 @@ namespace RegressionTests.POP3.Fetching
          {
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -785,7 +785,7 @@ namespace RegressionTests.POP3.Fetching
          {
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -841,7 +841,7 @@ namespace RegressionTests.POP3.Fetching
          {
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -905,7 +905,7 @@ namespace RegressionTests.POP3.Fetching
          {
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -960,7 +960,7 @@ namespace RegressionTests.POP3.Fetching
          {
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -1015,7 +1015,7 @@ namespace RegressionTests.POP3.Fetching
          {
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -1062,7 +1062,7 @@ namespace RegressionTests.POP3.Fetching
             pop3Server.SendBufferMode = Pop3ServerSimulator.BufferMode.SingleBuffer;
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -1087,7 +1087,7 @@ namespace RegressionTests.POP3.Fetching
             Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
 
             var log = LogHandler.ReadCurrentDefaultLog();
-            Assert.IsTrue(log.Contains("Delivering message from A@example.com to user@test.com."));
+            Assert.IsTrue(log.Contains("Delivering message from A@example.com to user@example.test."));
          }
       }
 
@@ -1111,7 +1111,7 @@ namespace RegressionTests.POP3.Fetching
             pop3Server.SendBufferMode = Pop3ServerSimulator.BufferMode.SingleBuffer;
             pop3Server.StartListen();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             FetchAccount fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -1136,7 +1136,7 @@ namespace RegressionTests.POP3.Fetching
             Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
 
             var log = LogHandler.ReadCurrentDefaultLog();
-            Assert.IsTrue(log.Contains("Delivering message from <Empty> to user@test.com."));
+            Assert.IsTrue(log.Contains("Delivering message from <Empty> to user@example.test."));
          }
       }
 

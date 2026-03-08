@@ -13,7 +13,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestCreateDeepFolder()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder4@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder4@example.test", "test");
 
          var simulator = new ImapClientSimulator();
 
@@ -30,7 +30,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestCreateFolderWithHash()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder6@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder6@example.test", "test");
 
          var simulator = new ImapClientSimulator();
 
@@ -45,7 +45,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestCreateFolderWithQuote()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
 
          const string folderName = "ABC\"123";
@@ -62,7 +62,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestCreateFolderWithSlash()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
          const string folderName = "ABC\\123";
 
@@ -78,7 +78,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestCreateLongFolder()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder9@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder9@example.test", "test");
 
          var simulator = new ImapClientSimulator();
 
@@ -107,7 +107,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestCreateParallelFolder()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder5@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder5@example.test", "test");
 
          var simulator = new ImapClientSimulator();
 
@@ -124,7 +124,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestCreateUnnamedSubFolder()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder7@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder7@example.test", "test");
 
          var simulator = new ImapClientSimulator();
 
@@ -144,7 +144,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestFolderCaseInLIST()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
          string folderName = "ABC.def.GHI";
 
@@ -163,7 +163,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestFolderCaseInLSUB()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
          string folderName = "ABC.def.GHI";
 
@@ -186,7 +186,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestFolderLSUBUnsubscribedFolder()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
          const string folderName = "ABC.def.GHI";
 
@@ -207,7 +207,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestFolderQuote()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
          const string folderName = "Test*";
 
@@ -223,7 +223,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestListCommandChangedHierarchyDelimiter()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder1@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder1@example.test", "test");
          _settings.IMAPHierarchyDelimiter = "\\";
 
          var simulator = new ImapClientSimulator();
@@ -247,7 +247,7 @@ namespace RegressionTests.IMAP
       [Description("Test that the namespace is included in an empty list response.")]
       public void TestListSpecial()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
          var simulator = new ImapClientSimulator();
          string sWelcomeMessage = simulator.Connect();
@@ -280,7 +280,7 @@ namespace RegressionTests.IMAP
       [Description("Test to include reference in LIST command (issue 163).")]
       public void TestListWithReference()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
          var simulator = new ImapClientSimulator();
          simulator.ConnectAndLogon(account.Address, "test");
@@ -326,7 +326,7 @@ namespace RegressionTests.IMAP
       [Description("Test to include reference in LIST command (test case from issue 165).")]
       public void TestListWithReferenceTestCase2()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
          var simulator = new ImapClientSimulator();
          simulator.ConnectAndLogon(account.Address, "test");
@@ -350,7 +350,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestLsubInclusion()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
          string folderName = "Folder1";
 
@@ -368,7 +368,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestRenameIncorrectParameters()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder8@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder8@example.test", "test");
 
          var simulator = new ImapClientSimulator();
 
@@ -385,7 +385,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestRenameLongFolder()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder2@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder2@example.test", "test");
 
          var simulator = new ImapClientSimulator();
 
@@ -426,7 +426,7 @@ namespace RegressionTests.IMAP
          permission2.set_Permission(eACLPermission.ePermissionDeleteMailbox, true);
          permission2.Save();
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "shared@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "shared@example.test", "test");
 
          var simulator1 = new ImapClientSimulator();
          simulator1.ConnectAndLogon(account.Address, "test");
@@ -442,7 +442,7 @@ namespace RegressionTests.IMAP
       [Description("Issue 274, IMAP: Moving folder to sub-folder")]
       public void TestRenameSubFolderToChildSub()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder1@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder1@example.test", "test");
 
          var simulator = new ImapClientSimulator();
          Assert.IsTrue(simulator.ConnectAndLogon(account.Address, "test"));
@@ -461,7 +461,7 @@ namespace RegressionTests.IMAP
       [Description("Issue 274, Test side effect of fix for 274")]
       public void TestRenameSubFolderToMatchingName()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder1@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder1@example.test", "test");
 
          var simulator = new ImapClientSimulator();
          Assert.IsTrue(simulator.ConnectAndLogon(account.Address, "test"));
@@ -483,7 +483,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestRenameToAndFromINBOX()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder3@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder3@example.test", "test");
 
          var simulator = new ImapClientSimulator();
 
@@ -500,7 +500,7 @@ namespace RegressionTests.IMAP
       [Description("Test renaming sub folder to a new sub folder where the new parent does not exist.")]
       public void TestRenameToParallelFolder()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder1@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder1@example.test", "test");
 
          var simulator = new ImapClientSimulator();
 
@@ -520,7 +520,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestRenameToSubFolder()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder1@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder1@example.test", "test");
 
          var simulator = new ImapClientSimulator();
 
@@ -543,7 +543,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestTryCreateInvalidStructure()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder1@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder1@example.test", "test");
 
          var simulator = new ImapClientSimulator();
 

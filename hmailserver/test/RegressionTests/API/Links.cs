@@ -27,7 +27,7 @@ namespace RegressionTests.API
       public void TestAccountLink()
       {
          Account account =
-            SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+            SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          Assert.AreEqual(account.Address, _links.get_Account(account.ID).Address);
       }
@@ -36,7 +36,7 @@ namespace RegressionTests.API
       public void TestAliasLink()
       {
          Alias alias =
-            SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "mytest@test.com", "test2");
+            SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "mytest@example.test", "test2");
 
          Assert.AreEqual(alias.Value, _links.get_Alias(alias.ID).Value);
       }
@@ -50,7 +50,7 @@ namespace RegressionTests.API
          recipients.Add("Laffe");
 
          DistributionList list =
-            SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "mytest@test.com", recipients);
+            SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "mytest@example.test", recipients);
 
          Assert.AreEqual(recipients.Count, _links.get_DistributionList(list.ID).Recipients.Count);
       }

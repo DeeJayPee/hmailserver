@@ -56,7 +56,7 @@ namespace RegressionTests.AntiSpam
          _antiSpam.SpamMarkThreshold = 1;
          _antiSpam.SpamDeleteThreshold = 100;
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "dnsbltest@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "dnsbltest@example.test", "test");
 
          LogHandler.DeleteCurrentDefaultLog();
 
@@ -75,7 +75,7 @@ namespace RegressionTests.AntiSpam
       {
          Application application = SingletonProvider<TestSetup>.Instance.GetApp();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          // Disallow incorrect line endings.
          _antiSpam.SpamDeleteThreshold = 100;
@@ -86,7 +86,7 @@ namespace RegressionTests.AntiSpam
          // Send a messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
 
-         CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send("whitelist@microsoft.com", "whitelist@test.com", "SURBL-Match", "Test"));
+         CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send("whitelist@microsoft.com", "whitelist@example.test", "SURBL-Match", "Test"));
       }
 
       [Test]
@@ -95,7 +95,7 @@ namespace RegressionTests.AntiSpam
          // Create a test account
          // Fetch the default domain
          Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
-                                                                              "SpamProtectionLineEndings@test.com",
+                                                                              "SpamProtectionLineEndings@example.test",
                                                                               "test");
 
          // Disallow incorrect line endings.
@@ -104,22 +104,22 @@ namespace RegressionTests.AntiSpam
          // Send a messages to this account.
 
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("SpamProtectionLineEndings@test.com", "SpamProtectionLineEndings@test.com", "INBOX",
+         smtpClientSimulator.Send("SpamProtectionLineEndings@example.test", "SpamProtectionLineEndings@example.test", "INBOX",
             "This is a test message\r\n consisting of correct lines");
 
-         CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send("SpamProtectionLineEndings@test.com",
-            "SpamProtectionLineEndings@test.com", "INBOX",
+         CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send("SpamProtectionLineEndings@example.test",
+            "SpamProtectionLineEndings@example.test", "INBOX",
             "This is a test message\r consisting of incorrect lines"));
 
 
 
          CustomAsserts.Throws<DeliveryFailedException>(
-            () => smtpClientSimulator.Send("SpamProtectionLineEndings@test.com", "SpamProtectionLineEndings@test.com", "INBOX",
+            () => smtpClientSimulator.Send("SpamProtectionLineEndings@example.test", "SpamProtectionLineEndings@example.test", "INBOX",
                "This is a test message\n consisting of incorrect lines"));
 
 
-         CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send("SpamProtectionLineEndings@test.com",
-            "SpamProtectionLineEndings@test.com", "INBOX",
+         CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send("SpamProtectionLineEndings@example.test",
+            "SpamProtectionLineEndings@example.test", "INBOX",
             "This is a test message\n\r consisting of incorrect lines"));
 
          Pop3ClientSimulator.AssertMessageCount(account1.Address, "test", 1);
@@ -131,7 +131,7 @@ namespace RegressionTests.AntiSpam
          Application application = SingletonProvider<TestSetup>.Instance.GetApp();
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@example.test", "test");
 
          // Disallow incorrect line endings.
          _antiSpam.SpamMarkThreshold = 1;
@@ -159,7 +159,7 @@ namespace RegressionTests.AntiSpam
                "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890\r\n");
          }
 
-         smtpClientSimulator.Send("surbltest@test.com", "surbltest@test.com", "SURBL-No-Match",
+         smtpClientSimulator.Send("surbltest@example.test", "surbltest@example.test", "SURBL-No-Match",
                                   "This is a test message with a SURBL url: -> http://surbl-org-permanent-test-point.com/ <-\r\n" +
                                   sb);
 
@@ -179,7 +179,7 @@ namespace RegressionTests.AntiSpam
          // Create a test account
          // Fetch the default domain
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@example.test", "test");
 
          // Disallow incorrect line endings.
          _antiSpam.SpamMarkThreshold = 1;
@@ -207,7 +207,7 @@ namespace RegressionTests.AntiSpam
                "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890\r\n");
          }
 
-            smtpClientSimulator.Send("surbltest@test.com", "surbltest@test.com", "SURBL-No-Match",
+            smtpClientSimulator.Send("surbltest@example.test", "surbltest@example.test", "SURBL-No-Match",
                                   "This is a test message with a SURBL url: -> http://surbl-org-permanent-test-point.com/ <-\r\n" +
                                   sb);
 
@@ -229,7 +229,7 @@ namespace RegressionTests.AntiSpam
          // Create a test account
          // Fetch the default domain
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "missingmxrecords@test.com",
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "missingmxrecords@example.test",
                                                                               "test");
 
          // Disallow incorrect line endings.
@@ -241,7 +241,7 @@ namespace RegressionTests.AntiSpam
          // Send a messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
 
-         smtpClientSimulator.Send("test@microsoft.com", "missingmxrecords@test.com", "INBOX", "This is a test message.");
+         smtpClientSimulator.Send("test@microsoft.com", "missingmxrecords@example.test", "INBOX", "This is a test message.");
 
          CustomAsserts.Throws<DeliveryFailedException>(
             () => smtpClientSimulator.Send("test@domain_without_mx_records421dfsam430sasd.com", account1.Address, "INBOX",
@@ -258,7 +258,7 @@ namespace RegressionTests.AntiSpam
          // Create a test account
          // Fetch the default domain
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@example.test", "test");
 
          // Disallow incorrect line endings.
          _antiSpam.SpamMarkThreshold = 1;
@@ -277,7 +277,7 @@ namespace RegressionTests.AntiSpam
          // Send a messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
 
-         smtpClientSimulator.Send("surbltest@test.com", "surbltest@test.com", "SURBL-Match",
+         smtpClientSimulator.Send("surbltest@example.test", "surbltest@example.test", "SURBL-Match",
                     "Wrapped URL - <a href=3D\"http://surbl-org-perm\r\nanent-test-point.com\">Test</a>");
 
          string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
@@ -294,7 +294,7 @@ namespace RegressionTests.AntiSpam
          // Create a test account
          // Fetch the default domain
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@example.test", "test");
 
          // Disallow incorrect line endings.
          _antiSpam.SpamMarkThreshold = 1;
@@ -314,7 +314,7 @@ namespace RegressionTests.AntiSpam
          var smtpClientSimulator = new SmtpClientSimulator();
 
 
-         smtpClientSimulator.Send("surbltest@test.com", "surbltest@test.com", "SURBL-No-Match",
+         smtpClientSimulator.Send("surbltest@example.test", "surbltest@example.test", "SURBL-No-Match",
                     "This is a test message without a SURBL url.");
 
          string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
@@ -324,7 +324,7 @@ namespace RegressionTests.AntiSpam
             throw new Exception("Non-Spam message detected as spam");
 
 
-         smtpClientSimulator.Send("surbltest@test.com", "surbltest@test.com", "SURBL-Match",
+         smtpClientSimulator.Send("surbltest@example.test", "surbltest@example.test", "SURBL-Match",
                     "This is a test message with a SURBL url: -> http://surbl-org-permanent-test-point.com/ <-");
 
          sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
@@ -348,7 +348,7 @@ namespace RegressionTests.AntiSpam
          _domain.AddSignaturesToLocalMail = true;
          _domain.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@example.test", "test");
 
          // Disallow incorrect line endings.
          _antiSpam.SpamMarkThreshold = 1;
@@ -367,7 +367,7 @@ namespace RegressionTests.AntiSpam
          // Send a messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
 
-         smtpClientSimulator.Send("surbltest@test.com", "surbltest@test.com", "SURBL-No-Match",
+         smtpClientSimulator.Send("surbltest@example.test", "surbltest@example.test", "SURBL-No-Match",
                     "This is a test message without a SURBL url.");
 
          string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
@@ -378,7 +378,7 @@ namespace RegressionTests.AntiSpam
 
          Assert.IsTrue(sMessageContents.Contains(_domain.SignaturePlainText));
 
-         smtpClientSimulator.Send("surbltest@test.com", "surbltest@test.com", "SURBL-No-Match",
+         smtpClientSimulator.Send("surbltest@example.test", "surbltest@example.test", "SURBL-No-Match",
                     "This is a test message with a SURBL url: -> http://surbl-org-permanent-test-point.com/ <-");
 
          sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
@@ -392,7 +392,7 @@ namespace RegressionTests.AntiSpam
       [Test]
       public void TestSURBLCorrectNegative()
       {
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@example.test", "test");
 
          // Disallow incorrect line endings.
          _antiSpam.SpamMarkThreshold = 1;
@@ -409,7 +409,7 @@ namespace RegressionTests.AntiSpam
          surblServer.Save();
 
          // Send a messages to this account.
-         SmtpClientSimulator.StaticSend("surbltest@test.com", "surbltest@test.com", "SURBL-Match",
+         SmtpClientSimulator.StaticSend("surbltest@example.test", "surbltest@example.test", "SURBL-Match",
                                                       "This is a test message without a SURBL url: -> http://www.youtube.com/ <-");
 
          string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
@@ -425,7 +425,7 @@ namespace RegressionTests.AntiSpam
       {
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@example.test", "test");
 
          // Disallow incorrect line endings.
          _antiSpam.SpamMarkThreshold = 1;
@@ -444,7 +444,7 @@ namespace RegressionTests.AntiSpam
          // Send a messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
 
-         smtpClientSimulator.Send("surbltest@test.com", "surbltest@test.com", "SURBL-Match",
+         smtpClientSimulator.Send("surbltest@example.test", "surbltest@example.test", "SURBL-Match",
                     "Wrapped URL - <a href=3D\"http://surbl-org-perma=\r\nnent-test-point.com\">Test</a>");
 
          string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
@@ -459,7 +459,7 @@ namespace RegressionTests.AntiSpam
       {
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@example.test", "test");
 
          // Disallow incorrect line endings.
          _antiSpam.SpamMarkThreshold = 1;
@@ -478,7 +478,7 @@ namespace RegressionTests.AntiSpam
          // Send a messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
 
-         smtpClientSimulator.Send("surbltest@test.com", "surbltest@test.com", "SURBL-Match",
+         smtpClientSimulator.Send("surbltest@example.test", "surbltest@example.test", "SURBL-Match",
                     "Wrapped URL - <a href=3D\"http://surbl-org-permanent-test-point.com\r\nHello\">Test</a>");
 
          string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
@@ -493,7 +493,7 @@ namespace RegressionTests.AntiSpam
       {
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@example.test", "test");
 
          // Disallow incorrect line endings.
          _antiSpam.SpamMarkThreshold = 1;
@@ -512,7 +512,7 @@ namespace RegressionTests.AntiSpam
          // Send a messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
 
-         smtpClientSimulator.Send("surbltest@test.com", "surbltest@test.com", "SURBL-Match",
+         smtpClientSimulator.Send("surbltest@example.test", "surbltest@example.test", "SURBL-Match",
                     "Wrapped URL - <a href=3D\"http://surbl-org-permanent-test-point.com\">Test</a>\r\nWrapped URL - <a href=3D\"http://surbl-org-permanent-test-point.com\">Test</a>\r\nWrapped URL - <a href=3D\"http://surbl-org-permanent-test-point.com\">Test</a>\r\n");
 
          string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
@@ -530,7 +530,7 @@ namespace RegressionTests.AntiSpam
 
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@example.test", "test");
 
          // Disallow incorrect line endings.
          _antiSpam.SpamMarkThreshold = 1;
@@ -549,7 +549,7 @@ namespace RegressionTests.AntiSpam
          // Send a messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
 
-         smtpClientSimulator.Send("surbltest@test.com", "surbltest@test.com", "SURBL-Match",
+         smtpClientSimulator.Send("surbltest@example.test", "surbltest@example.test", "SURBL-Match",
                     "Wrapped URL - <a href=3D'http://surbl-org-permanent-test-point.com'>Test</a>\r\n");
 
          surblServer.Active = false;
@@ -566,7 +566,7 @@ namespace RegressionTests.AntiSpam
 
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@example.test", "test");
 
          // Disallow incorrect line endings.
          _antiSpam.SpamMarkThreshold = 1;
@@ -585,7 +585,7 @@ namespace RegressionTests.AntiSpam
          // Send a messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
 
-         smtpClientSimulator.Send("surbltest@test.com", "surbltest@test.com", "SURBL-Match",
+         smtpClientSimulator.Send("surbltest@example.test", "surbltest@example.test", "SURBL-Match",
                     "Wrapped URL - <a href=3D\"http://test.example1fdafdsfds.com\">Test</a>\r\nWrapped URL - <a href=3D\"http://test.example2fdafdsfds.com\">Test</a>\r\nWrapped URL - <a href=3D\"http://test.example3fdafdsfds.com\">Test</a>\r\n");
 
          string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
@@ -606,7 +606,7 @@ namespace RegressionTests.AntiSpam
 
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "surbltest@example.test", "test");
 
          // Disallow incorrect line endings.
          _antiSpam.SpamMarkThreshold = 1;
@@ -625,7 +625,7 @@ namespace RegressionTests.AntiSpam
          // Send a messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
 
-         smtpClientSimulator.Send("surbltest@test.com", "surbltest@test.com", "SURBL-Match", TestResources.SecuniaBody1);
+         smtpClientSimulator.Send("surbltest@example.test", "surbltest@example.test", "SURBL-Match", TestResources.SecuniaBody1);
 
          string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
          Assert.IsFalse(sMessageContents.Contains("X-hMailServer-Spam"), "Spam message not detected as spam");

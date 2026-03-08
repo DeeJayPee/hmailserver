@@ -18,7 +18,7 @@ namespace RegressionTests.IMAP
          Settings settings = _settings;
          settings.IMAPHierarchyDelimiter = "/";
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
          string folderName = "Test.Test";
 
@@ -40,7 +40,7 @@ namespace RegressionTests.IMAP
          Settings settings = _settings;
          settings.IMAPHierarchyDelimiter = "\\";
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
          string folderName = "Test\\Test";
 
@@ -66,7 +66,7 @@ namespace RegressionTests.IMAP
          Settings settings = _settings;
          settings.IMAPHierarchyDelimiter = "\\";
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
          string folderName = "Test\\Test";
 
@@ -88,7 +88,7 @@ namespace RegressionTests.IMAP
          Settings settings = _settings;
          settings.IMAPHierarchyDelimiter = "/";
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
          string folderName = "Test/Test";
 
@@ -113,7 +113,7 @@ namespace RegressionTests.IMAP
          settings.IMAPHierarchyDelimiter = "\\";
          string publicFolderName = _settings.IMAPPublicFolderName;
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
          var simulator = new ImapClientSimulator();
          simulator.ConnectAndLogon(account.Address, "test");
@@ -152,7 +152,7 @@ namespace RegressionTests.IMAP
          Settings settings = _settings;
          settings.IMAPHierarchyDelimiter = "/";
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
          string folderName = "Test/Test";
          string newFolderName = "Apa/Test";
@@ -179,7 +179,7 @@ namespace RegressionTests.IMAP
          Settings settings = _settings;
          settings.IMAPHierarchyDelimiter = "\\";
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "quote@example.test", "test");
 
          string folderName = "Test\\Test";
 

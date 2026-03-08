@@ -15,7 +15,7 @@ namespace RegressionTests.API
          Domain domain = SingletonProvider<TestSetup>.Instance.AddTestDomain();
 
          // Create an account with normal privileges.
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test", "test");
          account.AdminLevel = eAdminLevel.hAdminLevelDomainAdmin;
          account.Save();
 
@@ -35,7 +35,7 @@ namespace RegressionTests.API
          Domain domain = SingletonProvider<TestSetup>.Instance.AddTestDomain();
 
          // Create an account with normal privileges.
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test", "test");
 
          var newApp = new Application();
          Account authenticated = newApp.Authenticate(account.Address, "test");
@@ -53,7 +53,7 @@ namespace RegressionTests.API
          Domain domain = SingletonProvider<TestSetup>.Instance.AddTestDomain();
 
          // Create an account with normal privileges.
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test", "test");
          account.AdminLevel = eAdminLevel.hAdminLevelServerAdmin;
          account.Save();
 
@@ -71,7 +71,7 @@ namespace RegressionTests.API
          Domain domain = SingletonProvider<TestSetup>.Instance.AddTestDomain();
 
          // Create an account with normal privileges.
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test", "test");
          account.AdminLevel = eAdminLevel.hAdminLevelDomainAdmin;
          account.Save();
 
@@ -92,7 +92,7 @@ namespace RegressionTests.API
          Domain domain = SingletonProvider<TestSetup>.Instance.AddTestDomain();
 
          // Create an account with normal privileges.
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test", "test");
          account.AdminLevel = eAdminLevel.hAdminLevelNormal;
          account.Save();
 

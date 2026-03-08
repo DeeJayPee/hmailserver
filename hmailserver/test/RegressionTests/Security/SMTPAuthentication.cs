@@ -42,7 +42,7 @@ namespace RegressionTests.Security
 
          range.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
 
@@ -93,7 +93,7 @@ namespace RegressionTests.Security
          range.RequireSMTPAuthExternalToLocal = true;
          range.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
          CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send("someexternaladdress@example.com", account1.Address, "Mail 1", "Mail 1"));
@@ -151,7 +151,7 @@ namespace RegressionTests.Security
          range.RequireSMTPAuthLocalToExternal = true;
          range.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
          string result = "";
@@ -169,7 +169,7 @@ namespace RegressionTests.Security
          range.RequireSMTPAuthLocalToLocal = true;
          range.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
          string result = "";
@@ -199,7 +199,7 @@ namespace RegressionTests.Security
          range.RequireSMTPAuthExternalToLocal = true;
          range.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
          string result;
@@ -222,7 +222,7 @@ namespace RegressionTests.Security
          range.RequireSMTPAuthLocalToLocal = true;
          range.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
          string result;
@@ -270,7 +270,7 @@ namespace RegressionTests.Security
          range.RequireSMTPAuthLocalToLocal = true;
          range.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
          string result = "";
@@ -294,7 +294,7 @@ namespace RegressionTests.Security
          range.RequireSMTPAuthLocalToLocal = false;
          range.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
          string result;
@@ -344,7 +344,7 @@ namespace RegressionTests.Security
          route.TreatSenderAsLocalDomain = false;
          route.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
          string result;

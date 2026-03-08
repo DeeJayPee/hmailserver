@@ -30,11 +30,11 @@ namespace RegressionTests.IMAP
       [Description("Issue 340, Incorrect date sorting order")]
       public void TestDateSortOrder()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "imapsort@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "imapsort@example.test", "test");
          var simulator = new ImapClientSimulator();
 
          string sWelcomeMessage = simulator.Connect();
-         simulator.LogonWithLiteral("imapsort@test.com", "test");
+         simulator.LogonWithLiteral("imapsort@example.test", "test");
          Assert.IsTrue(simulator.SelectFolder("Inbox"));
 
          string response =
@@ -64,11 +64,11 @@ namespace RegressionTests.IMAP
       [Description("Issue 340, Incorrect date sorting order")]
       public void TestDateSortOrderNonexistantDate()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "imapsort@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "imapsort@example.test", "test");
          var simulator = new ImapClientSimulator();
 
          string sWelcomeMessage = simulator.Connect();
-         simulator.LogonWithLiteral("imapsort@test.com", "test");
+         simulator.LogonWithLiteral("imapsort@example.test", "test");
          Assert.IsTrue(simulator.SelectFolder("Inbox"));
 
          string response = simulator.SendSingleCommandWithLiteral(
@@ -104,14 +104,14 @@ namespace RegressionTests.IMAP
       [Description("Issue 168 - IMAP: Search for message with specific UID fails. ")]
       public void TestSearchSpecficUID()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@example.test", "test");
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
          for (int i = 0; i < 5; i++)
-            smtpClientSimulator.Send("search@test.com", "search@test.com", "Test1", "This is a test of IMAP Search");
+            smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
 
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 5);
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 5);
 
          Messages messages = account.IMAPFolders.get_ItemByName("Inbox").Messages;
 
@@ -122,7 +122,7 @@ namespace RegressionTests.IMAP
 
          var simulator = new ImapClientSimulator();
          simulator.Connect();
-         simulator.Logon("search@test.com", "test");
+         simulator.Logon("search@example.test", "test");
          Assert.IsTrue(simulator.SelectFolder("INBOX"));
 
          string result = simulator.SendSingleCommand(string.Format("a01 SORT (REVERSE DATE) UTF-8 ALL UID {0},{1}", second, third));
@@ -170,18 +170,18 @@ namespace RegressionTests.IMAP
       public void TestSortDeletedOrAnswered()
       {
          Domain domain = _application.Domains[0];
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@example.test", "test");
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "aa", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "bb", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 2);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "aa", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "bb", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
          string sWelcomeMessage = simulator.Connect();
-         simulator.Logon("search@test.com", "test");
+         simulator.Logon("search@example.test", "test");
          Assert.IsTrue(simulator.SelectFolder("INBOX"));
 
          Assert.AreEqual("", simulator.Sort("(DATE) UTF-8 ALL OR ANSWERED DELETED"));
@@ -191,23 +191,23 @@ namespace RegressionTests.IMAP
       public void TestSortReverseArrival()
       {
          Domain domain = _application.Domains[0];
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@example.test", "test");
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "Test1", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 1);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
 
          // The two messages needs to be sent a second apart, so we actually need to pause a bit here.
 
          Thread.Sleep(1000);
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "Test2", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 2);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
 
          string sWelcomeMessage = simulator.Connect();
-         simulator.Logon("search@test.com", "test");
+         simulator.Logon("search@example.test", "test");
          Assert.IsTrue(simulator.SelectFolder("INBOX"));
 
          Assert.AreEqual("1 2", simulator.Sort("(ARRIVAL) UTF-8 ALL"));
@@ -218,23 +218,23 @@ namespace RegressionTests.IMAP
       public void TestSortReverseSize()
       {
          Domain domain = _application.Domains[0];
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@example.test", "test");
 
          var longBodyString = new StringBuilder();
          longBodyString.Append('A', 10000);
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "Test1", longBodyString.ToString());
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 1);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", longBodyString.ToString());
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
 
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "Test2", "Test body");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 2);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2", "Test body");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
 
          string sWelcomeMessage = simulator.Connect();
-         simulator.Logon("search@test.com", "test");
+         simulator.Logon("search@example.test", "test");
          Assert.IsTrue(simulator.SelectFolder("INBOX"));
 
          Assert.AreEqual("2 1", simulator.Sort("(SIZE) UTF-8 ALL"));
@@ -245,19 +245,19 @@ namespace RegressionTests.IMAP
       public void TestSortSubject()
       {
          Domain domain = _application.Domains[0];
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@example.test", "test");
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "Test1", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "Test2", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 2);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
 
          string sWelcomeMessage = simulator.Connect();
-         simulator.Logon("search@test.com", "test");
+         simulator.Logon("search@example.test", "test");
          Assert.IsTrue(simulator.SelectFolder("INBOX"));
 
          Assert.AreEqual("1 2", simulator.Sort("(SUBJECT) UTF-8 ALL"));
@@ -267,19 +267,19 @@ namespace RegressionTests.IMAP
       public void TestSortSubjectReverse()
       {
          Domain domain = _application.Domains[0];
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@example.test", "test");
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "Test1", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "Test2", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 2);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
 
          string sWelcomeMessage = simulator.Connect();
-         simulator.Logon("search@test.com", "test");
+         simulator.Logon("search@example.test", "test");
          Assert.IsTrue(simulator.SelectFolder("INBOX"));
 
          Assert.AreEqual("2 1", simulator.Sort("(REVERSE SUBJECT) UTF-8 ALL"));
@@ -289,18 +289,18 @@ namespace RegressionTests.IMAP
       public void TestSortSubjectSearch()
       {
          Domain domain = _application.Domains[0];
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@example.test", "test");
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "aa", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "bb", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 2);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "aa", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "bb", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
          string sWelcomeMessage = simulator.Connect();
-         simulator.Logon("search@test.com", "test");
+         simulator.Logon("search@example.test", "test");
          Assert.IsTrue(simulator.SelectFolder("INBOX"));
 
          Assert.AreEqual("1 2", simulator.Sort("(DATE) UTF-8 ALL UNANSWERED OR HEADER SUBJECT aa HEADER SUBJECT bb"));
@@ -325,19 +325,19 @@ namespace RegressionTests.IMAP
       public void TestSubjectSearch()
       {
          Domain domain = _application.Domains[0];
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@example.test", "test");
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "Test1", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "Test2", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 2);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
 
          string sWelcomeMessage = simulator.Connect();
-         simulator.Logon("search@test.com", "test");
+         simulator.Logon("search@example.test", "test");
          Assert.IsTrue(simulator.SelectFolder("INBOX"));
 
          Assert.AreEqual("1", simulator.Sort("(REVERSE SUBJECT) UTF-8 ALL HEADER SUBJECT \"Test1\""));
@@ -351,21 +351,21 @@ namespace RegressionTests.IMAP
       public void TestSubjectSearchMultipleMatches()
       {
          Domain domain = _application.Domains[0];
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@example.test", "test");
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "Test1", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "TestA", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 2);
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "Test1", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 3);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "TestA", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 3);
 
          var simulator = new ImapClientSimulator();
 
          string sWelcomeMessage = simulator.Connect();
-         simulator.Logon("search@test.com", "test");
+         simulator.Logon("search@example.test", "test");
          Assert.IsTrue(simulator.SelectFolder("INBOX"));
 
          Assert.AreEqual("1 3", simulator.Sort("(SUBJECT) UTF-8 ALL HEADER SUBJECT \"Test1\""));
@@ -380,19 +380,19 @@ namespace RegressionTests.IMAP
       public void TestSubjectSearchValueWithParanthesis()
       {
          Domain domain = _application.Domains[0];
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "search@example.test", "test");
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "Te(st1", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@test.com", "search@test.com", "Te)st2", "This is a test of IMAP Search");
-         ImapClientSimulator.AssertMessageCount("search@test.com", "test", "INBOX", 2);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Te(st1", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Te)st2", "This is a test of IMAP Search");
+         ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
 
          string sWelcomeMessage = simulator.Connect();
-         simulator.Logon("search@test.com", "test");
+         simulator.Logon("search@example.test", "test");
          Assert.IsTrue(simulator.SelectFolder("INBOX"));
 
          Assert.AreEqual("1", simulator.Sort("(SUBJECT) UTF-8 ALL HEADER SUBJECT \"Te(st1\""));

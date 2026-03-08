@@ -18,7 +18,7 @@ namespace RegressionTests.SMTP
       [SetUp]
       public new void SetUp()
       {
-         _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "signature@test.com", "test");
+         _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "signature@example.test", "test");
       }
 
       [Test]
@@ -52,7 +52,7 @@ namespace RegressionTests.SMTP
          _domain.SignatureEnabled = true;
          _domain.AddSignaturesToLocalMail = true;
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "domainsignature@test.com",
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "domainsignature@example.test",
                                                                               "test");
          account1.SignatureEnabled = true;
          account1.SignaturePlainText = "PlainTextSignature";
@@ -204,7 +204,7 @@ namespace RegressionTests.SMTP
          _domain.AddSignaturesToLocalMail = true;
          _domain.Save();
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "list@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "list@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
          smtpClientSimulator.Send("nonexistant@dummy-example.com", account.Address, "SignatureTest", "SignaturerTestBody");
@@ -226,7 +226,7 @@ namespace RegressionTests.SMTP
          _domain.AddSignaturesToLocalMail = true;
          _domain.Save();
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "list@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "list@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
          smtpClientSimulator.Send("nonexistant@" + _domain.Name, account.Address, "SignatureTest", "SignaturerTestBody");
@@ -248,7 +248,7 @@ namespace RegressionTests.SMTP
          _domain.AddSignaturesToLocalMail = true;
          _domain.Save();
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "list@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "list@example.test", "test");
          account.PersonFirstName = "Martin";
 
          var smtpClientSimulator = new SmtpClientSimulator();

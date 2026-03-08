@@ -22,7 +22,7 @@ namespace RegressionTests.API
       [Description("Test to add a body after an attachment has been added.")]
       public void TestAddBodyAfterAttachment()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "encode@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "encode@example.test", "test");
 
          string filename = Path.Combine(Path.GetTempPath(), "dummy.txt");
          File.WriteAllText(filename, "tjena moss");
@@ -48,7 +48,7 @@ namespace RegressionTests.API
       [Test]
       public void TestAddTextDuringSending()
       {
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          // Send a message to the account.
          var message = new hMailServer.Message();
@@ -73,8 +73,8 @@ namespace RegressionTests.API
 
          // Send the message.
          var recipients = new List<string>();
-         recipients.Add("test@test.com");
-         SmtpClientSimulator.StaticSend("test@test.com", recipients, "Hej", "Välkommen till verkligheten");
+         recipients.Add("test@example.test");
+         SmtpClientSimulator.StaticSend("test@example.test", recipients, "Hej", "Välkommen till verkligheten");
 
          // Check that the message exists
          string firstMessageText = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
@@ -87,7 +87,7 @@ namespace RegressionTests.API
       [Test]
       public void TestAddTextDuringSendingAttachment()
       {
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          // Send a message to the account.
          var message = new hMailServer.Message();
@@ -110,7 +110,7 @@ namespace RegressionTests.API
 
          var mail = new MailMessage();
          mail.From = new MailAddress("test@test.se");
-         mail.To.Add("test@test.com");
+         mail.To.Add("test@example.test");
          mail.Subject = "Automatiskt servertest";
          mail.Body = "Detta är ett automatiskt test av epostservern.";
          mail.BodyEncoding = Encoding.GetEncoding(1252);
@@ -130,7 +130,7 @@ namespace RegressionTests.API
       [Description("Add text to an empty body during sending of attachments")]
       public void TestAddTextToEmptyBody()
       {
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          // Send a message to the account.
          var message = new hMailServer.Message();
@@ -153,7 +153,7 @@ namespace RegressionTests.API
 
          var mail = new MailMessage();
          mail.From = new MailAddress("test@test.se");
-         mail.To.Add("test@test.com");
+         mail.To.Add("test@example.test");
          mail.Subject = "Automatiskt servertest";
          mail.Body = "";
          mail.BodyEncoding = Encoding.GetEncoding(1252);
@@ -173,7 +173,7 @@ namespace RegressionTests.API
       [Description("Test to create a simple message with a HTML body.")]
       public void TestMailCreationHTML()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "encode@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "encode@example.test", "test");
 
          var message = new hMailServer.Message();
          message.AddRecipient("", account.Address);
@@ -194,7 +194,7 @@ namespace RegressionTests.API
       [Description("Test to create a simple message with a HTML body and a plain text body.")]
       public void TestMailCreationHTMLAndPlainText()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "encode@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "encode@example.test", "test");
 
          var message = new hMailServer.Message();
          message.AddRecipient("", account.Address);
@@ -217,7 +217,7 @@ namespace RegressionTests.API
       [Description("Test to create a simple message with a HTML body and a plain text body.")]
       public void TestMailCreationHTMLAndPlainTextReverse()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "encode@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "encode@example.test", "test");
 
          var message = new hMailServer.Message();
          message.AddRecipient("", account.Address);
@@ -240,7 +240,7 @@ namespace RegressionTests.API
       [Description("Test to create a simple message with a body.")]
       public void TestMailCreationPlainText()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "encode@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "encode@example.test", "test");
 
          var message = new hMailServer.Message();
          message.AddRecipient("", account.Address);
@@ -261,7 +261,7 @@ namespace RegressionTests.API
       [Description("Test to create a simple message with a HTML body and a plain text body.")]
       public void TestMailCreationUnicodeAndAttachment()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "encode@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "encode@example.test", "test");
 
          string filename = Path.Combine(Path.GetTempPath(), "dummy.txt");
          File.WriteAllText(filename, "tjena moss");
@@ -290,7 +290,7 @@ namespace RegressionTests.API
       [Description("Test to create a message with both a plain text and HTML part")]
       public void TestMailCreationUnicodeBodyAndHtml()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "encode@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "encode@example.test", "test");
 
          var message = new hMailServer.Message();
          message.AddRecipient("", account.Address);
@@ -310,7 +310,7 @@ namespace RegressionTests.API
          "Test to update a subject in a message with no message-wide character set (should default to utf-8)")]
       public void TestUpdateSubjectOnMessageWithNoMessageWideCharacterSet()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "encode@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "encode@example.test", "test");
 
          string script = "Sub OnAcceptMessage(oClient, message) " + Environment.NewLine +
                          " message.Subject = \"[ov]\" + message.Subject " + Environment.NewLine +
@@ -331,7 +331,7 @@ namespace RegressionTests.API
                        "Hej!" + Environment.NewLine;
 
 
-         SmtpClientSimulator.StaticSendRaw("encode@test.com", "encode@test.com", body);
+         SmtpClientSimulator.StaticSendRaw("encode@example.test", "encode@example.test", body);
 
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
 

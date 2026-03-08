@@ -21,8 +21,8 @@ namespace RegressionTests.API
       {
          var smtp = new SmtpClientSimulator();
          var recipients = new List<string>();
-         recipients.Add("test@test.com");
-         smtp.Send("test@test.com", recipients, "Test", "Test message");
+         recipients.Add("test@example.test");
+         smtp.Send("test@example.test", recipients, "Test", "Test message");
       }
 
       [Test]
@@ -30,7 +30,7 @@ namespace RegressionTests.API
       {
          Application app = SingletonProvider<TestSetup>.Instance.GetApp();
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var newApp = new Application();
          Assert.IsNotNull(newApp.Authenticate(account.Address, "test"));
@@ -51,7 +51,7 @@ namespace RegressionTests.API
          Application app = SingletonProvider<TestSetup>.Instance.GetApp();
          Utilities utilities = app.Utilities;
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          // Create a new folder.
          IMAPFolder folder = account.IMAPFolders.get_ItemByName("INBOX");
@@ -111,13 +111,13 @@ namespace RegressionTests.API
       [Description("Add text to an empty body during sending of attachments")]
       public void TestAddTextToEmptyBody()
       {
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          // Send a message to the account.
          string messageText = @"Date: Thu, 03 Jul 2008 22:01:53 +0200\r\n" +
-                              "From: Test <test@test.com>\r\n" +
+                              "From: Test <test@example.test>\r\n" +
                               "MIME-Version: 1.0\r\n" +
-                              "To: test@test.com\r\n" +
+                              "To: test@example.test\r\n" +
                               "Subject: test\r\n" +
                               "Content-Type: multipart/mixed;\r\n" +
                               "  boundary=\"------------050908050500020808050006\"\r\n" +
@@ -139,7 +139,7 @@ namespace RegressionTests.API
                               "\r\n" +
                               "--------------050908050500020808050006--\r\n";
 
-         SmtpClientSimulator.StaticSendRaw("test@test.com", "test@test.com", messageText);
+         SmtpClientSimulator.StaticSendRaw("test@example.test", "test@example.test", messageText);
 
          hMailServer.Message message =
             CustomAsserts.AssertRetrieveFirstMessage(account1.IMAPFolders.get_ItemByName("INBOX"));
@@ -154,7 +154,7 @@ namespace RegressionTests.API
          Application app = SingletonProvider<TestSetup>.Instance.GetApp();
          Utilities utilities = app.Utilities;
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          // Create a new folder.
          IMAPFolder folder = account.IMAPFolders.get_ItemByName("INBOX");
@@ -273,7 +273,7 @@ namespace RegressionTests.API
          LogHandler.DeleteEventLog();
 
          // Add an account and send a message to it.
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SendMessageToTest();
 
@@ -315,7 +315,7 @@ namespace RegressionTests.API
       {
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "folder@example.test", "test");
          IMAPFolder folder = account1.IMAPFolders.Add("TestFolder1");
          folder.Save();
 
@@ -340,7 +340,7 @@ namespace RegressionTests.API
          Application application = SingletonProvider<TestSetup>.Instance.GetApp();
 
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account1@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account1@example.test", "test");
          Group group = SingletonProvider<TestSetup>.Instance.AddGroup("TestGroup");
 
          IMAPFolders publicFolders = _settings.PublicFolders;
@@ -382,7 +382,7 @@ namespace RegressionTests.API
          scripting.Reload();
 
          // Add an account and send a message to it.
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account1.Address, account1.Address, "Test", "SampleBody");
 
@@ -415,7 +415,7 @@ namespace RegressionTests.API
          logging.EnableLiveLogging(true);
 
          // Add an account and send a message to it.
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "SampleBody");
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
@@ -436,17 +436,17 @@ namespace RegressionTests.API
       public void TestReinitialize()
       {
          string @messageText =
-            "From: test@test.com\r\n" +
+            "From: test@example.test\r\n" +
             "\r\n" +
             "WhatTest\r\n";
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "First message",
                                                       "Test message");
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
 
          // Create another message on disk and import it.
-         string domainPath = Path.Combine(_application.Settings.Directories.DataDirectory, "test.com");
+         string domainPath = Path.Combine(_application.Settings.Directories.DataDirectory, "example.test");
          string accountPath = Path.Combine(domainPath, "test");
          Directory.CreateDirectory(accountPath);
          string fileName = Path.Combine(accountPath, "something.eml");
@@ -477,7 +477,7 @@ namespace RegressionTests.API
          Utilities utilities = app.Utilities;
 
          // Add an account and send a message to it.
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "SampleBody");
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
@@ -502,7 +502,7 @@ namespace RegressionTests.API
       {
          Settings settings = SingletonProvider<TestSetup>.Instance.GetApp().Settings;
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          // Check that the message does not exist
          Pop3ClientSimulator.AssertMessageCount(account1.Address, "test", 0);
@@ -555,7 +555,7 @@ namespace RegressionTests.API
       [Test]
       public void TestSendMessage()
       {
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          // Send a message to the account.
          var message = new hMailServer.Message();

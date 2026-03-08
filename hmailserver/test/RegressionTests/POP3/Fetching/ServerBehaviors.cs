@@ -30,7 +30,7 @@ namespace RegressionTests.POP3
       [SetUp]
       public void SetUpTest()
       {
-         _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@test.com", "test");
+         _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
 
          _serverPort = TestSetup.GetNextFreePort();
       }

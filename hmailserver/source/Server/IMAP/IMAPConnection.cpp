@@ -351,7 +351,7 @@ namespace HM
 
             // 1 words - A01
             // 2 words - LOGIN
-            // 3 words - test@test.com
+            // 3 words - test@example.test
             // 4 words - password.
          }
 

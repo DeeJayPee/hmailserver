@@ -123,7 +123,7 @@ namespace RegressionTests.Infrastructure
          // Set up the domain. It's already set-up...
          Domain domain = _application.Domains[0];
          Assert.IsNotNull(domain);
-         Assert.AreEqual("test.com", domain.Name);
+         Assert.AreEqual("example.test", domain.Name);
 
          SetupDomainObject(domain);
          SetupDomainObjects(domain);
@@ -282,7 +282,7 @@ namespace RegressionTests.Infrastructure
 
       private void SetupDomainObject(Domain domain)
       {
-         domain.Postmaster = "someone@test.com";
+         domain.Postmaster = "someone@example.test";
          domain.SignatureEnabled = true;
          domain.AddSignaturesToLocalMail = true;
          domain.AddSignaturesToReplies = true;
@@ -323,7 +323,7 @@ namespace RegressionTests.Infrastructure
          folder.Save();
 
          Domain domain = _application.Domains[0];
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "acltest-1@test.com", "test");
+         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "acltest-1@example.test", "test");
 
          IMAPFolderPermission permission = folder.Permissions.Add();
          permission.PermissionType = eACLPermissionType.ePermissionTypeUser;
@@ -363,7 +363,7 @@ namespace RegressionTests.Infrastructure
             IMAPFolderPermissions permissions = publicFolders.get_ItemByName("ACL").Permissions;
             Assert.AreEqual(1, permissions.Count);
 
-            Account account1 = domain.Accounts.get_ItemByAddress("acltest-1@test.com");
+            Account account1 = domain.Accounts.get_ItemByAddress("acltest-1@example.test");
 
             IMAPFolderPermission permission = permissions[0];
 
@@ -393,11 +393,11 @@ namespace RegressionTests.Infrastructure
       private void SetupDistributionListObject(Domain domain)
       {
          var listRecipients = new List<string>();
-         listRecipients.Add("member1@test.com");
-         listRecipients.Add("member2@test.com");
-         listRecipients.Add("member3@test.com");
+         listRecipients.Add("member1@example.test");
+         listRecipients.Add("member2@example.test");
+         listRecipients.Add("member3@example.test");
 
-         DistributionList list = SingletonProvider<TestSetup>.Instance.AddDistributionList(domain, "list@test.com",
+         DistributionList list = SingletonProvider<TestSetup>.Instance.AddDistributionList(domain, "list@example.test",
                                                                                            listRecipients);
       }
 
@@ -407,11 +407,11 @@ namespace RegressionTests.Infrastructure
          group.Name = "TestGroup";
          group.Save();
 
-         Account gm1 = SingletonProvider<TestSetup>.Instance.AddAccount(_application.Domains[0], "gm1@test.com",
+         Account gm1 = SingletonProvider<TestSetup>.Instance.AddAccount(_application.Domains[0], "gm1@example.test",
                                                                         "test");
-         Account gm2 = SingletonProvider<TestSetup>.Instance.AddAccount(_application.Domains[0], "gm2@test.com",
+         Account gm2 = SingletonProvider<TestSetup>.Instance.AddAccount(_application.Domains[0], "gm2@example.test",
                                                                         "test");
-         Account gm3 = SingletonProvider<TestSetup>.Instance.AddAccount(_application.Domains[0], "gm3@test.com",
+         Account gm3 = SingletonProvider<TestSetup>.Instance.AddAccount(_application.Domains[0], "gm3@example.test",
                                                                         "test");
 
          GroupMember gm = group.Members.Add();
@@ -429,12 +429,12 @@ namespace RegressionTests.Infrastructure
 
       private void SetupAliasObject(Domain domain)
       {
-         Alias alias = SingletonProvider<TestSetup>.Instance.AddAlias(domain, "alias@test.com", "someone@test.com");
+         Alias alias = SingletonProvider<TestSetup>.Instance.AddAlias(domain, "alias@example.test", "someone@example.test");
       }
 
       private void SetupAccountObject(Domain domain)
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test", "test");
 
          // Make sure the inbox contains two messages which should be backed up.
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Message 1 Subject",
@@ -509,7 +509,7 @@ namespace RegressionTests.Infrastructure
 
          RuleAction action = rule.Actions.Add();
          action.Type = eRuleActionType.eRAForwardEmail;
-         action.To = "someone@test.com";
+         action.To = "someone@example.test";
          action.Body = "Test";
          action.Filename = "File";
          action.FromAddress = "T";
@@ -773,14 +773,14 @@ namespace RegressionTests.Infrastructure
 
       private void ConfirmDomainObject(Domain domain)
       {
-         Assert.AreEqual("someone@test.com", domain.Postmaster);
+         Assert.AreEqual("someone@example.test", domain.Postmaster);
          Assert.IsTrue(domain.SignatureEnabled);
          Assert.IsTrue(domain.AddSignaturesToLocalMail);
          Assert.IsTrue(domain.AddSignaturesToReplies);
          Assert.AreEqual("PLS", domain.SignaturePlainText);
          Assert.AreEqual("HTML", domain.SignatureHTML);
 
-         Assert.AreEqual("test.com", _application.Domains[0].Name);
+         Assert.AreEqual("example.test", _application.Domains[0].Name);
          Assert.AreEqual(2, _application.Domains[0].DomainAliases.Count);
          Assert.AreEqual("test1.com", _application.Domains[0].DomainAliases[0].AliasName);
          Assert.AreEqual("test2.com", _application.Domains[0].DomainAliases[1].AliasName);
@@ -796,23 +796,23 @@ namespace RegressionTests.Infrastructure
       private void ConfirmDistributionListObject()
       {
          DistributionList list = _application.Domains[0].DistributionLists[0];
-         Assert.AreEqual("list@test.com", list.Address);
+         Assert.AreEqual("list@example.test", list.Address);
          Assert.AreEqual(3, list.Recipients.Count);
-         Assert.AreEqual("member1@test.com", list.Recipients[0].RecipientAddress);
-         Assert.AreEqual("member2@test.com", list.Recipients[1].RecipientAddress);
-         Assert.AreEqual("member3@test.com", list.Recipients[2].RecipientAddress);
+         Assert.AreEqual("member1@example.test", list.Recipients[0].RecipientAddress);
+         Assert.AreEqual("member2@example.test", list.Recipients[1].RecipientAddress);
+         Assert.AreEqual("member3@example.test", list.Recipients[2].RecipientAddress);
       }
 
       private void ConfirmAliasObject()
       {
          Alias alias = _application.Domains[0].Aliases[0];
-         Assert.AreEqual("alias@test.com", alias.Name);
-         Assert.AreEqual("someone@test.com", alias.Value);
+         Assert.AreEqual("alias@example.test", alias.Name);
+         Assert.AreEqual("someone@example.test", alias.Value);
       }
 
       private void ConfirmAccountObject()
       {
-         Account account = _application.Domains[0].Accounts.get_ItemByAddress("test@test.com");
+         Account account = _application.Domains[0].Accounts.get_ItemByAddress("test@example.test");
 
 
          Assert.IsTrue(account.Active);
@@ -863,7 +863,7 @@ namespace RegressionTests.Infrastructure
 
          RuleAction action = rule.Actions[0];
          Assert.AreEqual(eRuleActionType.eRAForwardEmail, action.Type);
-         Assert.AreEqual("someone@test.com", action.To);
+         Assert.AreEqual("someone@example.test", action.To);
          Assert.AreEqual("Test", action.Body);
          Assert.AreEqual("File", action.Filename);
          Assert.AreEqual("T", action.FromAddress);
@@ -903,9 +903,9 @@ namespace RegressionTests.Infrastructure
          Assert.AreEqual("TestGroup", group.Name);
          Assert.AreEqual(3, group.Members.Count);
 
-         Assert.AreEqual("gm1@test.com", group.Members[0].Account.Address);
-         Assert.AreEqual("gm2@test.com", group.Members[1].Account.Address);
-         Assert.AreEqual("gm3@test.com", group.Members[2].Account.Address);
+         Assert.AreEqual("gm1@example.test", group.Members[0].Account.Address);
+         Assert.AreEqual("gm2@example.test", group.Members[1].Account.Address);
+         Assert.AreEqual("gm3@example.test", group.Members[2].Account.Address);
       }
 
       [Test]

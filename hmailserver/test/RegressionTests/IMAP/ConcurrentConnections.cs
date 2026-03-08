@@ -13,7 +13,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void ChangingFlagShouldAffectAllConnections()
       {
-         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "Test");
 
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);

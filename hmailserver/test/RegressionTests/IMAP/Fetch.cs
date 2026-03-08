@@ -17,7 +17,7 @@ namespace RegressionTests.IMAP
       [Description("Issue 218, IMAP: Problem with file name containing non-latin chars")]
       public void TestBodyStructureWithNonLatinCharacter()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          string attachmentName = "本本本.zip";
 
@@ -48,7 +48,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestFetch()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "SampleBody1");
          ImapClientSimulator.AssertMessageCount(account.Address, "test", "Inbox", 1);
@@ -75,7 +75,7 @@ namespace RegressionTests.IMAP
       [Description("Issue 293, IMAP: bodystructure is sent instead of body")]
       public void TestFetchBody()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          string attachmentName = "本本本.zip";
 
@@ -108,7 +108,7 @@ namespace RegressionTests.IMAP
       [Description("Issue 209, Date containing \" doesn't show up in OE")]
       public void TestFetchEnvelopeWithDateContainingQuote()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mimetest@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mimetest@example.test", "test");
 
          string message = "From: Someone <someone@example.com>" + Environment.NewLine +
                           "To: Someoen <someone@example.com>" + Environment.NewLine +
@@ -135,7 +135,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void IfInReplyToFieldContainsQuoteThenFetchHeadersShouldEncodeIt()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mimetest@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mimetest@example.test", "test");
 
          string message = "From: Someone <someone@example.com>" + Environment.NewLine +
                           "To: Someoen <someone@example.com>" + Environment.NewLine +
@@ -164,7 +164,7 @@ namespace RegressionTests.IMAP
       [Description("Issue 282, hMailServer not working with Symbian N60 ")]
       public void TestFetchHeaderFields()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mimetest@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mimetest@example.test", "test");
 
          string message = "From: Someone <someone@example.com>" + Environment.NewLine +
                           "To: Someoen <someone@example.com>" + Environment.NewLine +
@@ -196,7 +196,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void RequestingSameHeaderFieldMultipleTimesShouldReturnItOnce()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mimetest@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mimetest@example.test", "test");
 
          string message = "From: Someone <someone@example.com>" + Environment.NewLine +
                           "To: Someoen <someone@example.com>" + Environment.NewLine +
@@ -225,7 +225,7 @@ namespace RegressionTests.IMAP
       [Description("Issue 282, hMailServer not working with Symbian N60 ")]
       public void TestFetchHeaderFieldsNot()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mimetest@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mimetest@example.test", "test");
 
          string message = "From: Someone <someone@example.com>" + Environment.NewLine +
                           "To: Someoen <someone@example.com>" + Environment.NewLine +
@@ -257,7 +257,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void TestFetchInvalid()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "SampleBody1");
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "SampleBody2");
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "SampleBody3");

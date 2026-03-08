@@ -40,7 +40,7 @@ namespace RegressionTests.SMTP
 
          _settings.AntiVirus.EnableAttachmentBlocking = true;
 
-         _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
       }
 
       [Test]
@@ -48,9 +48,9 @@ namespace RegressionTests.SMTP
       {
          // Send a message to the account.
          string messageText = @"Date: Thu, 03 Jul 2008 22:01:53 +0200\r\n" +
-                              "From: Test <test@test.com>\r\n" +
+                              "From: Test <test@example.test>\r\n" +
                               "MIME-Version: 1.0\r\n" +
-                              "To: test@test.com\r\n" +
+                              "To: test@example.test\r\n" +
                               "Subject: test\r\n" +
                               "Content-Type: multipart/mixed;\r\n" +
                               "  boundary=\"------------050908050500020808050006\"\r\n" +
@@ -72,9 +72,9 @@ namespace RegressionTests.SMTP
                               "\r\n" +
                               "--------------050908050500020808050006--\r\n";
 
-         SmtpClientSimulator.StaticSendRaw("test@test.com", "test@test.com", messageText);
+         SmtpClientSimulator.StaticSendRaw("test@example.test", "test@example.test", messageText);
 
-         ImapClientSimulator.AssertMessageCount("test@test.com", "test", "Inbox", 1);
+         ImapClientSimulator.AssertMessageCount("test@example.test", "test", "Inbox", 1);
 
          Message message = CustomAsserts.AssertRetrieveFirstMessage(_account.IMAPFolders.get_ItemByName("INBOX"));
          Assert.AreEqual(1, message.Attachments.Count);
@@ -109,8 +109,8 @@ namespace RegressionTests.SMTP
             using (var attachment = new System.Net.Mail.Attachment(tempFile))
             {
                var mail = new MailMessage();
-               mail.From = new MailAddress("test@test.com");
-               mail.To.Add("test@test.com");
+               mail.From = new MailAddress("test@example.test");
+               mail.To.Add("test@example.test");
                mail.Subject = "Test";
                mail.Body = "Test";
                mail.BodyEncoding = Encoding.GetEncoding(1252);
@@ -150,8 +150,8 @@ namespace RegressionTests.SMTP
             using (var attachment2 = new System.Net.Mail.Attachment(tempFile2))
             {
                var mail = new MailMessage();
-               mail.From = new MailAddress("test@test.com");
-               mail.To.Add("test@test.com");
+               mail.From = new MailAddress("test@example.test");
+               mail.To.Add("test@example.test");
                mail.Subject = "Test";
                mail.Body = "Test";
                mail.BodyEncoding = Encoding.GetEncoding(1252);
@@ -190,8 +190,8 @@ namespace RegressionTests.SMTP
             using (var attachment = new System.Net.Mail.Attachment(tempFile))
             {
                var mail = new MailMessage();
-               mail.From = new MailAddress("test@test.com");
-               mail.To.Add("test@test.com");
+               mail.From = new MailAddress("test@example.test");
+               mail.To.Add("test@example.test");
                mail.Subject = "Test";
                mail.Body = "Test";
                mail.BodyEncoding = Encoding.GetEncoding(1252);
@@ -204,7 +204,7 @@ namespace RegressionTests.SMTP
 
             string expectedNewAttachmentName = attachmentName + ".txt";
 
-            ImapClientSimulator.AssertMessageCount("test@test.com", "test", "Inbox", 1);
+            ImapClientSimulator.AssertMessageCount("test@example.test", "test", "Inbox", 1);
 
             Message message = CustomAsserts.AssertRetrieveFirstMessage(_account.IMAPFolders.get_ItemByName("INBOX"));
             Assert.AreEqual(1, message.Attachments.Count);
