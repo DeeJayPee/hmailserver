@@ -15,32 +15,33 @@ namespace RegressionTests.SSL
    [TestFixture]
    public class SslTlsVersionTests : TestFixtureBase
    {
-      private Account _account;
-
-      private void SetSslVersions(bool tlsv10, bool tlsv11, bool tlsv12, bool tlsv13)
-      {
-         SslSetup.SetupSSLPorts(_application, new SslVersions()
-            {
-               Tls10 = tlsv10,
-               Tls11 = tlsv11,
-               Tls12 = tlsv12,
-               Tls13 = tlsv13
-            });
-
-         Thread.Sleep(1000);
-      }
-
       [SetUp]
       public new void SetUp()
       {
          _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
       }
 
+      private Account _account;
+
+      private void SetSslVersions(bool tlsv10, bool tlsv11, bool tlsv12, bool tlsv13)
+      {
+         SslSetup.SetupSSLPorts(_application, new SslVersions
+         {
+            Tls10 = tlsv10,
+            Tls11 = tlsv11,
+            Tls12 = tlsv12,
+            Tls13 = tlsv13
+         });
+
+         Thread.Sleep(1000);
+      }
+
       [Test]
       public void ItShouldBePossibleToDisableSslV3()
       {
          SetSslVersions(true, true, true, true);
-         var smtpClientSimulator = new SmtpClientSimulator(true, SslProtocols.Ssl3, 25001, IPAddress.Parse("127.0.0.1"));
+         var smtpClientSimulator =
+            new SmtpClientSimulator(true, SslProtocols.Ssl3, 25001, IPAddress.Parse("127.0.0.1"));
 
          try
          {
@@ -72,11 +73,11 @@ namespace RegressionTests.SSL
          var smtpClientSimulator = new SmtpClientSimulator(true, SslProtocols.Tls, 25001, IPAddress.Parse("127.0.0.1"));
 
          string errorMessage;
-         smtpClientSimulator.Send(false, _account.Address, "test", _account.Address, _account.Address, "Test", "test", out errorMessage);
+         smtpClientSimulator.Send(false, _account.Address, "test", _account.Address, _account.Address, "Test", "test",
+            out errorMessage);
 
          var message = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
          Assert.IsTrue(message.Contains("version=TLSv1"), message);
       }
-   
    }
 }

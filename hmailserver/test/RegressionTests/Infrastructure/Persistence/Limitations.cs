@@ -13,8 +13,6 @@ namespace RegressionTests.Infrastructure.Persistence
    [TestFixture]
    public class Limitations : TestFixtureBase
    {
-
-
       [Test]
       public void TestDomainAliasRenameToSameNameAsDomain()
       {
@@ -33,6 +31,7 @@ namespace RegressionTests.Infrastructure.Persistence
          {
             return;
          }
+
          Assert.Fail("Domain alias with same name as domain was permitted.");
       }
 
@@ -52,6 +51,7 @@ namespace RegressionTests.Infrastructure.Persistence
          {
             return;
          }
+
          Assert.Fail("Domain alias with same name as domain was permitted.");
       }
 
@@ -92,7 +92,7 @@ namespace RegressionTests.Infrastructure.Persistence
          try
          {
             var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "secret1",
-                                                                               0);
+               0);
          }
          catch (Exception)
          {
@@ -181,19 +181,17 @@ namespace RegressionTests.Infrastructure.Persistence
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "secret1", 0);
          var message = new StringBuilder();
 
-         for (var i = 0; i < 10000; i++)
-         {
-            message.Append("ABCDEFGH");
-         }
+         for (var i = 0; i < 10000; i++) message.Append("ABCDEFGH");
 
          SmtpClientSimulator.StaticSend("test@example.test", "test@example.test", "TestSubject",
-                                                      message.ToString());
+            message.ToString());
          Pop3ClientSimulator.AssertMessageCount("test@example.test", "secret1", 1);
          _domain.MaxMessageSize = 50;
          _domain.Save();
 
-         CustomAsserts.Throws<DeliveryFailedException>(() => SmtpClientSimulator.StaticSend("test@example.test", "test@example.test", "TestSubject",
-                                                       message.ToString()));
+         CustomAsserts.Throws<DeliveryFailedException>(() => SmtpClientSimulator.StaticSend("test@example.test",
+            "test@example.test", "TestSubject",
+            message.ToString()));
       }
 
 
@@ -252,10 +250,11 @@ namespace RegressionTests.Infrastructure.Persistence
          {
             return;
          }
+
          Assert.Fail("Duplicate domain name was permitted.");
       }
 
-      
+
       [Test]
       public void TestDomainNameDuplicateDomainRename()
       {
@@ -272,6 +271,7 @@ namespace RegressionTests.Infrastructure.Persistence
          {
             return;
          }
+
          Assert.Fail("Duplicate domain name was permitted.");
       }
 
@@ -292,6 +292,7 @@ namespace RegressionTests.Infrastructure.Persistence
          {
             return;
          }
+
          Assert.Fail("Domain with same name as domain alias was permitted.");
       }
 
@@ -326,6 +327,7 @@ namespace RegressionTests.Infrastructure.Persistence
          {
             return;
          }
+
          Assert.Fail("Duplicate account was permitted");
       }
 
@@ -342,6 +344,7 @@ namespace RegressionTests.Infrastructure.Persistence
          {
             return;
          }
+
          Assert.Fail("Alias with same name as account was permitted.");
       }
 
@@ -360,6 +363,7 @@ namespace RegressionTests.Infrastructure.Persistence
          {
             return;
          }
+
          Assert.Fail("Distribution list with same name as alias was permitted.");
       }
 
@@ -376,6 +380,7 @@ namespace RegressionTests.Infrastructure.Persistence
          {
             return;
          }
+
          Assert.Fail("Two groups with same name was permitted.");
       }
 
@@ -390,7 +395,6 @@ namespace RegressionTests.Infrastructure.Persistence
          range.UpperIP = "0.0.0.0";
          var ex = Assert.Throws<COMException>(() => range.Save());
          StringAssert.Contains("The lower IP address must be lower or the same as the upper IP address.", ex.Message);
-
       }
 
 

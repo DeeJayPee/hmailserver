@@ -2,7 +2,7 @@
 
 namespace RegressionTests.Shared
 {
-   static class StringExtensions
+   internal static class StringExtensions
    {
       public static int Occurences(string haystack, string needle)
       {
@@ -10,13 +10,11 @@ namespace RegressionTests.Shared
          var n = 0;
 
          if (needle != "")
-         {
             while ((n = haystack.IndexOf(needle, n, StringComparison.InvariantCulture)) != -1)
             {
                n += needle.Length;
                count++;
             }
-         }
 
          return count;
       }

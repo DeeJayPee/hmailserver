@@ -101,7 +101,8 @@ namespace RegressionTests.SMTP
       }
 
       [Test]
-      [Description("If a message with 4 recipients on the same domain is is delivered via a route, only one message should be delivered.")]
+      [Description(
+         "If a message with 4 recipients on the same domain is is delivered via a route, only one message should be delivered.")]
       public void RoutesShouldConsolidateRecipients()
       {
          // Set up a server listening on port 250 which accepts email for test@example.test
@@ -131,13 +132,13 @@ namespace RegressionTests.SMTP
 
             var smtpClient = new SmtpClientSimulator();
 
-            var recipients = new List<string>()
-               {
-                  "user1@example.test",
-                  "user2@example.test",
-                  "user3@example.test",
-                  "user4@example.test"
-               };
+            var recipients = new List<string>
+            {
+               "user1@example.test",
+               "user2@example.test",
+               "user3@example.test",
+               "user4@example.test"
+            };
 
             smtpClient.Send("example@example.com", recipients, "Test", "Test message");
             CustomAsserts.AssertRecipientsInDeliveryQueue(0);
@@ -190,7 +191,8 @@ namespace RegressionTests.SMTP
       }
 
       [Test]
-      [Description("If a client attempts to deliver to a route, but the list is not in the route list an error should be returned.")]
+      [Description(
+         "If a client attempts to deliver to a route, but the list is not in the route list an error should be returned.")]
       public void RecipientNotInListShouldReturnError()
       {
          // Add a route pointing at localhost
@@ -208,7 +210,8 @@ namespace RegressionTests.SMTP
          var smtpClient = new SmtpClientSimulator();
 
          var resultMessage = "";
-         CustomAsserts.Throws<DeliveryFailedException>(() => smtpClient.Send("example@example.com", "user1@example.test", "Test", "Test message", out resultMessage));
+         CustomAsserts.Throws<DeliveryFailedException>(() =>
+            smtpClient.Send("example@example.com", "user1@example.test", "Test", "Test message", out resultMessage));
          Assert.AreEqual("550 Recipient not in route list.", resultMessage);
       }
 
@@ -228,10 +231,10 @@ namespace RegressionTests.SMTP
             var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, true, eConnectionSecurity.eCSNone);
             route.TargetSMTPHost = "127.0.0.1";
             route.Save();
-          
+
             var smtpSimulator = new SmtpClientSimulator();
             smtpSimulator.Send("test@example.test",
-                                           "test@dummy-example.com", "Mail 1", "Test message");
+               "test@dummy-example.com", "Mail 1", "Test message");
 
 
             // This should now be processed via the rule -> route -> external server we've set up.
@@ -270,6 +273,5 @@ namespace RegressionTests.SMTP
          SmtpClientSimulator.StaticSend("test@example.test", "other@example.test", "A", "B");
          Pop3ClientSimulator.AssertMessageCount("test@example.test", "test", 1);
       }
-
    }
 }

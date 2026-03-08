@@ -10,15 +10,11 @@ namespace RegressionTests.AntiSpam
    [TestFixture]
    public class Combinations : TestFixtureBase
    {
-      #region Setup/Teardown
-
       [SetUp]
       public new void SetUp()
       {
          CustomAsserts.AssertSpamAssassinIsRunning();
       }
-
-      #endregion
 
       [Test]
       [Description(
@@ -54,7 +50,7 @@ namespace RegressionTests.AntiSpam
          // Should not be possible to send this email since it's results in a spam
          // score over the delete threshold.
          smtpClientSimulator.Send("test@example.com", account1.Address, "INBOX",
-                                  "Test http://surbl-org-permanent-test-point.com/ Test 2");
+            "Test http://surbl-org-permanent-test-point.com/ Test 2");
 
          var message = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
 
@@ -92,7 +88,7 @@ namespace RegressionTests.AntiSpam
          // Should not be possible to send this email since it's results in a spam
          // score over the delete threshold.
          smtpClientSimulator.Send("test@domain.without.mxrecords.example.com", account1.Address, "INBOX",
-                                  "This is a test message.");
+            "This is a test message.");
 
          var message = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
 
@@ -103,7 +99,7 @@ namespace RegressionTests.AntiSpam
       [Test]
       public void TestSpamMultipleHits()
       {
-         CustomAsserts.AssertSpamAssassinIsRunning();  
+         CustomAsserts.AssertSpamAssassinIsRunning();
 
          var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mult'ihit@example.test", "test");
 
@@ -143,8 +139,9 @@ namespace RegressionTests.AntiSpam
 
          // Should not be possible to send this email since it's results in a spam
          // score over the delete threshold.
-         CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send("test@domain.without.mxrecords.example.com", account1.Address, "INBOX",
-                                   "This is a test message. It contains incorrect MX records and a SURBL string: http://surbl-org-permanent-test-point.com/ SpamAssassinString: XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X"));
+         CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send(
+            "test@domain.without.mxrecords.example.com", account1.Address, "INBOX",
+            "This is a test message. It contains incorrect MX records and a SURBL string: http://surbl-org-permanent-test-point.com/ SpamAssassinString: XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X"));
 
          liveLog = _settings.Logging.LiveLog;
 

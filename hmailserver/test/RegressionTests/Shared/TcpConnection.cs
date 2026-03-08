@@ -14,28 +14,29 @@ using System.Threading;
 namespace RegressionTests.Shared
 {
    /// <summary>
-   /// Summary description for ClientSocket.
+   ///    Summary description for ClientSocket.
    /// </summary>
    public class TcpConnection : IDisposable
    {
-      private bool _useSslSocket;
-      private SslProtocols _sslProtocols = SslProtocols.Default;
+      private readonly SslProtocols _sslProtocols = SslProtocols.Default;
+
+      private SslStream _sslStream;
+      private TcpClient _tcpClient;
 
       public TcpConnection()
       {
-
       }
 
-      public TcpConnection(bool useSSL) 
+      public TcpConnection(bool useSSL)
          : this(useSSL, SslProtocols.Default)
-         
+
       {
-         _useSslSocket = useSSL;
+         IsSslConnection = useSSL;
       }
 
       public TcpConnection(bool useSSL, SslProtocols protocols)
       {
-         _useSslSocket = useSSL;
+         IsSslConnection = useSSL;
          _sslProtocols = protocols;
       }
 
@@ -44,9 +45,13 @@ namespace RegressionTests.Shared
          _tcpClient = client;
       }
 
-      public bool IsConnected
+      public bool IsConnected => _tcpClient != null && _tcpClient.Connected;
+
+      public bool IsSslConnection { get; private set; }
+
+      public void Dispose()
       {
-         get { return _tcpClient != null && _tcpClient.Connected; }
+         Disconnect();
       }
 
       public bool Connect(int iPort)
@@ -67,15 +72,9 @@ namespace RegressionTests.Shared
 
             var success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(10), false);
 
-            if (!success)
-            {
-               return false;
-            }
+            if (!success) return false;
 
-            if (!_tcpClient.Connected)
-            {
-               return false;
-            }
+            if (!_tcpClient.Connected) return false;
          }
          catch
          {
@@ -84,9 +83,9 @@ namespace RegressionTests.Shared
 
          _tcpClient.Client.Blocking = true;
 
-         if (_useSslSocket)
+         if (IsSslConnection)
             HandshakeAsClient();
-         
+
          return true;
       }
 
@@ -115,7 +114,7 @@ namespace RegressionTests.Shared
 
       public void Disconnect()
       {
-         if (_useSslSocket)
+         if (IsSslConnection)
             _sslStream.Close();
 
          if (_tcpClient != null)
@@ -126,27 +125,22 @@ namespace RegressionTests.Shared
       {
          // Create an SSL stream that will close the client's stream.
          _sslStream = new SslStream(_tcpClient.GetStream(), false,
-                                    ValidateServerCertificate, null);
+            ValidateServerCertificate, null);
 
          _sslStream.AuthenticateAsClient("localhost", null, _sslProtocols, false);
-         
-         _useSslSocket = true;
+
+         IsSslConnection = true;
       }
 
       public void HandshakeAsServer(X509Certificate2 certificate)
       {
          // Create an SSL stream that will close the client's stream.
          _sslStream = new SslStream(_tcpClient.GetStream(), false,
-                                    ValidateServerCertificate, null);
+            ValidateServerCertificate, null);
 
          _sslStream.AuthenticateAsServer(certificate, false, _sslProtocols, false);
 
-         _useSslSocket = true;
-      }
-
-      public bool IsSslConnection
-      {
-         get { return _useSslSocket; }
+         IsSslConnection = true;
       }
 
       public string SendAndReceive(string sData)
@@ -160,7 +154,7 @@ namespace RegressionTests.Shared
          if (!_tcpClient.Connected)
             throw new InvalidOperationException("Connection closed - Unable to send data.");
 
-         if (_useSslSocket)
+         if (IsSslConnection)
          {
             var message = Encoding.UTF8.GetBytes(s);
             _sslStream.Write(message);
@@ -210,10 +204,8 @@ namespace RegressionTests.Shared
          for (var i = 0; i < 1000; i++)
          {
             foreach (var s in possibleReplies)
-            {
                if (result.Contains(s))
                   return result;
-            }
 
             Thread.Sleep(10);
 
@@ -230,8 +222,7 @@ namespace RegressionTests.Shared
          var buffer = new byte[2048];
          int bytesRead;
 
-         if (_useSslSocket)
-         {
+         if (IsSslConnection)
             do
             {
                if (!_sslStream.CanRead)
@@ -243,9 +234,7 @@ namespace RegressionTests.Shared
                decoder.GetChars(buffer, 0, bytesRead, chars, 0);
                messageData.Append(chars);
             } while (_tcpClient.Available > 0);
-         }
          else
-         {
             do
             {
                var stream = _tcpClient.GetStream();
@@ -258,19 +247,14 @@ namespace RegressionTests.Shared
                var s = new string(chars, 0, bytesRead);
                messageData.Append(s);
             } while (_tcpClient.Available > 0);
-         }
 
          return messageData.ToString();
-
       }
 
       public bool Peek()
       {
          return _tcpClient.Available > 0;
       }
-
-      private SslStream _sslStream;
-      private TcpClient _tcpClient;
 
       // The following method is invoked by the RemoteCertificateValidationDelegate.
       public static bool ValidateServerCertificate(
@@ -282,11 +266,6 @@ namespace RegressionTests.Shared
          return true;
       }
 
-      public void Dispose()
-      {
-         Disconnect();
-      }
-
 
       public bool TestConnect(int iPort)
       {
@@ -294,7 +273,5 @@ namespace RegressionTests.Shared
          Disconnect();
          return bRetVal;
       }
-
-
    }
 }

@@ -79,12 +79,11 @@ namespace RegressionTests.API
          var newApplication = new Application();
          newApplication.Authenticate("user@example.test", "test");
          var ex = Assert.Throws<COMException>(() =>
-            {
-               var settings = newApplication.Settings;
-            });
+         {
+            var settings = newApplication.Settings;
+         });
 
          StringAssert.Contains("You do not have access to this property / method.", ex.Message);
-
       }
 
       [Test]
@@ -97,9 +96,9 @@ namespace RegressionTests.API
          var newApplication = new Application();
          newApplication.Authenticate("user@example.test", "test");
          var ex = Assert.Throws<COMException>(() =>
-            {
-               var backupManager = newApplication.BackupManager;
-            });
+         {
+            var backupManager = newApplication.BackupManager;
+         });
          StringAssert.Contains("You do not have access to this property / method.", ex.Message);
       }
 
@@ -192,7 +191,6 @@ namespace RegressionTests.API
             var settings = newApplication.Settings;
          });
          StringAssert.Contains("You do not have access to this property / method.", ex.Message);
-
       }
    }
 }

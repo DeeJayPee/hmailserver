@@ -109,7 +109,7 @@ namespace RegressionTests.IMAP
 
          var imapSim = new ImapClientSimulator("test@example.test", "test", "INBOX");
          var result = imapSim.SendSingleCommandWithLiteral("A01 APPEND INBOX {" + message.Length + "}",
-                                                              message.ToString());
+            message.ToString());
          imapSim.Logout();
 
          Assert.IsFalse(result.StartsWith("A01 NO Message size exceeds fixed maximum message size."));
@@ -131,7 +131,7 @@ namespace RegressionTests.IMAP
 
          var imapSim = new ImapClientSimulator("test@example.test", "test", "INBOX");
          var result = imapSim.SendSingleCommandWithLiteral("A01 APPEND INBOX {" + message.Length + "}",
-                                                              message.ToString());
+            message.ToString());
          imapSim.Logout();
 
          Assert.IsTrue(result.StartsWith("A01 NO Message size exceeds fixed maximum message size."));
@@ -152,7 +152,7 @@ namespace RegressionTests.IMAP
 
          var imapSim = new ImapClientSimulator("test@example.test", "test", "INBOX");
          var result = imapSim.SendSingleCommandWithLiteral("A01 APPEND INBOX {" + message.Length + "}",
-                                                              message.ToString());
+            message.ToString());
          imapSim.Logout();
 
          Assert.IsFalse(result.StartsWith("A01 NO Message size exceeds fixed maximum message size."));
@@ -173,7 +173,7 @@ namespace RegressionTests.IMAP
 
          var imapSim = new ImapClientSimulator("test@example.test", "test", "INBOX");
          var result = imapSim.SendSingleCommandWithLiteral("A01 APPEND INBOX {" + message.Length + "}",
-                                                              message.ToString());
+            message.ToString());
          imapSim.Logout();
 
          Assert.IsTrue(result.StartsWith("A01 NO Message size exceeds fixed maximum message size."));

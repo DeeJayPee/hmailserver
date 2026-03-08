@@ -46,6 +46,5 @@ namespace RegressionTests.Infrastructure.Persistence
       {
          SingletonProvider<TestSetup>.Instance.AddAlias(_domain, address, "secret@example.com");
       }
-
    }
 }

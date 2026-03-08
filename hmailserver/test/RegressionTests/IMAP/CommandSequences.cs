@@ -20,10 +20,7 @@ namespace RegressionTests.IMAP
          simulator.Logon(account.Address, "test");
 
          var commandSequence = "";
-         for (var i = 0; i < 200; i++)
-         {
-            commandSequence += "A" + i.ToString() + " SELECT INBOX\r\n";
-         }
+         for (var i = 0; i < 200; i++) commandSequence += "A" + i + " SELECT INBOX\r\n";
          commandSequence = commandSequence.TrimEnd("\r\n".ToCharArray());
 
          var result = simulator.Send(commandSequence);
@@ -34,10 +31,7 @@ namespace RegressionTests.IMAP
          sWelcomeMessage = simulator.Connect();
          simulator.Logon(account.Address, "test");
          commandSequence = "";
-         for (var i = 0; i < 500; i++)
-         {
-            commandSequence += "A" + i.ToString() + " SELECT INBOX\r\n";
-         }
+         for (var i = 0; i < 500; i++) commandSequence += "A" + i + " SELECT INBOX\r\n";
          commandSequence = commandSequence.TrimEnd("\r\n".ToCharArray());
 
          result = simulator.Send(commandSequence);
@@ -56,10 +50,7 @@ namespace RegressionTests.IMAP
 
          var sb = new StringBuilder();
 
-         for (var i = 0; i < 240000; i++)
-         {
-            sb.Append("A");
-         }
+         for (var i = 0; i < 240000; i++) sb.Append("A");
 
          var result = simulator.Send("A01 " + sb);
          Assert.IsTrue(result.Length == 0 || result.StartsWith("A01"));

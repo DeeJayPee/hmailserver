@@ -9,15 +9,11 @@ namespace RegressionTests.Infrastructure
    [TestFixture]
    public class MainOperations : TestFixtureBase
    {
-      #region Setup/Teardown
-
       [SetUp]
       public void Setup()
       {
          SingletonProvider<TestSetup>.Instance.PerformBasicSetup();
       }
-
-      #endregion
 
       [Test]
       public void RestartServer()

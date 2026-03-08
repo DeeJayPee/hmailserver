@@ -39,12 +39,13 @@ namespace RegressionTests.SSL
          settings.TlsVersion11Enabled = sslVersions == null || sslVersions.Tls11;
          settings.TlsVersion12Enabled = sslVersions == null || sslVersions.Tls12;
          settings.TlsVersion13Enabled = sslVersions == null || sslVersions.Tls13;
-         
+
          application.Stop();
          application.Start();
       }
 
-      private static void AddPort(TCPIPPorts ports, int portNumber, eConnectionSecurity connectionSecurity, int sslCertificateId, eSessionType sessionType)
+      private static void AddPort(TCPIPPorts ports, int portNumber, eConnectionSecurity connectionSecurity,
+         int sslCertificateId, eSessionType sessionType)
       {
          var port = ports.Add();
          port.Address = "0.0.0.0";
@@ -101,8 +102,5 @@ namespace RegressionTests.SSL
 
          return sslCertificate;
       }
-
-
-
    }
 }

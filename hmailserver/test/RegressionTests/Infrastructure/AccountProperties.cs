@@ -17,12 +17,12 @@ namespace RegressionTests.Infrastructure
       {
          var domain = SingletonProvider<TestSetup>.Instance.AddTestDomain();
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test",
-                                                                            "test");
+            "test");
 
          // Send a message
          for (var i = 0; i < 30; i++)
             SmtpClientSimulator.StaticSend("test@example.test", "test@example.test", "Test message",
-                                           "123456789012345678901234567890123456789012345678901234567890");
+               "123456789012345678901234567890123456789012345678901234567890");
 
          ImapClientSimulator.AssertMessageCount("test@example.test", "test", "Inbox", 30);
 
@@ -39,7 +39,7 @@ namespace RegressionTests.Infrastructure
          var domain = SingletonProvider<TestSetup>.Instance.AddTestDomain();
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test", "test");
 
-         if ((int) account.Size != 0)
+         if ((int)account.Size != 0)
             throw new Exception("Account is not empty");
       }
 
@@ -50,7 +50,7 @@ namespace RegressionTests.Infrastructure
       {
          var domain = SingletonProvider<TestSetup>.Instance.AddTestDomain();
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(domain, "test@example.test",
-                                                                            "test");
+            "test");
 
          var body = TestSetup.CreateLargeDummyMailBody();
 

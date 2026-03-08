@@ -21,7 +21,7 @@ namespace RegressionTests.SSL
          Thread.Sleep(1000);
       }
 
-      
+
       [Test]
       [Category("SSL")]
       [Description("Confirm that the TCP/IP log contains information on when a SSL handshake fails")]
@@ -142,7 +142,7 @@ namespace RegressionTests.SSL
          using (var tcpConn = new TcpConnection(false))
          {
             tcpConn.Connect(25001);
-            
+
             // Since there may be other connections lingering, we just check the increased count if
             // it was zero previous to this test. Otherwise we might end up with false positives.
             if (countBefore == 0)
@@ -151,7 +151,8 @@ namespace RegressionTests.SSL
                   var countWhileConnected = _application.Status.get_SessionCount(eSessionType.eSTSMTP);
 
                   if (countWhileConnected != 1)
-                     throw new ArgumentException($"Connection count not decreased. Expected: 1, Actual: {countWhileConnected}");
+                     throw new ArgumentException(
+                        $"Connection count not decreased. Expected: 1, Actual: {countWhileConnected}");
                });
          }
 
@@ -160,7 +161,8 @@ namespace RegressionTests.SSL
             var countAfter = _application.Status.get_SessionCount(eSessionType.eSTSMTP);
 
             if (countBefore != countAfter)
-               throw new ArgumentException($"Connection count not decreased. Expected: countBefore, Actual: {countAfter}");
+               throw new ArgumentException(
+                  $"Connection count not decreased. Expected: countBefore, Actual: {countAfter}");
          });
       }
    }

@@ -11,15 +11,11 @@ namespace RegressionTests.Infrastructure
    [TestFixture]
    public class IPRanges : TestFixtureBase
    {
-      #region Setup/Teardown
-
       [SetUp]
       public new void SetUp()
       {
          _ipRanges = SingletonProvider<TestSetup>.Instance.GetApp().Settings.SecurityRanges;
       }
-
-      #endregion
 
       private SecurityRanges _ipRanges;
 

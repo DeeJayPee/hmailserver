@@ -32,9 +32,7 @@ namespace RegressionTests.Infrastructure
                return;
 
             RetryableAssert.AreEqual(expectedCount, count);
-
          });
-
       }
 
       public static void AssertBounceMessageExistsInQueue(string bounceTo)
@@ -74,10 +72,8 @@ namespace RegressionTests.Infrastructure
          var processlist = Process.GetProcesses();
 
          foreach (var theprocess in processlist)
-         {
             if (theprocess.ProcessName == "spamd")
                return;
-         }
 
          // Check if we can launch it...
          try
@@ -108,6 +104,7 @@ namespace RegressionTests.Infrastructure
                if (i == 400)
                   throw e;
             }
+
             Thread.Sleep(25);
          }
       }
@@ -151,10 +148,8 @@ namespace RegressionTests.Infrastructure
          var processlist = Process.GetProcesses();
 
          foreach (var theprocess in processlist)
-         {
             if (theprocess.ProcessName == "clamd")
                return;
-         }
 
          // Check if we can launch it...
          var startInfo = new ProcessStartInfo();
@@ -196,10 +191,8 @@ namespace RegressionTests.Infrastructure
       public static void AssertFolderMessageCount(IMAPFolder folder, int expectedCount)
       {
          if (expectedCount == 0)
-         {
             // just in case.
             AssertRecipientsInDeliveryQueue(0);
-         }
 
          var currentCount = 0;
          var timeout = 100;
@@ -223,10 +216,7 @@ namespace RegressionTests.Infrastructure
          var timeout = 100;
          while (timeout > 0)
          {
-            if (folder.Messages.Count > 0)
-            {
-               return folder.Messages[0];
-            }
+            if (folder.Messages.Count > 0) return folder.Messages[0];
 
             timeout--;
             Thread.Sleep(100);
@@ -296,7 +286,6 @@ namespace RegressionTests.Infrastructure
             var contents = LogHandler.ReadErrorLog();
             Assert.Fail(contents);
          }
-
       }
 
       public static void AssertReportedError(string firstContent, params string[] contents)
@@ -311,10 +300,7 @@ namespace RegressionTests.Infrastructure
             {
                var errorLog = LogHandler.ReadErrorLog();
 
-               foreach (var content in allExpectedContent)
-               {
-                  RetryableAssert.StringContains(content, errorLog);
-               }
+               foreach (var content in allExpectedContent) RetryableAssert.StringContains(content, errorLog);
             });
          }
          finally
@@ -368,11 +354,9 @@ namespace RegressionTests.Infrastructure
          }
 
          if (!exceptionThrown)
-         {
             throw new InvalidOperationException(
-                String.Format("An exception of type {0} was expected, but not thrown", typeof(T))
-                );
-         }
+               string.Format("An exception of type {0} was expected, but not thrown", typeof(T))
+            );
       }
    }
 }

@@ -16,10 +16,10 @@ namespace RegressionTests.MIME
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSendRaw(account.Address, account.Address,
-                                           "From: test@example.test\r\n" +
-                                           "Content-Type: text/plain; charset =\"iso-8859-1\" \r\n" +
-                                           "\r\n" +
-                                           "Test\r\n");
+            "From: test@example.test\r\n" +
+            "Content-Type: text/plain; charset =\"iso-8859-1\" \r\n" +
+            "\r\n" +
+            "Test\r\n");
 
          ImapClientSimulator.AssertMessageCount(account.Address, "test", "Inbox", 1);
 
@@ -37,10 +37,10 @@ namespace RegressionTests.MIME
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSendRaw(account.Address, account.Address,
-                                           "From: test@example.test\r\n" +
-                                           "Content-Type: text/plain; charset = \"iso-8859-1\"\r\n" +
-                                           "\r\n" +
-                                           "Test\r\n");
+            "From: test@example.test\r\n" +
+            "Content-Type: text/plain; charset = \"iso-8859-1\"\r\n" +
+            "\r\n" +
+            "Test\r\n");
 
          ImapClientSimulator.AssertMessageCount(account.Address, "test", "Inbox", 1);
 
@@ -58,10 +58,10 @@ namespace RegressionTests.MIME
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSendRaw(account.Address, account.Address,
-                                           "From: test@example.test\r\n" +
-                                           "Content-Type: text/plain; charset = iso-8859-1 \r\n" +
-                                           "\r\n" +
-                                           "Test\r\n");
+            "From: test@example.test\r\n" +
+            "Content-Type: text/plain; charset = iso-8859-1 \r\n" +
+            "\r\n" +
+            "Test\r\n");
 
          ImapClientSimulator.AssertMessageCount(account.Address, "test", "Inbox", 1);
 
@@ -79,10 +79,10 @@ namespace RegressionTests.MIME
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSendRaw(account.Address, account.Address,
-                                           "From: test@example.test\r\n" +
-                                           "Content-Type: text/plain; charset=iso-8859-1 \r\n" +
-                                           "\r\n" +
-                                           "Test\r\n");
+            "From: test@example.test\r\n" +
+            "Content-Type: text/plain; charset=iso-8859-1 \r\n" +
+            "\r\n" +
+            "Test\r\n");
 
          ImapClientSimulator.AssertMessageCount(account.Address, "test", "Inbox", 1);
 
@@ -100,10 +100,10 @@ namespace RegressionTests.MIME
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSendRaw(account.Address, account.Address,
-                                           "From: test@example.test\r\n" +
-                                           "Content-Type: text/plain; charset =\"iso-8859-1\"\r\n" +
-                                           "\r\n" +
-                                           "Test\r\n");
+            "From: test@example.test\r\n" +
+            "Content-Type: text/plain; charset =\"iso-8859-1\"\r\n" +
+            "\r\n" +
+            "Test\r\n");
 
          ImapClientSimulator.AssertMessageCount(account.Address, "test", "Inbox", 1);
 

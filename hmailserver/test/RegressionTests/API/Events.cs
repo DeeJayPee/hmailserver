@@ -87,9 +87,9 @@ namespace RegressionTests.API
          Assert.IsNotEmpty(eventLogText);
          Assert.IsTrue(eventLogText.Contains("Port: 25"));
          Assert.IsTrue(eventLogText.Contains("Address: 127"));
-         Assert.IsTrue(eventLogText.Contains("Username: \"")); // Should be empty, Username isn't available at this time.
+         Assert.IsTrue(
+            eventLogText.Contains("Username: \"")); // Should be empty, Username isn't available at this time.
          StringAssert.IsMatch(".*\"SessionId: \\d+\"", eventLogText);
-
       }
 
       [Test]
@@ -160,10 +160,7 @@ namespace RegressionTests.API
          client.Receive(); // Welcome banner
          var ehloResponse = client.SendAndReceive("EHLO example.com\r\n");
 
-         for (var i = 0; i < maxInvalid + 1; i++)
-         {
-            client.SendAndReceive("MAIL FROM\r\n");
-         }
+         for (var i = 0; i < maxInvalid + 1; i++) client.SendAndReceive("MAIL FROM\r\n");
 
          // Check that the event was triggered
          var message = TestSetup.ReadExistingTextFile(eventLogFile);
@@ -351,7 +348,8 @@ namespace RegressionTests.API
          Assert.IsNotEmpty(eventLogText);
          Assert.IsTrue(eventLogText.Contains("Port: 25"));
          Assert.IsTrue(eventLogText.Contains("Address: 127"));
-         Assert.IsTrue(eventLogText.Contains("Username: \"")); // Should be empty, Username isn't available at this time.
+         Assert.IsTrue(
+            eventLogText.Contains("Username: \"")); // Should be empty, Username isn't available at this time.
       }
 
       [Test]
@@ -419,7 +417,7 @@ namespace RegressionTests.API
          Assert.IsTrue(eventLogText.Contains("File: "), eventLogText);
          Assert.IsTrue(eventLogText.Contains("Recipient: user@dummy.example.com"), eventLogText);
          Assert.IsTrue(eventLogText.Contains("No mail servers appear to exists") ||
-                               eventLogText.Contains("Unable to find the recipient's email server"), eventLogText);
+                       eventLogText.Contains("Unable to find the recipient's email server"), eventLogText);
       }
 
       [Test]
@@ -452,7 +450,6 @@ namespace RegressionTests.API
          Assert.IsTrue(eventLogText.Contains("Recipient: user@dummy.example.com"));
          Assert.IsTrue(eventLogText.Contains("No mail servers appear to exists") ||
                        eventLogText.Contains("Unable to find the recipient's email server"), eventLogText);
-
       }
 
       [Test]
@@ -616,7 +613,7 @@ namespace RegressionTests.API
          {
             pop3Server.StartListen();
 
-            
+
             fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
@@ -654,8 +651,6 @@ namespace RegressionTests.API
             Assert.IsTrue(pop3Server.RetrievedMessages.Contains(3));
 
             Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 3);
-
-            
          }
 
          using (var pop3Server = new Pop3ServerSimulator(1, port, messages))
@@ -708,7 +703,8 @@ namespace RegressionTests.API
          Assert.IsNotEmpty(message);
          Assert.IsTrue(message.Contains("OnClientLogin-POP3"));
          Assert.IsTrue(message.Contains("IsAuthenticated: True"));
-         Assert.IsTrue(message.Contains("Username: test@example.test")); // Should be empty, Username isn't available at this time.
+         Assert.IsTrue(
+            message.Contains("Username: test@example.test")); // Should be empty, Username isn't available at this time.
       }
 
       [Test]
@@ -744,7 +740,8 @@ namespace RegressionTests.API
          Assert.IsNotEmpty(message);
          Assert.IsTrue(message.Contains("OnClientLogin-IMAP"));
          Assert.IsTrue(message.Contains("IsAuthenticated: True"));
-         Assert.IsTrue(message.Contains("Username: test@example.test")); // Should be empty, Username isn't available at this time.
+         Assert.IsTrue(
+            message.Contains("Username: test@example.test")); // Should be empty, Username isn't available at this time.
       }
 
       [Test]
@@ -786,7 +783,8 @@ namespace RegressionTests.API
          Assert.IsNotEmpty(message);
          Assert.IsTrue(message.Contains("OnClientLogin-SMTP"));
          Assert.IsTrue(message.Contains("IsAuthenticated: True"));
-         Assert.IsTrue(message.Contains("Username: test@example.test")); // Should be empty, Username isn't available at this time.
+         Assert.IsTrue(
+            message.Contains("Username: test@example.test")); // Should be empty, Username isn't available at this time.
       }
 
       [Test]
@@ -899,7 +897,5 @@ namespace RegressionTests.API
          Assert.IsTrue(eventLogText.Contains("Account: test@example.test"));
          Assert.IsTrue(eventLogText.Contains("Password: MySecretPassword"));
       }
-
-    
    }
 }

@@ -29,7 +29,6 @@ namespace RegressionTests.IMAP
 
          Assert.IsTrue(flags2.Contains(@"* 1 FETCH (FLAGS (\Deleted))"), flags2);
          Assert.IsTrue(flags2.Contains(@"* 1 FETCH (FLAGS (\Deleted) UID 1)"), flags2);
-         
       }
    }
 }

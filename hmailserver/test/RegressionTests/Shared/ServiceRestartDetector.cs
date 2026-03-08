@@ -4,8 +4,8 @@ using System.Diagnostics;
 namespace RegressionTests.Shared
 {
    /// <summary>
-   /// Detects if the hMailServer service has been restarted.
-   /// This is often an indication of a bug.
+   ///    Detects if the hMailServer service has been restarted.
+   ///    This is often an indication of a bug.
    /// </summary>
    public class ServiceRestartDetector
    {
@@ -28,15 +28,14 @@ namespace RegressionTests.Shared
             {
                // Validate that it has not changed
                if (currentProcessId != ExpectedProcessId.Value)
-               {
-                  throw new Exception(string.Format("hMailServer.exe has restarted. Old process id: {0}, New process id: {1}", ExpectedProcessId.Value, currentProcessId));
-               }
+                  throw new Exception(string.Format(
+                     "hMailServer.exe has restarted. Old process id: {0}, New process id: {1}", ExpectedProcessId.Value,
+                     currentProcessId));
             }
             else
             {
                ExpectedProcessId = currentProcessId;
             }
-
          }
       }
    }

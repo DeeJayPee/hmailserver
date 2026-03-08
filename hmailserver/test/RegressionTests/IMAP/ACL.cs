@@ -37,7 +37,7 @@ namespace RegressionTests.IMAP
          imapClientSimulator.Disconnect();
 
          Assert.IsTrue(examineResult.Contains("ACL: Read permission denied (Required for EXAMINE command)."),
-                       examineResult);
+            examineResult);
       }
 
       [Test]
@@ -183,7 +183,7 @@ namespace RegressionTests.IMAP
          try
          {
             var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account10@example.test",
-                                                                                "test");
+               "test");
 
             var imapClientSimulator = new ImapClientSimulator();
             imapClientSimulator.Connect();
@@ -545,8 +545,8 @@ namespace RegressionTests.IMAP
       }
 
       /// <summary>
-      /// Test that if you create a folder named #public.Share1, both #public and #public.Share1
-      /// are listed in the LIST response.
+      ///    Test that if you create a folder named #public.Share1, both #public and #public.Share1
+      ///    are listed in the LIST response.
       /// </summary>
       [Test]
       public void TestLISTPublicFolderParent()
@@ -582,8 +582,8 @@ namespace RegressionTests.IMAP
       }
 
       /// <summary>
-      /// Test that if you create a folder named #public.Share1, both #public and #public.Share1
-      /// are listed in the LIST response.
+      ///    Test that if you create a folder named #public.Share1, both #public and #public.Share1
+      ///    are listed in the LIST response.
       /// </summary>
       [Test]
       public void TestLSUBPublicFolderParent()
@@ -619,7 +619,7 @@ namespace RegressionTests.IMAP
       }
 
       /// <summary>
-      /// Test that a public folder is included in the LIST response.
+      ///    Test that a public folder is included in the LIST response.
       /// </summary>
       [Test]
       public void TestListPublicFolder()

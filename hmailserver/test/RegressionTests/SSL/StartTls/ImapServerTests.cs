@@ -8,14 +8,12 @@ namespace RegressionTests.SSL.StartTls
    [TestFixture]
    internal class ImapServerTests : TestFixtureBase
    {
-      private Account _account;
-
       [OneTimeSetUp]
       public new void TestFixtureSetUp()
       {
          SslSetup.SetupSSLPorts(_application);
 
-         
+
          Thread.Sleep(1000);
       }
 
@@ -24,6 +22,8 @@ namespace RegressionTests.SSL.StartTls
       {
          _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
       }
+
+      private Account _account;
 
       [Test]
       public void IfStartTlsNotEnabledStartTlsShouldNotBeShownInEhloResponse()
@@ -89,7 +89,8 @@ namespace RegressionTests.SSL.StartTls
       [Test]
       public void IfStlsOptionalButSslRequiredByIpRangeForAuthThenAuthShouldFail()
       {
-         var range = SingletonProvider<TestSetup>.Instance.GetApp().Settings.SecurityRanges.get_ItemByName("My computer");
+         var range = SingletonProvider<TestSetup>.Instance.GetApp().Settings.SecurityRanges
+            .get_ItemByName("My computer");
          range.RequireSSLTLSForAuth = true;
          range.Save();
 
@@ -102,5 +103,3 @@ namespace RegressionTests.SSL.StartTls
       }
    }
 }
-
-

@@ -37,9 +37,9 @@ namespace RegressionTests.Rules
          rule.Save();
 
          File.WriteAllText(_settings.Scripting.CurrentScriptFile,
-                           "Sub PrintRecipientCount(message)" + Environment.NewLine +
-                           " Call EventLog.Write(message.Recipients.Count)" + Environment.NewLine +
-                           "End Sub");
+            "Sub PrintRecipientCount(message)" + Environment.NewLine +
+            " Call EventLog.Write(message.Recipients.Count)" + Environment.NewLine +
+            "End Sub");
 
          _settings.Scripting.Reload();
       }
@@ -87,7 +87,7 @@ namespace RegressionTests.Rules
 
          // Spam folder
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "SomeString",
-                                  "Detta ska hamna i public folder.");
+            "Detta ska hamna i public folder.");
 
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "#public.Share1", 1);
       }
@@ -136,7 +136,7 @@ namespace RegressionTests.Rules
 
          // Spam folder
          smtpClientSimulator.Send("ruletest@example.test", "account1@example.test", "SomeString",
-                    "This should end up in the #public.share1.sub since user lacks right.");
+            "This should end up in the #public.share1.sub since user lacks right.");
 
          ImapClientSimulator.AssertMessageCount("account1@example.test", "test", "#public.Share1.Sub", 1);
       }
@@ -174,7 +174,7 @@ namespace RegressionTests.Rules
 
          // Spam folder
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "SomeString",
-                    "This should end up in the inbox since user lacks right.");
+            "This should end up in the inbox since user lacks right.");
 
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "INBOX", 1);
       }
@@ -208,7 +208,7 @@ namespace RegressionTests.Rules
 
          // Spam folder
          smtpClientSimulator.Send("ruletest@example.test", "knafve@gmail.com", "SomeString",
-                    "This mail should not be delivered - Test ActionBindToAddress.");
+            "This mail should not be delivered - Test ActionBindToAddress.");
 
          CustomAsserts.AssertRecipientsInDeliveryQueue(0);
 
@@ -258,24 +258,26 @@ namespace RegressionTests.Rules
          var userDir = Path.Combine(domainDir, "ruletest");
 
          RetryHelper.TryAction(TimeSpan.FromSeconds(10), () =>
+         {
+            var dirs = Directory.GetDirectories(userDir);
+            foreach (var dir in dirs)
             {
-               var dirs = Directory.GetDirectories(userDir);
-               foreach (var dir in dirs)
-               {
-                  var files = Directory.GetFiles(dir);
-                  fileCount += files.Length;
-               }
+               var files = Directory.GetFiles(dir);
+               fileCount += files.Length;
+            }
 
-               RetryableAssert.AreEqual(2, fileCount);
-            });
+            RetryableAssert.AreEqual(2, fileCount);
+         });
 
          RetryHelper.TryAction(TimeSpan.FromSeconds(10), delegate
-            {
-               var logContent = LogHandler.ReadCurrentDefaultLog();
-               var loggedDeletionCount = new Regex(Regex.Escape("Delivery to this account was canceled by an account rule")).Matches(logContent).Count;
+         {
+            var logContent = LogHandler.ReadCurrentDefaultLog();
+            var loggedDeletionCount =
+               new Regex(Regex.Escape("Delivery to this account was canceled by an account rule")).Matches(logContent)
+                  .Count;
 
-               RetryableAssert.AreEqual(2, loggedDeletionCount);
-            });
+            RetryableAssert.AreEqual(2, loggedDeletionCount);
+         });
       }
 
       [Test]
@@ -283,8 +285,8 @@ namespace RegressionTests.Rules
       {
          // Add an account
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
-                                                                             "ActionGlobalMoveToIMAPFolder@example.test",
-                                                                             "test");
+            "ActionGlobalMoveToIMAPFolder@example.test",
+            "test");
 
          var rule = SingletonProvider<TestSetup>.Instance.GetApp().Rules.Add();
          rule.Name = "Global rule test";
@@ -309,14 +311,18 @@ namespace RegressionTests.Rules
          var smtpClientSimulator = new SmtpClientSimulator();
 
          // Spam folder
-         smtpClientSimulator.Send("ActionGlobalMoveToIMAPFolder@example.test", "ActionGlobalMoveToIMAPFolder@example.test", "SomeString",
-                    "Detta ska inte hamna i mappen Inbox\\NotEquals");
-         smtpClientSimulator.Send("ActionGlobalMoveToIMAPFolder@example.test", "ActionGlobalMoveToIMAPFolder@example.test", "SomeStringA",
-                    "Detta ska hamna i mappen Inbox\\NotEquals");
-         smtpClientSimulator.Send("ActionGlobalMoveToIMAPFolder@example.test", "ActionGlobalMoveToIMAPFolder@example.test", "somestring",
-                    "Detta ska inte hamna i mappen Inbox\\NotEquals");
+         smtpClientSimulator.Send("ActionGlobalMoveToIMAPFolder@example.test",
+            "ActionGlobalMoveToIMAPFolder@example.test", "SomeString",
+            "Detta ska inte hamna i mappen Inbox\\NotEquals");
+         smtpClientSimulator.Send("ActionGlobalMoveToIMAPFolder@example.test",
+            "ActionGlobalMoveToIMAPFolder@example.test", "SomeStringA",
+            "Detta ska hamna i mappen Inbox\\NotEquals");
+         smtpClientSimulator.Send("ActionGlobalMoveToIMAPFolder@example.test",
+            "ActionGlobalMoveToIMAPFolder@example.test", "somestring",
+            "Detta ska inte hamna i mappen Inbox\\NotEquals");
 
-         ImapClientSimulator.AssertMessageCount("ActionGlobalMoveToIMAPFolder@example.test", "test", "Inbox.GlobalBox", 1);
+         ImapClientSimulator.AssertMessageCount("ActionGlobalMoveToIMAPFolder@example.test", "test", "Inbox.GlobalBox",
+            1);
          ImapClientSimulator.AssertMessageCount("ActionGlobalMoveToIMAPFolder@example.test", "test", "Inbox", 2);
       }
 
@@ -362,7 +368,8 @@ namespace RegressionTests.Rules
          var smtpClientSimulator = new SmtpClientSimulator();
 
          // Spam folder
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "SomeString", "Detta ska hamna i public folder.");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "SomeString",
+            "Detta ska hamna i public folder.");
 
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "#public.Share1", 1);
       }
@@ -397,7 +404,7 @@ namespace RegressionTests.Rules
 
          // Spam folder
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "SomeString",
-                                  "Detta ska hamna i public folder.");
+            "Detta ska hamna i public folder.");
 
          // Wait for the folder to be created.
          var folder = CustomAsserts.AssertFolderExists(_settings.PublicFolders, "MyFolder");
@@ -409,7 +416,7 @@ namespace RegressionTests.Rules
          var imap = new ImapClientSimulator();
          Assert.IsTrue(imap.ConnectAndLogon("ruletest@example.test", "test"));
 
-         Assert.Throws<ArgumentException>(() =>  imap.GetMessageCount("#public.MyFolder"));
+         Assert.Throws<ArgumentException>(() => imap.GetMessageCount("#public.MyFolder"));
 
          // Set permissions on this folder.
          var permission = folder.Permissions.Add();
@@ -454,11 +461,11 @@ namespace RegressionTests.Rules
 
          // Spam folder
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "SomeString",
-                    "Detta ska inte hamna i mappen Inbox\\NotEquals");
+            "Detta ska inte hamna i mappen Inbox\\NotEquals");
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "SomeStringA",
-                    "Detta ska hamna i mappen Inbox\\NotEquals");
+            "Detta ska hamna i mappen Inbox\\NotEquals");
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "somestring",
-                    "Detta ska inte hamna i mappen Inbox\\NotEquals");
+            "Detta ska inte hamna i mappen Inbox\\NotEquals");
 
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox.NotEquals", 1);
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox", 2);
@@ -511,11 +518,11 @@ namespace RegressionTests.Rules
 
          // Spam folder
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "SomeString",
-                    "Detta ska inte hamna i mappen Inbox.Overriden.Test");
+            "Detta ska inte hamna i mappen Inbox.Overriden.Test");
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "SomeStringA",
-                    "Detta ska hamna i mappen Inbox.Overriden.Test");
+            "Detta ska hamna i mappen Inbox.Overriden.Test");
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "somestring",
-                    "Detta ska inte hamna i mappen Inbox.Overriden.Test");
+            "Detta ska inte hamna i mappen Inbox.Overriden.Test");
 
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox.Overriden.Test", 1);
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox", 2);
@@ -565,7 +572,7 @@ namespace RegressionTests.Rules
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@nonexistantdomain.com"] = 550;
 
-         
+
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -698,10 +705,11 @@ namespace RegressionTests.Rules
 
          // Spam folder
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "TestString",
-                    "Detta ska hamna i mappen Inbox\\Wildcard");
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "TestStri", "Detta ska inte hamna Inbox\\Wildcard");
+            "Detta ska hamna i mappen Inbox\\Wildcard");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "TestStri",
+            "Detta ska inte hamna Inbox\\Wildcard");
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "VaffeTestStringBaffe",
-                    "Detta ska hamna i mappen Inbox\\Wildcard");
+            "Detta ska hamna i mappen Inbox\\Wildcard");
 
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox.Wildcard", 2);
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox", 1);
@@ -782,12 +790,13 @@ namespace RegressionTests.Rules
 
          // Spam folder
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "TestString",
-                    "Detta ska hamna i mappen Inbox\\Wildcard");
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "teststring", "Detta ska hamna Inbox\\Wildcard");
+            "Detta ska hamna i mappen Inbox\\Wildcard");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "teststring",
+            "Detta ska hamna Inbox\\Wildcard");
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "Testar",
-                    "Detta ska inte hamna i mappen Inbox\\Wildcard");
+            "Detta ska inte hamna i mappen Inbox\\Wildcard");
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "teststring vaffe",
-                    "Detta ska inte hamna i mappen Inbox\\Wildcard");
+            "Detta ska inte hamna i mappen Inbox\\Wildcard");
 
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox.Wildcard", 2);
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox", 2);
@@ -823,11 +832,16 @@ namespace RegressionTests.Rules
          var smtpClientSimulator = new SmtpClientSimulator();
 
          // Spam folder
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "0", "Detta ska inte hamna i mappen Inbox");
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "1", "Detta ska inte hamna i mappen Inbox");
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "2", "Detta ska inte hamna i mappen Inbox");
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "3", "Detta ska hamna i mappen Inbox\\GreaterThan");
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "4", "Detta ska hamna i mappen Inbox\\GreaterThan");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "0",
+            "Detta ska inte hamna i mappen Inbox");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "1",
+            "Detta ska inte hamna i mappen Inbox");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "2",
+            "Detta ska inte hamna i mappen Inbox");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "3",
+            "Detta ska hamna i mappen Inbox\\GreaterThan");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "4",
+            "Detta ska hamna i mappen Inbox\\GreaterThan");
 
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox", 3);
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox.GreaterThan", 2);
@@ -862,10 +876,14 @@ namespace RegressionTests.Rules
          var smtpClientSimulator = new SmtpClientSimulator();
 
          // Spam folder
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "0", "Detta ska hamna i mappen Inbox\\LessThan");
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "2", "Detta ska hamna i mappen Inbox");
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "3", "Detta ska hamna i mappen Inbox");
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "4", "Detta ska hamna i mappen Inbox");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "0",
+            "Detta ska hamna i mappen Inbox\\LessThan");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "2",
+            "Detta ska hamna i mappen Inbox");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "3",
+            "Detta ska hamna i mappen Inbox");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "4",
+            "Detta ska hamna i mappen Inbox");
 
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox.LessThan", 1);
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox", 3);
@@ -901,11 +919,11 @@ namespace RegressionTests.Rules
 
          // Spam folder
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "SomeString",
-                    "Detta ska inte hamna i mappen Inbox\\NotEquals");
+            "Detta ska inte hamna i mappen Inbox\\NotEquals");
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "SomeStringA",
-                    "Detta ska hamna i mappen Inbox\\NotEquals");
+            "Detta ska hamna i mappen Inbox\\NotEquals");
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "somestring",
-                    "Detta ska inte hamna i mappen Inbox\\NotEquals");
+            "Detta ska inte hamna i mappen Inbox\\NotEquals");
 
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox.NotEquals", 1);
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox", 2);
@@ -940,10 +958,12 @@ namespace RegressionTests.Rules
          var smtpClientSimulator = new SmtpClientSimulator();
 
          // Spam folder
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "abc", "Detta ska hamna i mappen Inbox\\Wildcard");
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "abcdef", "Detta ska hamna i mappen Inbox\\Wildcard");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "abc",
+            "Detta ska hamna i mappen Inbox\\Wildcard");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "abcdef",
+            "Detta ska hamna i mappen Inbox\\Wildcard");
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "abcdefghi",
-                    "Detta ska inte hamna i mappen Inbox\\Wildcard");
+            "Detta ska inte hamna i mappen Inbox\\Wildcard");
 
          CustomAsserts.AssertRecipientsInDeliveryQueue(0);
 
@@ -981,9 +1001,9 @@ namespace RegressionTests.Rules
 
          // Spam folder
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "Exact wildcard",
-                    "Detta ska hamna i mappen Inbox\\Wildcard");
+            "Detta ska hamna i mappen Inbox\\Wildcard");
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "Exact wildcard",
-                    "Detta ska hamna i mappen Inbox\\Wildcard");
+            "Detta ska hamna i mappen Inbox\\Wildcard");
 
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox.Wildcard", 2);
       }
@@ -993,8 +1013,8 @@ namespace RegressionTests.Rules
       {
          // Add an account
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
-                                                                             "CriteriaWildcardNoCase@example.test",
-                                                                             "test");
+            "CriteriaWildcardNoCase@example.test",
+            "test");
 
          var rule = account.Rules.Add();
          rule.Name = "Criteria test";
@@ -1019,8 +1039,9 @@ namespace RegressionTests.Rules
          var smtpClientSimulator = new SmtpClientSimulator();
 
          // Spam folder
-         smtpClientSimulator.Send("CriteriaWildcardNoCase@example.test", "CriteriaWildcardNoCase@example.test", "exact Test match",
-                    "Detta ska hamna i mappen Inbox\\Wildcard");
+         smtpClientSimulator.Send("CriteriaWildcardNoCase@example.test", "CriteriaWildcardNoCase@example.test",
+            "exact Test match",
+            "Detta ska hamna i mappen Inbox\\Wildcard");
 
          ImapClientSimulator.AssertMessageCount("CriteriaWildcardNoCase@example.test", "test", "Inbox.Wildcard", 1);
       }
@@ -1055,9 +1076,9 @@ namespace RegressionTests.Rules
 
          // Spam folder
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "Exact Test Match",
-                    "Detta ska hamna i mappen Inbox\\Wildcard");
+            "Detta ska hamna i mappen Inbox\\Wildcard");
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "ExactMatchArInte",
-                    "Detta ska inte hamna Inbox\\Wildcard");
+            "Detta ska inte hamna Inbox\\Wildcard");
 
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox.Wildcard", 1);
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox", 1);
@@ -1107,7 +1128,8 @@ namespace RegressionTests.Rules
          var smtpClientSimulator = new SmtpClientSimulator();
 
          // Spam folder
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "SomeString", "Detta ska hamna i public folder.");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "SomeString",
+            "Detta ska hamna i public folder.");
 
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Public.Share1", 1);
       }
@@ -1130,20 +1152,23 @@ namespace RegressionTests.Rules
 
          // Spam folder
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "**SPAM** INBOX->SPAM",
-                    "Detta ska hamna i mappen Inbox\\Spam");
+            "Detta ska hamna i mappen Inbox\\Spam");
 
          // Corporate folder
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "**CORPORATE** INBOX->CORPORATE",
-                    "Detta ska hamna i mappen Inbox\\Corporate");
+            "Detta ska hamna i mappen Inbox\\Corporate");
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "CORPORATE EXACT MATCH",
-                    "Detta ska hamna i mappen Inbox\\Corporate");
+            "Detta ska hamna i mappen Inbox\\Corporate");
 
          // Inbox folder
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "**CORPORATE EXACT MATCH**",
-                    "Detta ska hamna i mappen Inbox");
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "INBOX", "Detta ska hamna i mappen Inbox");
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "INBOX", "Detta ska hamna i mappen Inbox");
-         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "INBOX", "Detta ska hamna i mappen Inbox");
+            "Detta ska hamna i mappen Inbox");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "INBOX",
+            "Detta ska hamna i mappen Inbox");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "INBOX",
+            "Detta ska hamna i mappen Inbox");
+         smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "INBOX",
+            "Detta ska hamna i mappen Inbox");
 
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox.Spam", 1);
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox.Corporate", 2);
@@ -1156,7 +1181,7 @@ namespace RegressionTests.Rules
          AddSpamRule(account1);
 
          // Send email to both recipients
-         var lstRecipients = new List<string> {"ruletest-m1@example.test", "ruletest-m2@example.test"};
+         var lstRecipients = new List<string> { "ruletest-m1@example.test", "ruletest-m2@example.test" };
 
          const string sBody = "Test of sending same email to multiple accounts.";
 
@@ -1282,7 +1307,8 @@ namespace RegressionTests.Rules
          var smtpClientSimulator = new SmtpClientSimulator();
 
          // Test to send the message to account 1. Make sure a copy is created by this rule.
-         smtpClientSimulator.Send(account1.Address, new List<string> {account1.Address, account2.Address}, "Test", "Test message.");
+         smtpClientSimulator.Send(account1.Address, new List<string> { account1.Address, account2.Address }, "Test",
+            "Test message.");
          CustomAsserts.AssertRecipientsInDeliveryQueue(0, true);
          ImapClientSimulator.AssertMessageCount(account1.Address, "test", "Inbox", 2);
          ImapClientSimulator.AssertMessageCount(account2.Address, "test", "Inbox", 2);
@@ -1372,7 +1398,8 @@ namespace RegressionTests.Rules
             var smtpClientSimulator = new SmtpClientSimulator();
 
             // Test to send the message to account 1. Make sure a copy is created by this rule.
-            smtpClientSimulator.Send(account.Address, new List<string> {"ahem@dummy-example.com"}, "Test", "Test message.");
+            smtpClientSimulator.Send(account.Address, new List<string> { "ahem@dummy-example.com" }, "Test",
+               "Test message.");
 
             smtpServer.WaitForCompletion();
          }
@@ -1476,7 +1503,7 @@ namespace RegressionTests.Rules
 
          // Spam folder
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "SomeString",
-                    "This should end up in the inbox since user lacks right.");
+            "This should end up in the inbox since user lacks right.");
 
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "INBOX", 1);
       }
@@ -1494,7 +1521,7 @@ namespace RegressionTests.Rules
          CreatePrintRecipientCountRule(account1.Rules);
 
          SmtpClientSimulator.StaticSend(account1.Address, account1.Address, "SomeString",
-                                        "Detta ska inte hamna i mappen Inbox.Overriden.Test");
+            "Detta ska inte hamna i mappen Inbox.Overriden.Test");
          CustomAsserts.AssertRecipientsInDeliveryQueue(0);
          // This should print a single list.
          var eventLogText = TestSetup.ReadExistingTextFile(LogHandler.GetEventLogFileName());
@@ -1502,8 +1529,8 @@ namespace RegressionTests.Rules
          Assert.IsTrue(eventLogText.Contains("\"1\""), eventLogText);
 
          // Send message to two recipients. Recipient should still be one, since it's an account-level rule.
-         SmtpClientSimulator.StaticSend(account1.Address, new List<string> {account1.Address, account2.Address},
-                                        "SomeString", "Detta ska inte hamna i mappen Inbox.Overriden.Test");
+         SmtpClientSimulator.StaticSend(account1.Address, new List<string> { account1.Address, account2.Address },
+            "SomeString", "Detta ska inte hamna i mappen Inbox.Overriden.Test");
 
          CustomAsserts.AssertRecipientsInDeliveryQueue(0);
          // This should print a single list.
@@ -1525,17 +1552,17 @@ namespace RegressionTests.Rules
          CreatePrintRecipientCountRule(_application.Rules);
 
          SmtpClientSimulator.StaticSend(account1.Address, account1.Address, "SomeString",
-                                        "Detta ska inte hamna i mappen Inbox.Overriden.Test");
+            "Detta ska inte hamna i mappen Inbox.Overriden.Test");
          CustomAsserts.AssertRecipientsInDeliveryQueue(0);
          // This should print a single list.
-         
+
          var eventLogText = TestSetup.ReadExistingTextFile(LogHandler.GetEventLogFileName());
          CustomAsserts.AssertDeleteFile(LogHandler.GetEventLogFileName());
          Assert.IsTrue(eventLogText.Contains("\"1\""), eventLogText);
 
          // Send message to two recipients. 
-         SmtpClientSimulator.StaticSend(account1.Address, new List<string> {account1.Address, account2.Address},
-                                        "SomeString", "Detta ska inte hamna i mappen Inbox.Overriden.Test");
+         SmtpClientSimulator.StaticSend(account1.Address, new List<string> { account1.Address, account2.Address },
+            "SomeString", "Detta ska inte hamna i mappen Inbox.Overriden.Test");
 
          CustomAsserts.AssertRecipientsInDeliveryQueue(0);
          // This should print a two recipients. Global rule is affected before message reaches recipients.
@@ -1657,6 +1684,5 @@ namespace RegressionTests.Rules
          // Save the rule in the database
          rule.Save();
       }
-
    }
 }

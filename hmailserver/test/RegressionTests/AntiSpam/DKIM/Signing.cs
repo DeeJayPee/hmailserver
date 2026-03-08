@@ -14,8 +14,6 @@ namespace RegressionTests.AntiSpam.DKIM
    [TestFixture]
    public class Signing : TestFixtureBase
    {
-      #region Setup/Teardown
-
       [SetUp]
       public new void SetUp()
       {
@@ -24,8 +22,6 @@ namespace RegressionTests.AntiSpam.DKIM
          _antiSpam.SpamDeleteThreshold = 5;
       }
 
-      #endregion
-
       private hMailServer.AntiSpam _antiSpam;
 
       private string GetPrivateKeyFile()
@@ -33,7 +29,7 @@ namespace RegressionTests.AntiSpam.DKIM
          var sslPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..\\..\\..\\..\\SSL examples");
 
          var exampleKeyFile = Path.Combine(sslPath, "example.key");
-         if (!File.Exists((exampleKeyFile)))
+         if (!File.Exists(exampleKeyFile))
             throw new Exception("Example key file could not be found.");
 
          return exampleKeyFile;
@@ -119,10 +115,7 @@ namespace RegressionTests.AntiSpam.DKIM
 
          var result = SendMessage();
 
-         if (result.ToLower().Contains("a=rsa-sha256") == false)
-         {
-            Assert.Fail(result);
-         }
+         if (result.ToLower().Contains("a=rsa-sha256") == false) Assert.Fail(result);
       }
 
       [Test]

@@ -10,15 +10,11 @@ namespace RegressionTests.API
    [TestFixture]
    public class Links : TestFixtureBase
    {
-      #region Setup/Teardown
-
       [SetUp]
       public new void SetUp()
       {
          _links = _application.Links;
       }
-
-      #endregion
 
       private hMailServer.Links _links;
 

@@ -11,15 +11,11 @@ namespace RegressionTests.AntiSpam
    [TestFixture]
    public class GreyListing : TestFixtureBase
    {
-      #region Setup/Teardown
-
       [SetUp]
       public new void SetUp()
       {
          _antiSpam = _settings.AntiSpam;
       }
-
-      #endregion
 
       private hMailServer.AntiSpam _antiSpam;
 
@@ -38,7 +34,7 @@ namespace RegressionTests.AntiSpam
          _antiSpam.BypassGreylistingOnMailFromMX = true;
 
          SmtpClientSimulator.StaticSend("test@localhost.hmailserver.com", account1.Address, "Test",
-                                                      "Body");
+            "Body");
 
          Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
       }
@@ -54,18 +50,19 @@ namespace RegressionTests.AntiSpam
          var recipients = new List<string>();
          recipients.Add(account1.Address);
          smtp.Send("test@example.test", recipients, "Test", "Body");
-         
+
          Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
 
          _antiSpam.GreyListingEnabled = true;
 
-         CustomAsserts.Throws<DeliveryFailedException>(() => smtp.Send("test@example.test", recipients, "Test", "Body"));
-         
+         CustomAsserts.Throws<DeliveryFailedException>(() =>
+            smtp.Send("test@example.test", recipients, "Test", "Body"));
+
 
          _antiSpam.GreyListingEnabled = false;
 
          smtp.Send("test@example.test", recipients, "Test", "Body");
-         
+
          Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
       }
 
@@ -81,7 +78,8 @@ namespace RegressionTests.AntiSpam
          whiteAddress.IPAddress = "127.0.0.5";
          whiteAddress.Save();
 
-         CustomAsserts.Throws<DeliveryFailedException>(() => SmtpClientSimulator.StaticSend("external@example.com", account.Address, "Test", "Test"));
+         CustomAsserts.Throws<DeliveryFailedException>(() =>
+            SmtpClientSimulator.StaticSend("external@example.com", account.Address, "Test", "Test"));
 
          whiteAddress.IPAddress = "*";
          whiteAddress.Save();
@@ -102,12 +100,13 @@ namespace RegressionTests.AntiSpam
          var recipients = new List<string>();
          recipients.Add(account1.Address);
          smtp.Send("test@example.test", recipients, "Test", "Body");
-         
+
          Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
 
          _antiSpam.GreyListingEnabled = true;
 
-         CustomAsserts.Throws<DeliveryFailedException>(() => smtp.Send("test@example.test", recipients, "Test", "Body"));
+         CustomAsserts.Throws<DeliveryFailedException>(() =>
+            smtp.Send("test@example.test", recipients, "Test", "Body"));
 
 
          _domain.AntiSpamEnableGreylisting = false;
@@ -130,7 +129,8 @@ namespace RegressionTests.AntiSpam
          _domain.AntiSpamEnableGreylisting = true;
          _domain.Save();
 
-         CustomAsserts.Throws<DeliveryFailedException>(() => smtp.Send("test@example.test", recipients, "Test", "Body"));
+         CustomAsserts.Throws<DeliveryFailedException>(() =>
+            smtp.Send("test@example.test", recipients, "Test", "Body"));
       }
    }
 }

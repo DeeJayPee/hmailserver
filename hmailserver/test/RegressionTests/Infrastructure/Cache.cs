@@ -14,7 +14,6 @@ namespace RegressionTests.Infrastructure
 
          while (_application.Domains.Count > 0)
             _application.Domains.DeleteByDBID(_application.Domains[0].ID);
-
       }
 
 
@@ -37,7 +36,7 @@ namespace RegressionTests.Infrastructure
             account.Password = "test";
             account.Active = true;
             account.Save();
-            
+
             Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 0);
          }
 

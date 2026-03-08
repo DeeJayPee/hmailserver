@@ -10,8 +10,6 @@ namespace RegressionTests.SMTP
    [TestFixture]
    public class AWStatsLoggingTests : TestFixtureBase
    {
-      private Logging _logging;
-
       [OneTimeSetUp]
       public void OneTimeSetUp()
       {
@@ -29,6 +27,8 @@ namespace RegressionTests.SMTP
             File.Delete(_logging.CurrentAwstatsLog);
       }
 
+      private Logging _logging;
+
       [Test]
       public void SuccessfulDeliveriesShouldBeLogged()
       {
@@ -40,15 +40,16 @@ namespace RegressionTests.SMTP
          // Delivery from external to local.
          smtpClientSimulator.Send("test@external.com", "test@example.test", "Mail 1", "Mail 1");
          Pop3ClientSimulator.AssertMessageCount("test@example.test", "test", 1);
-         
+
          // Verify that the delivery is logged
          var contents = TestSetup.ReadExistingTextFile(_logging.CurrentAwstatsLog);
          CustomAsserts.AssertDeleteFile(_logging.CurrentAwstatsLog);
-         var expectedString = string.Format("\ttest@external.com\ttest@example.test\t{0}\t127.0.0.1\tSMTP\t?\t250\t", localAddress);
+         var expectedString = string.Format("\ttest@external.com\ttest@example.test\t{0}\t127.0.0.1\tSMTP\t?\t250\t",
+            localAddress);
          StringAssert.Contains(expectedString, contents);
-         
+
          // Verify there's just 1 logged line
-         Assert.AreEqual(1, contents.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).Length);
+         Assert.AreEqual(1, contents.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).Length);
       }
 
       [Test]
@@ -66,11 +67,12 @@ namespace RegressionTests.SMTP
          // Verify that the failed delivery is logged
          var contents = TestSetup.ReadExistingTextFile(_logging.CurrentAwstatsLog);
          CustomAsserts.AssertDeleteFile(_logging.CurrentAwstatsLog);
-         var expectedString = string.Format("\ttest@example.test\ttest@example.test\t{0}\t127.0.0.1\tSMTP\t?\t530\t", localAddress);
+         var expectedString = string.Format("\ttest@example.test\ttest@example.test\t{0}\t127.0.0.1\tSMTP\t?\t530\t",
+            localAddress);
          StringAssert.Contains(expectedString, contents);
 
          // Verify there's just 1 logged line
-         Assert.AreEqual(1,  contents.Split(new string[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries).Length);
+         Assert.AreEqual(1, contents.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).Length);
       }
 
       [Test]
@@ -86,11 +88,11 @@ namespace RegressionTests.SMTP
          // Verify that the failed delivery is logged
          var contents = TestSetup.ReadExistingTextFile(_logging.CurrentAwstatsLog);
          CustomAsserts.AssertDeleteFile(_logging.CurrentAwstatsLog);
-         var expectedString = string.Format("\ttest@example.test\ttest@example.test\t127.0.0.1\t127.0.0.1\tSMTP\t?\t550\t");
+         var expectedString = "\ttest@example.test\ttest@example.test\t127.0.0.1\t127.0.0.1\tSMTP\t?\t550\t";
          StringAssert.Contains(expectedString, contents);
 
          // Verify there's just 1 logged line
-         Assert.AreEqual(1, contents.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).Length);
+         Assert.AreEqual(1, contents.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).Length);
       }
 
       private void CreateDeleteAllMailRule()
@@ -116,4 +118,3 @@ namespace RegressionTests.SMTP
       }
    }
 }
-

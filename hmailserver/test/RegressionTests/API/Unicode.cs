@@ -331,7 +331,8 @@ namespace RegressionTests.API
          // 
          //   Also, there should be a space separating the encoded word with the following
          //   non-encoded word.
-         Assert.IsTrue(messageText.Contains("To: \"=?utf-8?B?VGVzdCBSZWNpcGllbnQ6INCi0LXRgdGC?=\" <encode@example.test>"));
+         Assert.IsTrue(
+            messageText.Contains("To: \"=?utf-8?B?VGVzdCBSZWNpcGllbnQ6INCi0LXRgdGC?=\" <encode@example.test>"));
       }
 
       [Test]

@@ -13,8 +13,6 @@ namespace RegressionTests.SMTP
    [TestFixture]
    public class BlockedAttachmentTests : TestFixtureBase
    {
-      private Account _account;
-
       [SetUp]
       public new void SetUp()
       {
@@ -43,6 +41,8 @@ namespace RegressionTests.SMTP
 
          _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
       }
+
+      private Account _account;
 
       [Test]
       public void TestAttachmentRemoval()
@@ -89,9 +89,8 @@ namespace RegressionTests.SMTP
             SingletonProvider<TestSetup>.Instance.GetApp().Settings.ServerMessages.get_ItemByName(
                "ATTACHMENT_REMOVED").Text;
          removedMessage = removedMessage.Replace("%MACRO_FILE%",
-                                                 message.Attachments[0].Filename.Substring(0,
-                                                                                           message.Attachments[0].
-                                                                                              Filename.Length - 4));
+            message.Attachments[0].Filename.Substring(0,
+               message.Attachments[0].Filename.Length - 4));
 
          Assert.IsTrue(contents.Contains(removedMessage));
          File.Delete(tempFile);
@@ -101,7 +100,7 @@ namespace RegressionTests.SMTP
       [Test]
       public void TestSingleBlockedAttachment()
       {
-         var attachmentName = Guid.NewGuid().ToString() + ".dll";
+         var attachmentName = Guid.NewGuid() + ".dll";
          var tempFile = Path.Combine(Path.GetTempPath(), attachmentName);
          File.WriteAllText(tempFile, "A");
 
@@ -124,22 +123,20 @@ namespace RegressionTests.SMTP
 
             // Check that the message exists
             var message = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
-            Assert.IsTrue(message.Contains(string.Format("The attachment {0} was blocked for delivery by the e-mail server.", attachmentName)));
-
+            Assert.IsTrue(message.Contains(
+               string.Format("The attachment {0} was blocked for delivery by the e-mail server.", attachmentName)));
          }
          finally
          {
             File.Delete(tempFile);
          }
-
-
       }
 
       [Test]
       public void TestTwoBlockedAttachments()
       {
-         var attachment1Name = Guid.NewGuid().ToString() + ".dll";
-         var attachment2Name = Guid.NewGuid().ToString() + ".dll";
+         var attachment1Name = Guid.NewGuid() + ".dll";
+         var attachment2Name = Guid.NewGuid() + ".dll";
          var tempFile1 = Path.Combine(Path.GetTempPath(), attachment1Name);
          var tempFile2 = Path.Combine(Path.GetTempPath(), attachment2Name);
          File.WriteAllText(tempFile1, "A");
@@ -166,23 +163,22 @@ namespace RegressionTests.SMTP
 
             // Check that the message exists
             var message = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
-            Assert.IsTrue(message.Contains(string.Format("The attachment {0} was blocked for delivery by the e-mail server.", attachment1Name)));
-            Assert.IsTrue(message.Contains(string.Format("The attachment {0} was blocked for delivery by the e-mail server.", attachment2Name)));
-
+            Assert.IsTrue(message.Contains(
+               string.Format("The attachment {0} was blocked for delivery by the e-mail server.", attachment1Name)));
+            Assert.IsTrue(message.Contains(
+               string.Format("The attachment {0} was blocked for delivery by the e-mail server.", attachment2Name)));
          }
          finally
          {
             File.Delete(tempFile1);
             File.Delete(tempFile2);
          }
-
-
       }
 
       [Test]
       public void TestBlockedAttachmentWithUnicodeInName()
       {
-         var attachmentName = Guid.NewGuid().ToString() + "漢語.dll";
+         var attachmentName = Guid.NewGuid() + "漢語.dll";
          var tempFile = Path.Combine(Path.GetTempPath(), attachmentName);
          File.WriteAllText(tempFile, "A");
 
@@ -220,14 +216,11 @@ namespace RegressionTests.SMTP
                   attachmentName)), contents);
 
             File.Delete(attachmentOnDisk);
-
          }
          finally
          {
             File.Delete(tempFile);
          }
-
-
       }
    }
 }

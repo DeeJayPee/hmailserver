@@ -11,9 +11,6 @@ namespace RegressionTests.Shared
 {
    public class Pop3ServerSimulator : TcpServer
    {
-      private readonly List<string> _messages;
-      private bool _disconnectImmediate;
-
       public enum BufferMode
       {
          Split = 0,
@@ -21,19 +18,21 @@ namespace RegressionTests.Shared
          MessageAndTerminatonTogether = 2
       }
 
-      
+      private readonly List<string> _messages;
+
+
       public Pop3ServerSimulator(int maxNumberOfConnections, int port, List<string> messages) :
          this(maxNumberOfConnections, port, messages, eConnectionSecurity.eCSNone)
       {
-         
       }
 
-      public Pop3ServerSimulator(int maxNumberOfConnections, int port, List<string> messages, eConnectionSecurity connectionSecurity) :
+      public Pop3ServerSimulator(int maxNumberOfConnections, int port, List<string> messages,
+         eConnectionSecurity connectionSecurity) :
          base(maxNumberOfConnections, port, connectionSecurity)
       {
          _messages = messages;
          DeletedMessages = new List<int>();
-         _disconnectImmediate = false;
+         DisconnectImmediate = false;
          SupportsUIDL = true;
          SendBufferMode = BufferMode.Split;
       }
@@ -44,11 +43,7 @@ namespace RegressionTests.Shared
       public bool DisconnectAfterRetrCompletion { get; set; }
       public BufferMode SendBufferMode { get; set; }
 
-      public bool DisconnectImmediate
-      {
-         get { return _disconnectImmediate; }
-         set { _disconnectImmediate = value; }
-      }
+      public bool DisconnectImmediate { get; set; }
 
       protected override void HandleClient()
       {
@@ -62,7 +57,7 @@ namespace RegressionTests.Shared
          DeletedMessages = new List<int>();
          RetrievedMessages = new List<int>();
 
-         if (_disconnectImmediate)
+         if (DisconnectImmediate)
             return;
 
          while (ProcessCommand(Receive()))
@@ -77,10 +72,7 @@ namespace RegressionTests.Shared
             // Remove the messages...
             DeletedMessages.Sort();
             DeletedMessages.Reverse();
-            foreach (var deletedMessage in DeletedMessages)
-            {
-               _messages.RemoveAt(deletedMessage - 1);
-            }
+            foreach (var deletedMessage in DeletedMessages) _messages.RemoveAt(deletedMessage - 1);
 
             return false;
          }
@@ -130,9 +122,7 @@ namespace RegressionTests.Shared
             var builder = new StringBuilder();
 
             for (var i = 0; i < _messages.Count; i++)
-            {
                builder.Append(string.Format("{0} UniqueID-{1}\r\n", i + 1, _messages[i].GetHashCode()));
-            }
 
             Send(builder.ToString());
 
@@ -155,23 +145,23 @@ namespace RegressionTests.Shared
             switch (SendBufferMode)
             {
                case BufferMode.Split:
-                  {
-                     Send("+OK\r\n");
-                     Send(message);
-                     Send("\r\n.\r\n");
-                     break;
-                  }
+               {
+                  Send("+OK\r\n");
+                  Send(message);
+                  Send("\r\n.\r\n");
+                  break;
+               }
                case BufferMode.SingleBuffer:
-                  {
-                     Send("+OK\r\n" + message + "\r\n.\r\n");
-                     break;
-                  }
+               {
+                  Send("+OK\r\n" + message + "\r\n.\r\n");
+                  break;
+               }
                case BufferMode.MessageAndTerminatonTogether:
-                  {
-                     Send("+OK\r\n");
-                     Send(message + "\r\n.\r\n");
-                     break;
-                  }
+               {
+                  Send("+OK\r\n");
+                  Send(message + "\r\n.\r\n");
+                  break;
+               }
             }
 
 

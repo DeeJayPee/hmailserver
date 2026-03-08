@@ -6,7 +6,7 @@ using RegressionTests.Infrastructure;
 
 namespace RegressionTests.POP3.Fetching
 {
-   class LockHelper
+   internal class LockHelper
    {
       public static void WaitForUnlock(FetchAccount fetchAccount)
       {
@@ -21,7 +21,7 @@ namespace RegressionTests.POP3.Fetching
          }
 
          var defaultLog = LogHandler.ReadCurrentDefaultLog();
-         Assert.Fail(string.Format("At {0}, fetch account was not unlocked.", DateTime.Now));
+         Assert.Fail("At {0}, fetch account was not unlocked.", DateTime.Now);
       }
    }
 }

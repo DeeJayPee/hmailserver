@@ -34,10 +34,10 @@ namespace RegressionTests.IMAP
          rule.Save();
 
          File.WriteAllText(_settings.Scripting.CurrentScriptFile,
-                           "Sub ModifyMessage(message)" + Environment.NewLine +
-                           "message.Subject = \"[Spam] \" + CStr(message.Subject)" + Environment.NewLine +
-                           "message.Save" + Environment.NewLine +
-                           "End Sub");
+            "Sub ModifyMessage(message)" + Environment.NewLine +
+            "message.Subject = \"[Spam] \" + CStr(message.Subject)" + Environment.NewLine +
+            "message.Save" + Environment.NewLine +
+            "End Sub");
 
          _settings.Scripting.Reload();
       }
@@ -68,7 +68,7 @@ namespace RegressionTests.IMAP
       public void TestBasicIncrements()
       {
          var testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@example.test",
-                                                                                "test");
+            "test");
 
          SmtpClientSimulator.StaticSend(testAccount.Address, testAccount.Address, "Test", "Test");
          Pop3ClientSimulator.AssertMessageCount(testAccount.Address, "test", 1);
@@ -96,7 +96,7 @@ namespace RegressionTests.IMAP
       public void TestBasicIncrementsWithDeletion()
       {
          var testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@example.test",
-                                                                                "test");
+            "test");
 
          SmtpClientSimulator.StaticSend(testAccount.Address, testAccount.Address, "Test", "Test");
          Pop3ClientSimulator.AssertMessageCount(testAccount.Address, "test", 1);
@@ -127,7 +127,7 @@ namespace RegressionTests.IMAP
       public void TestMoveMessageWithAccountLevelRule()
       {
          var testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@example.test",
-                                                                                "test");
+            "test");
 
          // First deliver two messages to the inbox.
          SmtpClientSimulator.StaticSend(testAccount.Address, testAccount.Address, "Test", "Test");
@@ -162,7 +162,7 @@ namespace RegressionTests.IMAP
       public void TestMoveMessageWithGlobalRule()
       {
          var testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@example.test",
-                                                                                "test");
+            "test");
 
          // First deliver two messages to the inbox.
          SmtpClientSimulator.StaticSend(testAccount.Address, testAccount.Address, "Test", "Test");
@@ -196,14 +196,14 @@ namespace RegressionTests.IMAP
       [Test]
       [Description("Issue 267, Invalid message UID generated. " +
                    " Confirm that moving a message to a new folder generates an UID specific to that folder, even if the message is saved using an account rule."
-         )]
+      )]
       public void TestSaveMessageWithScriptAndMoveMessageWithAccountRule()
       {
          _settings.Scripting.Enabled = true;
          _settings.Scripting.Reload();
 
          var testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@example.test",
-                                                                                "test");
+            "test");
 
          var sim = new ImapClientSimulator();
          Assert.IsTrue(sim.ConnectAndLogon(testAccount.Address, "test"));
@@ -247,13 +247,13 @@ namespace RegressionTests.IMAP
       [Test]
       [Description("Issue 267, Invalid message UID generated. " +
                    " Confirm that moving a message to a new folder generates an UID specific to that folder, even if the message is saved using an account rule."
-         )]
+      )]
       public void TestSaveMessageWithScriptAndMoveMessageWithGlobalRule()
       {
          _settings.Scripting.Enabled = true;
 
          var testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Test'Account@example.test",
-                                                                                "test");
+            "test");
 
          var sim = new ImapClientSimulator();
          Assert.IsTrue(sim.ConnectAndLogon(testAccount.Address, "test"));

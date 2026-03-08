@@ -83,9 +83,8 @@ namespace RegressionTests.Infrastructure
          {
             Assert.IsTrue(conn1.Connect(25));
 
-            CustomAsserts.AssertSessionCount(eSessionType.eSTSMTP,countBefore+1);
+            CustomAsserts.AssertSessionCount(eSessionType.eSTSMTP, countBefore + 1);
          }
-
       }
 
       [Test]
@@ -100,7 +99,6 @@ namespace RegressionTests.Infrastructure
             Assert.IsTrue(conn1.Connect(143));
             CustomAsserts.AssertSessionCount(eSessionType.eSTIMAP, countBefore + 1);
          }
-
       }
 
       [Test]
@@ -115,7 +113,6 @@ namespace RegressionTests.Infrastructure
             Assert.IsTrue(conn1.Connect(110));
             CustomAsserts.AssertSessionCount(eSessionType.eSTPOP3, countBefore + 1);
          }
-
       }
 
 
@@ -200,7 +197,6 @@ namespace RegressionTests.Infrastructure
 
             RetryableAssert.GreaterOrEqual(maxExpectedCount, count);
          });
-
       }
    }
 }

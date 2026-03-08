@@ -63,10 +63,10 @@ namespace RegressionTests.API
             message.set_Flag(eMessageFlag.eMFSeen, true);
             message.Save();
 
-            Pop3ClientSimulator.AssertMessageCount(account.Address, "test", (i + 1)*2 - 1);
+            Pop3ClientSimulator.AssertMessageCount(account.Address, "test", (i + 1) * 2 - 1);
 
             SmtpClientSimulator.StaticSend("test@example.com", account.Address, "Test", "Test");
-            Pop3ClientSimulator.AssertMessageCount(account.Address, "test", (i + 1)*2);
+            Pop3ClientSimulator.AssertMessageCount(account.Address, "test", (i + 1) * 2);
          }
 
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 6);
@@ -174,7 +174,7 @@ namespace RegressionTests.API
          SmtpClientSimulator.StaticSend("test@example.com", account.Address, "Test", "Test");
 
          // Copy back to inbox.
-         for (var i = 0; i < 3; i ++)
+         for (var i = 0; i < 3; i++)
          {
             var message = someOtherFolder.Messages[i];
             message.Copy(folder.ID);
@@ -435,14 +435,14 @@ namespace RegressionTests.API
       [Test]
       public void TestReinitialize()
       {
-         var @messageText =
+         var messageText =
             "From: test@example.test\r\n" +
             "\r\n" +
             "WhatTest\r\n";
 
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "First message",
-                                                      "Test message");
+            "Test message");
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
 
          // Create another message on disk and import it.

@@ -66,7 +66,7 @@ namespace RegressionTests.Infrastructure.Persistence
       {
          var testAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "lowercase@example.test", "test");
          var testAlias = SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "sometext@example.test",
-                                                                          "LowerCase@example.test");
+            "LowerCase@example.test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
          var upperCase = testAlias.Name.ToUpper();
@@ -84,7 +84,7 @@ namespace RegressionTests.Infrastructure.Persistence
          recipients.Add(testAccount.Address);
 
          var list = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "myList@example.test",
-                                                                                           recipients);
+            recipients);
 
          var smtpClientSimulator = new SmtpClientSimulator();
          var upperCase = list.Address.ToUpper();
@@ -102,7 +102,7 @@ namespace RegressionTests.Infrastructure.Persistence
          recipients.Add(testAccount.Address);
 
          var list = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "myList@example.test",
-                                                                                           recipients);
+            recipients);
 
          var recipient = list.Recipients[0];
          recipient.RecipientAddress = testAccount.Address.ToUpper();
@@ -200,16 +200,16 @@ namespace RegressionTests.Infrastructure.Persistence
          var domain = SingletonProvider<TestSetup>.Instance.AddDomain("example.com");
 
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(domain.Accounts, "test1@example.com",
-                                                                            "secret");
-         account.MaxSize = 1024*1024*2000;
+            "secret");
+         account.MaxSize = 1024 * 1024 * 2000;
          account.Save();
 
          var secondAccount = SingletonProvider<TestSetup>.Instance.AddAccount(domain.Accounts,
-                                                                                  "test2@example.com", "secret");
-         secondAccount.MaxSize = 1024*1024*2000;
+            "test2@example.com", "secret");
+         secondAccount.MaxSize = 1024 * 1024 * 2000;
          secondAccount.Save();
 
-         Assert.AreEqual(account.MaxSize + (long) secondAccount.MaxSize, domain.AllocatedSize);
+         Assert.AreEqual(account.MaxSize + (long)secondAccount.MaxSize, domain.AllocatedSize);
       }
 
       [Test]
@@ -311,7 +311,7 @@ namespace RegressionTests.Infrastructure.Persistence
 
          // Update the database with the full path.
          var sql = string.Format("update hm_messages set messagefilename = '{0}' where messageid = {1}",
-                                    TestSetup.Escape(fileName), message.ID);
+            TestSetup.Escape(fileName), message.ID);
          SingletonProvider<TestSetup>.Instance.GetApp().Database.ExecuteSQL(sql);
 
          SingletonProvider<TestSetup>.Instance.GetApp().Settings.Cache.Clear();

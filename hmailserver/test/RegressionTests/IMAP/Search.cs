@@ -24,7 +24,8 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Search test", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Search test",
+            "This is a test of IMAP Search");
 
          ImapClientSimulator.AssertMessageCount(account.Address, "test", "Inbox", 1);
 
@@ -55,7 +56,8 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Search test", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Search test",
+            "This is a test of IMAP Search");
 
          ImapClientSimulator.AssertMessageCount(account.Address, "test", "Inbox", 1);
 
@@ -245,7 +247,8 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Search test", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Search test",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
 
          var simulator = new ImapClientSimulator();
@@ -258,15 +261,9 @@ namespace RegressionTests.IMAP
             (DateTime.Now + new TimeSpan(1, 0, 0, 0)).ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture).ToUpper();
          var formattedToday = DateTime.Now.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture).ToUpper();
 
-         if (simulator.Search("ON " + formattedTomorrow) != "")
-         {
-            throw new Exception("ERROR - Search or flag failed");
-         }
+         if (simulator.Search("ON " + formattedTomorrow) != "") throw new Exception("ERROR - Search or flag failed");
 
-         if (simulator.Search("ON " + formattedToday) != "1")
-         {
-            throw new Exception("ERROR - Search or flag failed");
-         }
+         if (simulator.Search("ON " + formattedToday) != "1") throw new Exception("ERROR - Search or flag failed");
       }
 
 
@@ -277,7 +274,8 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Search test", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Search test",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
 
          var simulator = new ImapClientSimulator();
@@ -287,9 +285,9 @@ namespace RegressionTests.IMAP
          Assert.IsTrue(simulator.SelectFolder("INBOX"));
 
          Assert.AreEqual("1", simulator.Search("OR SINCE 28-May-2001 ON 28-May-2001 ALL"));
-         
+
          // Searching for mail sent a year from now or a specific date 2012 should not return any matches.
-         var nextYear = DateTime.UtcNow.Year+1;
+         var nextYear = DateTime.UtcNow.Year + 1;
          Assert.That(simulator.Search($"OR SINCE 28-May-{nextYear} ON 28-May-2012 ALL"), Is.Null.Or.Empty);
 
          var formattedToday = DateTime.Now.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture).ToUpper();
@@ -309,9 +307,11 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
@@ -337,9 +337,11 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
@@ -365,9 +367,11 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
@@ -392,9 +396,11 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Search test", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Search test",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Search test", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Search test",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
@@ -404,9 +410,7 @@ namespace RegressionTests.IMAP
          Assert.IsTrue(simulator.SelectFolder("INBOX"));
 
          if (simulator.Search("OR (SINCE 28-May-2001) (ON 28-May-2001) ALL") != "1 2")
-         {
             throw new Exception("ERROR - Search or flag failed");
-         }
       }
 
       [Test]
@@ -419,9 +423,11 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
@@ -431,14 +437,10 @@ namespace RegressionTests.IMAP
          Assert.IsTrue(simulator.SelectFolder("INBOX"));
 
          if (simulator.Search("OR (SUBJECT \"Test1\") (ON 28-May-2001) ALL") != "1")
-         {
             throw new Exception("ERROR - Search or flag failed");
-         }
 
          if (simulator.Search("OR (SUBJECT \"Test2\") (ON 28-May-2001) ALL") != "2")
-         {
             throw new Exception("ERROR - Search or flag failed");
-         }
       }
 
       [Test]
@@ -451,9 +453,11 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
@@ -463,9 +467,7 @@ namespace RegressionTests.IMAP
          Assert.IsTrue(simulator.SelectFolder("INBOX"));
 
          if (simulator.Search("ALL (OR (HEADER SUBJECT \"Test1\") (HEADER SUBJECT \"Test2\"))") != "1 2")
-         {
             throw new Exception("ERROR - Search or flag failed");
-         }
       }
 
       [Test]
@@ -480,7 +482,8 @@ namespace RegressionTests.IMAP
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
          for (var i = 0; i < 5; i++)
-            smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+            smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1",
+               "This is a test of IMAP Search");
 
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 5);
 
@@ -517,7 +520,8 @@ namespace RegressionTests.IMAP
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
          for (var i = 0; i < 3; i++)
-            smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+            smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1",
+               "This is a test of IMAP Search");
 
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 3);
 
@@ -538,10 +542,7 @@ namespace RegressionTests.IMAP
          foreach (var token in tokens)
          {
             int temp;
-            if (Int32.TryParse(token, out temp))
-            {
-               uids.Add(temp);
-            }
+            if (int.TryParse(token, out temp)) uids.Add(temp);
          }
 
          Assert.AreEqual(3, uids.Count, result);
@@ -647,9 +648,11 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
@@ -684,7 +687,8 @@ namespace RegressionTests.IMAP
          simulator.SelectFolder("Inbox");
          simulator.SetDeletedFlag(2);
 
-         var searchResult = simulator.Search("(OR FROM \"TestSubject\" (OR SUBJECT \"TestSubject\" BODY \"TestSubject\")) NOT DELETED");
+         var searchResult =
+            simulator.Search("(OR FROM \"TestSubject\" (OR SUBJECT \"TestSubject\" BODY \"TestSubject\")) NOT DELETED");
 
          Assert.AreEqual("1", searchResult);
       }

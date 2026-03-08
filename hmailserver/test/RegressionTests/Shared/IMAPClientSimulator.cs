@@ -10,7 +10,7 @@ using RegressionTests.Infrastructure;
 namespace RegressionTests.Shared
 {
    /// <summary>
-   /// Summary description for IMAPClientSimulator.
+   ///    Summary description for IMAPClientSimulator.
    /// </summary>
    public class ImapClientSimulator
    {
@@ -77,8 +77,7 @@ namespace RegressionTests.Shared
 
          if (sData.StartsWith("*"))
             return true;
-         else
-            return false;
+         return false;
       }
 
       public bool Logon(string sUsername, string sPassword, out string errorMessage)
@@ -96,7 +95,7 @@ namespace RegressionTests.Shared
 
       public void LogonWithLiteral(string sUsername, string sPassword)
       {
-         _tcpConnection.Send("A01 LOGIN " + sUsername + " {" + sPassword.Length.ToString() + "}\r\n");
+         _tcpConnection.Send("A01 LOGIN " + sUsername + " {" + sPassword.Length + "}\r\n");
          var sData = _tcpConnection.Receive();
 
          if (sData.IndexOf("+ Ready") != 0)
@@ -110,13 +109,13 @@ namespace RegressionTests.Shared
 
          // Logon using two literals.
 
-         _tcpConnection.Send("A02 LOGIN {" + sUsername.Length.ToString() + "}\r\n");
+         _tcpConnection.Send("A02 LOGIN {" + sUsername.Length + "}\r\n");
          sData = _tcpConnection.Receive();
 
          if (sData.IndexOf("+ Ready") != 0)
             Assert.Fail("Literal ready not received.");
 
-         _tcpConnection.Send(sUsername + " {" + sPassword.Length.ToString() + "}\r\n");
+         _tcpConnection.Send(sUsername + " {" + sPassword.Length + "}\r\n");
          sData = _tcpConnection.Receive();
 
          if (sData.IndexOf("+ Ready") != 0)
@@ -138,17 +137,16 @@ namespace RegressionTests.Shared
 
          if (result.StartsWith("A03 OK"))
             return true;
-         else
-            return false;
+         return false;
       }
 
       public bool SetACL(string sFolder, string identifier, string access)
       {
          var command = string.Format("A04 SETACL {0} {1} {2}\r\n",
-                                        sFolder,
-                                        identifier,
-                                        access
-            );
+            sFolder,
+            identifier,
+            access
+         );
          _tcpConnection.Send(command);
          var result = _tcpConnection.Receive();
 
@@ -158,8 +156,8 @@ namespace RegressionTests.Shared
       public bool DeleteACL(string sFolder, string identifier)
       {
          var command = string.Format("A05 DELETEACL \"{0}\" {1}\r\n",
-                                        sFolder,
-                                        identifier);
+            sFolder,
+            identifier);
          _tcpConnection.Send(command);
          var result = _tcpConnection.Receive();
 
@@ -169,7 +167,7 @@ namespace RegressionTests.Shared
       public string GetACL(string sFolder)
       {
          var command = string.Format("A06 GETACL \"{0}\"\r\n",
-                                        sFolder);
+            sFolder);
          _tcpConnection.Send(command);
          var result = _tcpConnection.Receive();
 
@@ -179,7 +177,7 @@ namespace RegressionTests.Shared
       public string GetMyRights(string sFolder)
       {
          var command = string.Format("A07 MYRIGHTS \"{0}\"\r\n",
-                                        sFolder);
+            sFolder);
          _tcpConnection.Send(command);
          var result = _tcpConnection.Receive();
 
@@ -205,7 +203,7 @@ namespace RegressionTests.Shared
       public string ListRights(string sFolder, string identifier)
       {
          var command = string.Format("A10 LISTRIGHTS \"{0}\" \"{1}\"\r\n",
-                                        sFolder, identifier);
+            sFolder, identifier);
          _tcpConnection.Send(command);
          var result = _tcpConnection.Receive();
 
@@ -219,8 +217,7 @@ namespace RegressionTests.Shared
 
          if (result.StartsWith("A11 OK"))
             return true;
-         else
-            return false;
+         return false;
       }
 
       public bool Unsubscribe(string sFolder)
@@ -230,8 +227,7 @@ namespace RegressionTests.Shared
 
          if (result.StartsWith("A12 OK"))
             return true;
-         else
-            return false;
+         return false;
       }
 
 
@@ -246,14 +242,14 @@ namespace RegressionTests.Shared
       public bool Close()
       {
          _tcpConnection.Send("A14 CLOSE\r\n");
-         var result = _tcpConnection.ReadUntil(new List<string>() {"A14 BAD", "A14 OK"});
+         var result = _tcpConnection.ReadUntil(new List<string> { "A14 BAD", "A14 OK" });
 
          if (result.Contains("A14 BAD"))
             return false;
          if (result.Contains("A14 OK"))
             return true;
 
-         Assert.Fail(string.Format("IMAPClientSimulator.Close() - Expected BAD/OK, received: \"{0}\"", result));
+         Assert.Fail("IMAPClientSimulator.Close() - Expected BAD/OK, received: \"{0}\"", result);
          return false;
       }
 
@@ -272,8 +268,8 @@ namespace RegressionTests.Shared
          if (sData.IndexOf("+ Ready") != 0)
          {
             var message = string.Format("Literal request not received from server. Time: {0}, Response: {1}",
-                                           DateTime.Now.ToShortDateString(),
-                                           sData);
+               DateTime.Now.ToShortDateString(),
+               sData);
 
             Assert.Fail(message);
          }
@@ -336,20 +332,18 @@ namespace RegressionTests.Shared
 
          if (sData.StartsWith("A21 OK"))
             return true;
-         else
-            return false;
+         return false;
       }
 
       public bool SetFlagOnMessage(int index, bool bSet, string sFlag)
       {
          var sSetUnset = bSet ? "+" : "-";
-         var sData = "A22 STORE " + index.ToString() + " " + sSetUnset + "FLAGS (" + sFlag + ")";
+         var sData = "A22 STORE " + index + " " + sSetUnset + "FLAGS (" + sFlag + ")";
          var result = SendSingleCommand(sData);
 
          if (result.Contains("A22 OK"))
             return true;
-         else
-            return false;
+         return false;
       }
 
       public void SetFlagOnFirstMessage(bool bSet, string sFlag)
@@ -400,10 +394,7 @@ namespace RegressionTests.Shared
       {
          output = string.Empty;
 
-         if (force == false)
-         {
-            output = _tcpConnection.Receive();
-         }
+         if (force == false) output = _tcpConnection.Receive();
 
          _tcpConnection.Send("DONE\r\n");
 
@@ -424,7 +415,7 @@ namespace RegressionTests.Shared
       }
 
       /// <summary>
-      /// Waits for data a total of 8 seconds.
+      ///    Waits for data a total of 8 seconds.
       /// </summary>
       /// <returns>true if data exists</returns>
       public bool AssertPendingDataExists()
@@ -549,18 +540,13 @@ namespace RegressionTests.Shared
          var sData = SendSingleCommand("A33 SELECT " + sFolder);
 
          if (!sData.Contains("A33 OK"))
-         {
             throw new ArgumentException("The folder " + sFolder + " was not selectable. Result: " + sData);
-         }
 
          var iStartPos = 2;
          var iEndPos = sData.IndexOf(" ", iStartPos);
          var iLength = iEndPos - iStartPos;
 
-         if (iLength == 0)
-         {
-            Assert.Fail("Unparseable SELECT response");
-         }
+         if (iLength == 0) Assert.Fail("Unparseable SELECT response");
 
          var sValue = sData.Substring(iStartPos, iLength);
 
@@ -643,13 +629,11 @@ namespace RegressionTests.Shared
 
 
       public static void AssertMessageCount(string accountName, string accountPassword, string folderName,
-                                            int expectedCount)
+         int expectedCount)
       {
          if (expectedCount == 0)
-         {
             // make sure that we aren't currently delivering messages.
             CustomAsserts.AssertRecipientsInDeliveryQueue(0);
-         }
 
          var imap = new ImapClientSimulator();
          Assert.IsTrue(imap.ConnectAndLogon(accountName, accountPassword));
@@ -679,7 +663,7 @@ namespace RegressionTests.Shared
          imap.Disconnect();
 
          var error = "Wrong number of messages in mailbox " + folderName + " in account " + accountName +
-                     " Actual: " + currentCount.ToString() + " Expected: " + expectedCount.ToString();
+                     " Actual: " + currentCount + " Expected: " + expectedCount;
          Assert.Fail(error);
       }
 

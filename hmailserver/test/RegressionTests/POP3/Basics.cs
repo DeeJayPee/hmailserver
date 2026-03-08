@@ -27,10 +27,7 @@ namespace RegressionTests.POP3
 
          // create a file with a lot of dots.
          var sb = new StringBuilder();
-         for (var i = 0; i < 10000; i++)
-         {
-            sb.Append("....................");
-         }
+         for (var i = 0; i < 10000; i++) sb.Append("....................");
 
          var tempFile = Path.GetTempFileName() + ".txt";
          File.WriteAllText(tempFile, sb.ToString());
@@ -111,7 +108,7 @@ namespace RegressionTests.POP3
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          for (var i = 1; i <= 10; i++)
-            SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i.ToString());
+            SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i);
 
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 10);
 
@@ -152,7 +149,7 @@ namespace RegressionTests.POP3
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          for (var i = 1; i <= 10; i++)
-            SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i.ToString());
+            SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i);
 
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 10);
 
@@ -193,7 +190,7 @@ namespace RegressionTests.POP3
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          for (var i = 1; i <= 10; i++)
-            SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i.ToString());
+            SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i);
 
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 10);
 
@@ -218,7 +215,7 @@ namespace RegressionTests.POP3
 
          for (var i = 1; i <= 3; i++)
             SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test",
-                                           "Line1\r\nLine2\r\nLine3\r\nLine4\r\nLine\r\n");
+               "Line1\r\nLine2\r\nLine3\r\nLine4\r\nLine\r\n");
 
          // Mark the second message as deleted using IMAP.
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 3);
@@ -311,7 +308,7 @@ namespace RegressionTests.POP3
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          for (var i = 1; i <= 10; i++)
-            SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i.ToString());
+            SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i);
 
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 10);
 
@@ -328,7 +325,7 @@ namespace RegressionTests.POP3
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          for (var i = 1; i <= 10; i++)
-            SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i.ToString());
+            SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i);
 
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 10);
 
@@ -347,7 +344,7 @@ namespace RegressionTests.POP3
 
          for (var i = 1; i <= 10; i++)
             SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test",
-                                           "Line1\r\nLine2\r\nLine3\r\nLine4\r\nLine\r\n");
+               "Line1\r\nLine2\r\nLine3\r\nLine4\r\nLine\r\n");
 
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 10);
 
@@ -368,7 +365,7 @@ namespace RegressionTests.POP3
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test",
-                                          "Line1\r\nLine2\r\n..\r\nLine4\r\n..A\r\n.B\r\nLine6\r\n");
+            "Line1\r\nLine2\r\n..\r\nLine4\r\n..A\r\n.B\r\nLine6\r\n");
 
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
 
@@ -385,7 +382,7 @@ namespace RegressionTests.POP3
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          for (var i = 1; i <= 10; i++)
-            SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i.ToString());
+            SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i);
 
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 10);
 
@@ -426,7 +423,7 @@ namespace RegressionTests.POP3
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          for (var i = 1; i <= 10; i++)
-            SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i.ToString());
+            SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "TestBody" + i);
 
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 10);
 
@@ -460,7 +457,6 @@ namespace RegressionTests.POP3
       public static void SendMessage(MailMessage mailMessage)
       {
          for (var i = 0; i < 5; i++)
-         {
             try
             {
                var client = new SmtpClient("localhost", 25);
@@ -473,7 +469,6 @@ namespace RegressionTests.POP3
                if (i == 4)
                   throw;
             }
-         }
       }
 
 
@@ -485,10 +480,7 @@ namespace RegressionTests.POP3
 
          var hashedData = sha.ComputeHash(bytes);
 
-         foreach (var b in hashedData)
-         {
-            hash.Append(String.Format("{0,2:X2}", b));
-         }
+         foreach (var b in hashedData) hash.Append(string.Format("{0,2:X2}", b));
 
          //return the hashed value
          return hash.ToString();

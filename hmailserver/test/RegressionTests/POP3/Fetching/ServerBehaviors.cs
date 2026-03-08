@@ -10,20 +10,8 @@ using RegressionTests.Shared;
 namespace RegressionTests.POP3
 {
    [TestFixture]
-    public class ServerBehaviors : TestFixtureBase
+   public class ServerBehaviors : TestFixtureBase
    {
-      const string _message = "Received: from example.com (example.com [1.2.3.4]) by mail.host.edu\r\n" +
-                                "From: Martin@example.com\r\n" +
-                                "To: Martin@example.com\r\n" +
-                                "Subject: Test\r\n" +
-                                "\r\n" +
-                                "Hello!";
-
-      private int _serverPort;
-
-      private Account _account;
-
-
       [SetUp]
       public void SetUpTest()
       {
@@ -31,6 +19,17 @@ namespace RegressionTests.POP3
 
          _serverPort = TestSetup.GetNextFreePort();
       }
+
+      private const string _message = "Received: from example.com (example.com [1.2.3.4]) by mail.host.edu\r\n" +
+                                      "From: Martin@example.com\r\n" +
+                                      "To: Martin@example.com\r\n" +
+                                      "Subject: Test\r\n" +
+                                      "\r\n" +
+                                      "Hello!";
+
+      private int _serverPort;
+
+      private Account _account;
 
       private FetchAccount CreateFetchAccount()
       {
@@ -52,7 +51,7 @@ namespace RegressionTests.POP3
          return fa;
       }
 
-      
+
       private Pop3ServerSimulator CreateServer()
       {
          return CreateServer(_message);
@@ -70,7 +69,6 @@ namespace RegressionTests.POP3
       [Description("Simulates that the POP3 server disconnects directly after having sent the entire message.")]
       public void TestDisconnectAfterRetrCommand()
       {
-         
          var pop3Server = CreateServer();
          pop3Server.SecondsToWaitBeforeTerminate = 180;
          pop3Server.DisconnectAfterRetrCompletion = true;
@@ -79,7 +77,7 @@ namespace RegressionTests.POP3
          // Connection will be dropped after we perform the RETR command.
          var fetchAccount = CreateFetchAccount();
          fetchAccount.DownloadNow();
-         
+
          pop3Server.WaitForCompletion();
          LockHelper.WaitForUnlock(fetchAccount);
 
@@ -112,7 +110,7 @@ namespace RegressionTests.POP3
             pop3Server.WaitForCompletion();
             LockHelper.WaitForUnlock(fetchAccount);
          }
-         
+
          // Do it again
          using (var pop3Server = CreateServer())
          {
@@ -150,9 +148,9 @@ namespace RegressionTests.POP3
             pop3Server.WaitForCompletion();
             LockHelper.WaitForUnlock(fetchAccount);
          }
-         
 
-            // Do it again, to make sure 
+
+         // Do it again, to make sure 
          using (var pop3Server = CreateServer())
          {
             pop3Server.SendBufferMode = Pop3ServerSimulator.BufferMode.MessageAndTerminatonTogether;
@@ -168,8 +166,6 @@ namespace RegressionTests.POP3
 
          StringAssert.Contains("Received: from example.com", downloadedMessage);
          StringAssert.Contains("Hello!", downloadedMessage);
-
       }
-
    }
 }

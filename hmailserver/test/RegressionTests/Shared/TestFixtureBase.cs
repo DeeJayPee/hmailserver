@@ -11,7 +11,7 @@ namespace RegressionTests.Shared
    public class TestFixtureBase
    {
       protected Application _application;
-      protected Domain _domain;  
+      protected Domain _domain;
       protected Settings _settings;
 
       [OneTimeSetUp]

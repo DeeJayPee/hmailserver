@@ -10,15 +10,11 @@ namespace RegressionTests.Infrastructure
    [TestFixture]
    public class BasicTests : TestFixtureBase
    {
-      #region Setup/Teardown
-
       [SetUp]
       public new void SetUp()
       {
          SingletonProvider<TestSetup>.Instance.DisableSpamProtection();
       }
-
-      #endregion
 
       [Test]
       public void TestAliases()
@@ -76,21 +72,23 @@ namespace RegressionTests.Infrastructure
          var account3 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mirror3@example.test", "test");
 
          var mirrorAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mirror-test@example.test",
-                                                                                  "test");
+            "test");
 
          _settings.MirrorEMailAddress = "mirror-test@example.test";
          _settings.AddDeliveredToHeader = true;
 
          // Send 5 messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("test@example.test", new List<string> {account1.Address, account2.Address, account3.Address},
-                    "INBOX", "Mirror test message");
+         smtpClientSimulator.Send("test@example.test",
+            new List<string> { account1.Address, account2.Address, account3.Address },
+            "INBOX", "Mirror test message");
 
          Pop3ClientSimulator.AssertMessageCount(mirrorAccount.Address, "test", 1);
 
          var message = Pop3ClientSimulator.AssertGetFirstMessageText(mirrorAccount.Address, "test");
 
-         Assert.IsTrue(message.Contains("Delivered-To: mirror1@example.test,mirror2@example.test,mirror3@example.test"));
+         Assert.IsTrue(
+            message.Contains("Delivered-To: mirror1@example.test,mirror2@example.test,mirror3@example.test"));
 
          CustomAsserts.AssertRecipientsInDeliveryQueue(0);
       }
@@ -110,7 +108,7 @@ namespace RegressionTests.Infrastructure
          }
 
          var mirrorAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mirror-test@example.test",
-                                                                                  "test");
+            "test");
 
          _settings.MirrorEMailAddress = "mirror-test@example.test";
          _settings.AddDeliveredToHeader = true;

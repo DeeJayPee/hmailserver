@@ -9,9 +9,6 @@ namespace RegressionTests.SMTP
    [TestFixture]
    public class SMTPClientStartTLSTests : TestFixtureBase
    {
-      private Status _status;
-      private Account _account;
-
       [SetUp]
       public new void SetUp()
       {
@@ -19,6 +16,9 @@ namespace RegressionTests.SMTP
 
          _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
       }
+
+      private Status _status;
+      private Account _account;
 
       [Test]
       public void UseStartTlsIfEnabledAndAvailable()
@@ -33,7 +33,8 @@ namespace RegressionTests.SMTP
             server.AddRecipientResult(deliveryResults);
             server.StartListen();
 
-            var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false, eConnectionSecurity.eCSSTARTTLSOptional);
+            var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false,
+               eConnectionSecurity.eCSSTARTTLSOptional);
 
             // Send message to this route.
             var smtp = new SmtpClientSimulator();
@@ -63,7 +64,8 @@ namespace RegressionTests.SMTP
             server.AddRecipientResult(deliveryResults);
             server.StartListen();
 
-            var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false, eConnectionSecurity.eCSSTARTTLSOptional);
+            var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false,
+               eConnectionSecurity.eCSSTARTTLSOptional);
 
             // Send message to this route.
             var smtp = new SmtpClientSimulator();
@@ -98,7 +100,7 @@ namespace RegressionTests.SMTP
             // Send message to this route.
             var smtp = new SmtpClientSimulator();
             smtp.Send("test@example.test", "test@dummy-example.com", "Test", "Test message");
-               
+
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
@@ -141,17 +143,16 @@ namespace RegressionTests.SMTP
          }
       }
 
-      
 
       [Test]
       public void TestDelivertoServerNotSupportingEHLOOptionalConnectionSecurity()
       {
          Assert.AreEqual(0, _status.UndeliveredMessages.Length);
 
-         var deliveryResults = new Dictionary<string, int>()
-            {
-               {"user1@dummy-example.com", 250}
-            };
+         var deliveryResults = new Dictionary<string, int>
+         {
+            { "user1@dummy-example.com", 250 }
+         };
 
          var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
@@ -181,10 +182,10 @@ namespace RegressionTests.SMTP
       {
          Assert.AreEqual(0, _status.UndeliveredMessages.Length);
 
-         var deliveryResults = new Dictionary<string, int>()
-            {
-               {"user1@dummy-example.com", 250}
-            };
+         var deliveryResults = new Dictionary<string, int>
+         {
+            { "user1@dummy-example.com", 250 }
+         };
 
          var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))

@@ -36,7 +36,7 @@ namespace RegressionTests.SSL
          _application.Start();
 
          CustomAsserts.AssertReportedError("The private key file has a password. hMailServer does not support this.",
-                                       "Failed to load private key file.");
+            "Failed to load private key file.");
 
          SingletonProvider<TestSetup>.Instance.PerformBasicSetup();
       }

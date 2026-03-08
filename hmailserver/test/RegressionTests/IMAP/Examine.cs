@@ -55,7 +55,7 @@ namespace RegressionTests.IMAP
 
       [Test]
       [Description("Assert that the \\SEEN flag isn't automatically changed when accessing a message in READONLY-mode"
-         )]
+      )]
       public void TestChangeSeenFlag()
       {
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "examine@example.test", "test");

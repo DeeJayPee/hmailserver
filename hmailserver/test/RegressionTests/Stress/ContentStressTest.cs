@@ -22,25 +22,25 @@ namespace RegressionTests.Stress
          for (var i = 0; i < 11000; i++) sb.Append("1234567890");
 
          var sim = new SmtpClientSimulator();
-         CustomAsserts.Throws<DeliveryFailedException>(() => sim.SendRaw("test@example.test", "test@example.test", sb.ToString()));
+         CustomAsserts.Throws<DeliveryFailedException>(() =>
+            sim.SendRaw("test@example.test", "test@example.test", sb.ToString()));
       }
 
 
       /// <summary>
       ///    RFC 2683, 3.2.1.5. Long Command Lines
-      ///       A client should limit the length of the command lines it generates to
-      ///       approximately 1000 octets (including all quoted strings but not
-      ///       including literals).  If the client is unable to group things into
-      ///       ranges so that the command line is within that length, it should
-      ///       split the request into multiple commands.  The client should use
-      ///       literals instead of long quoted strings, in order to keep the command
-      ///       length down.
-      ///
-      ///       For its part, a server should allow for a command line of at least
-      ///       8000 octets.  This provides plenty of leeway for accepting reasonable
-      ///       length commands from clients.  The server should send a BAD response
-      ///       to a command that does not end within the server's maximum accepted
-      ///       command length.
+      ///    A client should limit the length of the command lines it generates to
+      ///    approximately 1000 octets (including all quoted strings but not
+      ///    including literals).  If the client is unable to group things into
+      ///    ranges so that the command line is within that length, it should
+      ///    split the request into multiple commands.  The client should use
+      ///    literals instead of long quoted strings, in order to keep the command
+      ///    length down.
+      ///    For its part, a server should allow for a command line of at least
+      ///    8000 octets.  This provides plenty of leeway for accepting reasonable
+      ///    length commands from clients.  The server should send a BAD response
+      ///    to a command that does not end within the server's maximum accepted
+      ///    command length.
       /// </summary>
       [Test]
       public void TestExcessiveDataInIMAPConversation()
@@ -170,8 +170,8 @@ namespace RegressionTests.Stress
       }
 
       /// <summary>
-      /// Test to send a message where the MIME part boundaries overlap.
-      /// i.e. one boundary string is a part of another boundary string.
+      ///    Test to send a message where the MIME part boundaries overlap.
+      ///    i.e. one boundary string is a part of another boundary string.
       /// </summary>
       [Test]
       public void TestOverlappingBoundaryNames()
@@ -261,7 +261,7 @@ namespace RegressionTests.Stress
       {
          var inner = exception.InnerException as SocketException;
          Assert.IsNotNull(inner);
-     
+
 
          Assert.AreEqual(10054, inner.ErrorCode);
       }

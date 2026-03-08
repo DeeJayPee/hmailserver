@@ -14,20 +14,16 @@ namespace RegressionTests.Infrastructure
    [TestFixture]
    public class BackupRestore : TestFixtureBase
    {
-      #region Setup/Teardown
-
       [SetUp]
       public new void SetUp()
       {
          InitializeBackupSettings();
       }
 
-      #endregion
-
       private string _backupDir;
       private static string _folderCreationTime;
       private bool _backupMessages = true;
-      private int _fetchAccountPort = TestSetup.GetNextFreePort();
+      private readonly int _fetchAccountPort = TestSetup.GetNextFreePort();
 
       public void InitializeBackupSettings()
       {
@@ -78,10 +74,7 @@ namespace RegressionTests.Infrastructure
                if (contents.IndexOf("Backup completed successfully") > 0)
                   return true;
 
-               if (contents.IndexOf("BACKUP ERROR:") > 0)
-               {
-                  return false;
-               }
+               if (contents.IndexOf("BACKUP ERROR:") > 0) return false;
             }
             catch (Exception)
             {
@@ -398,7 +391,7 @@ namespace RegressionTests.Infrastructure
          listRecipients.Add("member3@example.test");
 
          var list = SingletonProvider<TestSetup>.Instance.AddDistributionList(domain, "list@example.test",
-                                                                                           listRecipients);
+            listRecipients);
       }
 
       private void SetupGroupObject()
@@ -408,11 +401,11 @@ namespace RegressionTests.Infrastructure
          group.Save();
 
          var gm1 = SingletonProvider<TestSetup>.Instance.AddAccount(_application.Domains[0], "gm1@example.test",
-                                                                        "test");
+            "test");
          var gm2 = SingletonProvider<TestSetup>.Instance.AddAccount(_application.Domains[0], "gm2@example.test",
-                                                                        "test");
+            "test");
          var gm3 = SingletonProvider<TestSetup>.Instance.AddAccount(_application.Domains[0], "gm3@example.test",
-                                                                        "test");
+            "test");
 
          var gm = group.Members.Add();
          gm.AccountID = gm1.ID;
@@ -429,7 +422,8 @@ namespace RegressionTests.Infrastructure
 
       private void SetupAliasObject(Domain domain)
       {
-         var alias = SingletonProvider<TestSetup>.Instance.AddAlias(domain, "alias@example.test", "someone@example.test");
+         var alias = SingletonProvider<TestSetup>.Instance.AddAlias(domain, "alias@example.test",
+            "someone@example.test");
       }
 
       private void SetupAccountObject(Domain domain)
@@ -443,11 +437,11 @@ namespace RegressionTests.Infrastructure
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
 
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Message 2 Subject",
-                                                      "Message 2 Body");
+            "Message 2 Body");
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 2);
 
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Message 3 Subject",
-                                                      "Message 3 Body");
+            "Message 3 Body");
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 3);
 
          var sim = new ImapClientSimulator();

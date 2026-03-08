@@ -26,13 +26,14 @@ namespace RegressionTests.SMTP
          recipients.Add("test@dummy-example.com");
 
          var list3 = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "list@example.test",
-                                                                                             recipients);
+            recipients);
          list3.Mode = eDistributionListMode.eLMAnnouncement;
          list3.RequireSenderAddress = "test@dummy-example.com";
          list3.Save();
 
          // THIS MESSAGE SHOULD FAIL
-         CustomAsserts.Throws<DeliveryFailedException>(()=> smtpClientSimulator.Send("test@example.test", "list@example.test", "Mail 1", "Mail 1"));
+         CustomAsserts.Throws<DeliveryFailedException>(() =>
+            smtpClientSimulator.Send("test@example.test", "list@example.test", "Mail 1", "Mail 1"));
 
          var domainAlias = _domain.DomainAliases.Add();
          domainAlias.AliasName = "dummy-example.com";
@@ -98,7 +99,8 @@ namespace RegressionTests.SMTP
          recipients.Add("recipient2@example.test");
          recipients.Add("recipient3@example.test");
 
-         var list = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "list1@example.test", recipients);
+         var list = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "list1@example.test",
+            recipients);
 
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "recipient1@example.test", "test");
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "recipient2@example.test", "test");
@@ -113,7 +115,7 @@ namespace RegressionTests.SMTP
 
          var smtpClient = new SmtpClientSimulator();
          smtpClient.Send("test@example.test", list.Address, "Mail 1", "Mail 1");
-         
+
          foreach (var recipientAddress in recipients)
             ImapClientSimulator.AssertMessageCount(recipientAddress, "test", "Inbox", 1);
       }
@@ -127,7 +129,8 @@ namespace RegressionTests.SMTP
          recipients.Add("recipient2@example.test");
          recipients.Add("recipient3@example.test");
 
-         var list = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "list1@example.test", recipients);
+         var list = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "list1@example.test",
+            recipients);
 
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "recipient1@example.test", "test");
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "recipient2@example.test", "test");
@@ -142,7 +145,8 @@ namespace RegressionTests.SMTP
          list.Save();
 
          var smtpClient = new SmtpClientSimulator();
-         CustomAsserts.Throws<DeliveryFailedException>(() => smtpClient.Send("test@example.test", list.Address, "Mail 1", "Mail 1"));
+         CustomAsserts.Throws<DeliveryFailedException>(() =>
+            smtpClient.Send("test@example.test", list.Address, "Mail 1", "Mail 1"));
          smtpClient.Send(announcer.Address, list.Address, "Mail 1", "Mail 1");
 
          foreach (var recipientAddress in recipients)
@@ -157,7 +161,8 @@ namespace RegressionTests.SMTP
          recipients.Add("recipient2@example.test");
          recipients.Add("recipient3@example.test");
 
-         var list = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "list1@example.test", recipients);
+         var list = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "list1@example.test",
+            recipients);
 
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "recipient1@example.test", "test");
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "recipient2@example.test", "test");
@@ -172,8 +177,10 @@ namespace RegressionTests.SMTP
          list.Save();
 
          var smtpClient = new SmtpClientSimulator();
-         CustomAsserts.Throws<DeliveryFailedException>(() => smtpClient.Send("test@example.test", list.Address, "Mail 1", "Mail 1"));
-         CustomAsserts.Throws<DeliveryFailedException>(() => smtpClient.Send(announcer.Address, list.Address, "Mail 1", "Mail 1"));
+         CustomAsserts.Throws<DeliveryFailedException>(() =>
+            smtpClient.Send("test@example.test", list.Address, "Mail 1", "Mail 1"));
+         CustomAsserts.Throws<DeliveryFailedException>(() =>
+            smtpClient.Send(announcer.Address, list.Address, "Mail 1", "Mail 1"));
          smtpClient.Send(recipients[0], list.Address, "Mail 1", "Mail 1");
 
          foreach (var recipientAddress in recipients)
@@ -188,7 +195,8 @@ namespace RegressionTests.SMTP
          recipients.Add("recipient2@example.test");
          recipients.Add("recipient3@example.test");
 
-         var list = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "list1@example.test", recipients);
+         var list = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "list1@example.test",
+            recipients);
 
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "recipient1@example.test", "test");
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "recipient2@example.test", "test");
@@ -202,11 +210,12 @@ namespace RegressionTests.SMTP
          list.Save();
 
          var smtpClient = new SmtpClientSimulator();
-         
+
          Assert.DoesNotThrow(() => smtpClient.Send("test@example.test", list.Address, "Mail 1", "Mail 1"));
          Assert.DoesNotThrow(() => smtpClient.Send("non-existent@example.test", list.Address, "Mail 1", "Mail 1"));
 
-         CustomAsserts.Throws<DeliveryFailedException>(() => smtpClient.Send("external@example.com", list.Address, "Mail 1", "Mail 1"));
+         CustomAsserts.Throws<DeliveryFailedException>(() =>
+            smtpClient.Send("external@example.com", list.Address, "Mail 1", "Mail 1"));
 
          foreach (var recipientAddress in recipients)
             ImapClientSimulator.AssertMessageCount(recipientAddress, "test", "Inbox", 2);
@@ -239,12 +248,13 @@ namespace RegressionTests.SMTP
          recipients.Add("vaffe@dummy-example.com");
 
          var list3 = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "list@example.test",
-                                                                                             recipients);
+            recipients);
          list3.Mode = eDistributionListMode.eLMMembership;
          list3.Save();
 
          // THIS MESSAGE SHOULD FAIL - Membership required, unknown sender domain
-         CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send("account1@dummy-example.com", "list@example.test", "Mail 1", "Mail 1"));
+         CustomAsserts.Throws<DeliveryFailedException>(() =>
+            smtpClientSimulator.Send("account1@dummy-example.com", "list@example.test", "Mail 1", "Mail 1"));
 
          list3.Delete();
 
@@ -277,45 +287,48 @@ namespace RegressionTests.SMTP
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "outsider1@example.test", "test");
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "outsider2@example.test", "test");
 
-         var daRecipients = new List<string>()
-            {
-               "db@example.test",
-               "dc@example.test"               
-            };
+         var daRecipients = new List<string>
+         {
+            "db@example.test",
+            "dc@example.test"
+         };
 
          var dbRecipients = new List<string>
-            {
-               "acc2@example.test",
-               "acc3@example.test",
-            };
+         {
+            "acc2@example.test",
+            "acc3@example.test"
+         };
 
          var dcRecipients = new List<string>
-            {
-               "acc2@example.test",
-               "acc3@example.test",
-            };
+         {
+            "acc2@example.test",
+            "acc3@example.test"
+         };
 
-         var daList = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "da@example.test", daRecipients);
+         var daList =
+            SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "da@example.test", daRecipients);
          daList.Mode = eDistributionListMode.eLMPublic;
          daList.Save();
-         
-         var dbList = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "db@example.test", dbRecipients);
+
+         var dbList =
+            SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "db@example.test", dbRecipients);
          dbList.Mode = eDistributionListMode.eLMPublic;
          dbList.Save();
 
-         var dcList = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "dc@example.test", dcRecipients);
+         var dcList =
+            SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "dc@example.test", dcRecipients);
          dbList.Mode = eDistributionListMode.eLMPublic;
          dbList.Save();
 
-         var recipients = new List<string>()
-            {
-               "da@example.test",
-               "outsider1@example.test",
-               "outsider2@example.test"               
-            };
+         var recipients = new List<string>
+         {
+            "da@example.test",
+            "outsider1@example.test",
+            "outsider2@example.test"
+         };
 
          var smtpClient = new SmtpClientSimulator();
-         smtpClient.Send(test.Address, recipients, "test" , "test");
+         smtpClient.Send(test.Address, recipients, "test", "test");
 
          ImapClientSimulator.AssertMessageCount("acc2@example.test", "test", "Inbox", 1); // Member in list
          ImapClientSimulator.AssertMessageCount("acc3@example.test", "test", "Inbox", 1); // Member in list

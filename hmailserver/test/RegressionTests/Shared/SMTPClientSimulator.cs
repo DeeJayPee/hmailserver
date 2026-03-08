@@ -10,7 +10,7 @@ using System.Text;
 namespace RegressionTests.Shared
 {
    /// <summary>
-   /// Summary description for SMTPSimulator.
+   ///    Summary description for SMTPSimulator.
    /// </summary>
    public class SmtpClientSimulator
    {
@@ -26,13 +26,11 @@ namespace RegressionTests.Shared
       public SmtpClientSimulator(bool useSSL, int port) :
          this(useSSL, port, IPAddress.Parse("127.0.0.1"))
       {
-
       }
 
       public SmtpClientSimulator(bool useSSL, int port, IPAddress ipaddress) :
          this(useSSL, SslProtocols.Default, port, ipaddress)
       {
-
       }
 
       public SmtpClientSimulator(bool useSSL, SslProtocols sslProtocols, int port, IPAddress ipaddress)
@@ -73,7 +71,7 @@ namespace RegressionTests.Shared
          errorMessage = SendAndReceive(base64Password + "\r\n");
          if (!errorMessage.StartsWith("235"))
             return false;
-         
+
          return true;
       }
 
@@ -112,9 +110,7 @@ namespace RegressionTests.Shared
       public void Send(string sFrom, List<string> lstRecipients, string sSubject, string sBody)
       {
          if (!_tcpConnection.Connect(_ipaddress, _port))
-         {
             throw new DeliveryFailedException("Failed to connect to server");
-         }
 
          // Receive welcome message.
          var sData = _tcpConnection.Receive();
@@ -169,12 +165,10 @@ namespace RegressionTests.Shared
 
          // Quit again
          _tcpConnection.Send("QUIT\r\n");
-         
+
          sData = _tcpConnection.Receive();
 
          _tcpConnection.Disconnect();
-
-         
       }
 
       public void Send(string sFrom, string sTo, string sSubject, string sBody)
@@ -189,7 +183,8 @@ namespace RegressionTests.Shared
          Send(false, "", "", sFrom, sTo, sSubject, sBody, out result);
       }
 
-      public void Send(bool useStartTls, string username, string password, string sFrom, string sTo, string sSubject, string sBody, out string errorMessage)
+      public void Send(bool useStartTls, string username, string password, string sFrom, string sTo, string sSubject,
+         string sBody, out string errorMessage)
       {
          string sData;
 
@@ -214,10 +209,8 @@ namespace RegressionTests.Shared
          }
 
          if (!string.IsNullOrEmpty(username))
-         {
             if (!Logon(EncodeBase64(username), EncodeBase64(password), out errorMessage))
                throw new DeliveryFailedException("Login failed: " + errorMessage);
-         }
 
          _tcpConnection.Send("HELO example.com\r\n");
          var helloResponse = _tcpConnection.Receive();
@@ -324,7 +317,6 @@ namespace RegressionTests.Shared
          sData = _tcpConnection.Receive();
 
          _tcpConnection.Disconnect();
-
       }
 
       public static void StaticSend(string sFrom, List<string> lstRecipients, string sSubject, string sBody)
@@ -353,7 +345,6 @@ namespace RegressionTests.Shared
          var bytes = Encoding.UTF8.GetBytes(s);
          return Convert.ToBase64String(bytes);
       }
-
 
 
       private static string GetCurrentMIMEDateTime()
@@ -429,11 +420,9 @@ namespace RegressionTests.Shared
 
          var timeString = now.ToString("HH':'mm':'ss");
          var dateString = string.Format("{0}, {1} {2} {3} {4} +0100", dayOfWeek, now.Day, monthName, now.Year,
-                                           timeString);
+            timeString);
 
          return dateString;
       }
-
-      
    }
 }

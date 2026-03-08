@@ -21,7 +21,6 @@ namespace RegressionTests.Infrastructure.Persistence
 
          var ex = Assert.Throws<COMException>(() => port.Save());
          StringAssert.Contains("Certificate must be specified.", ex.Message);
-
       }
 
       [Test]

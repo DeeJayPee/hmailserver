@@ -11,16 +11,12 @@ namespace RegressionTests.Security
    [TestFixture]
    public class AutoBan : TestFixtureBase
    {
-      #region Setup/Teardown
-
       [SetUp]
       public new void SetUp()
       {
          _settings.ClearLogonFailureList();
          LogHandler.DeleteCurrentDefaultLog();
       }
-
-      #endregion
 
       [Test]
       public void TestDisabled()
@@ -178,7 +174,8 @@ namespace RegressionTests.Security
          // fail to log on 3 times.
          for (var i = 0; i < 2; i++)
          {
-            CustomAsserts.Throws<Exception>(() => sim.ConnectAndLogon("dGVzdEBleGFtcGxlLnRlc3Q=", "Vaffe==", out errorMessage));
+            CustomAsserts.Throws<Exception>(() =>
+               sim.ConnectAndLogon("dGVzdEBleGFtcGxlLnRlc3Q=", "Vaffe==", out errorMessage));
             sim.Disconnect();
 
             if (i == 2) Assert.IsTrue(errorMessage.Contains("Too many invalid logon attempts."));

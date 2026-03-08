@@ -41,13 +41,15 @@ namespace RegressionTests.Infrastructure.Persistence
       [Test]
       public void TestAccountContainingSpaceInMailboxNameWithQuotes()
       {
-         AssertInvalidEmailAddress("\"JohnSmith\"@example.test", "Failed to save object. The account address may not contain spaces or quotes.");
+         AssertInvalidEmailAddress("\"JohnSmith\"@example.test",
+            "Failed to save object. The account address may not contain spaces or quotes.");
       }
 
       [Test]
       public void TestAccountContainingSpaceInMailboxNameWithQuoteAndSpace()
       {
-         AssertInvalidEmailAddress("\"John Smith\"@example.test", "Failed to save object. The account address may not contain spaces or quotes.");
+         AssertInvalidEmailAddress("\"John Smith\"@example.test",
+            "Failed to save object. The account address may not contain spaces or quotes.");
       }
 
       [Test]
@@ -103,13 +105,17 @@ namespace RegressionTests.Infrastructure.Persistence
       {
          AssertInvalidEmailAddress("");
 
-         var exception = Assert.Throws<COMException>(() => SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@other.example.com", "secret"));
-         Assert.AreEqual("Failed to save object. The account address domain does not match the owning domain name.", exception.Message);
+         var exception = Assert.Throws<COMException>(() =>
+            SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@other.example.com", "secret"));
+         Assert.AreEqual("Failed to save object. The account address domain does not match the owning domain name.",
+            exception.Message);
       }
 
-      private void AssertInvalidEmailAddress(string address, string expectedErrorMessage = "Failed to save object. The account address is not a valid email address.")
+      private void AssertInvalidEmailAddress(string address,
+         string expectedErrorMessage = "Failed to save object. The account address is not a valid email address.")
       {
-         var exception = Assert.Throws<COMException>(() => SingletonProvider<TestSetup>.Instance.AddAccount(_domain, address, "secret"));
+         var exception = Assert.Throws<COMException>(() =>
+            SingletonProvider<TestSetup>.Instance.AddAccount(_domain, address, "secret"));
          Assert.AreEqual(expectedErrorMessage, exception.Message);
       }
 

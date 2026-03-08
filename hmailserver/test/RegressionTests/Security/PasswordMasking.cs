@@ -17,8 +17,6 @@ namespace RegressionTests.Security
    [TestFixture]
    public class PasswordMasking : TestFixtureBase
    {
-      #region Setup/Teardown
-
       [SetUp]
       public new void SetUp()
       {
@@ -27,8 +25,6 @@ namespace RegressionTests.Security
          if (File.Exists(logFile))
             File.Delete(logFile);
       }
-
-      #endregion
 
       private Status _status;
 
@@ -121,8 +117,8 @@ namespace RegressionTests.Security
       {
          var sim = new ImapClientSimulator();
          sim.Connect();
-         Assert.IsTrue(sim.Send("a01 login {" + GetUsername().Length.ToString() + "} {4}").StartsWith("+"));
-         Assert.IsTrue(sim.Send(GetUsername() + " {" + GetPassword().Length.ToString() + "}").StartsWith("+"));
+         Assert.IsTrue(sim.Send("a01 login {" + GetUsername().Length + "} {4}").StartsWith("+"));
+         Assert.IsTrue(sim.Send(GetUsername() + " {" + GetPassword().Length + "}").StartsWith("+"));
          sim.Send(GetPassword());
          EnsureNoPassword();
       }
@@ -232,8 +228,9 @@ namespace RegressionTests.Security
          var sim = new SmtpClientSimulator();
          string errorMsg;
 
-         CustomAsserts.Throws<AuthenticationException>(() => sim.ConnectAndLogon(GetUsername(), GetPassword(), out errorMsg));
-         
+         CustomAsserts.Throws<AuthenticationException>(() =>
+            sim.ConnectAndLogon(GetUsername(), GetPassword(), out errorMsg));
+
          EnsureNoPassword();
       }
 

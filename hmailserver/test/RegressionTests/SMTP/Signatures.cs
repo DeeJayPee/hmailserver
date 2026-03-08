@@ -13,13 +13,13 @@ namespace RegressionTests.SMTP
    [TestFixture]
    public class Signatures : TestFixtureBase
    {
-      private Account _account;
-
       [SetUp]
       public new void SetUp()
       {
          _account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "signature@example.test", "test");
       }
+
+      private Account _account;
 
       [Test]
       public void TestAccountSignatureMacro()
@@ -34,7 +34,7 @@ namespace RegressionTests.SMTP
          _account.Save();
 
          SmtpClientSimulator.StaticSend(_account.Address, _account.Address, "Test of signature, 2",
-                                        "Test of signature - Body");
+            "Test of signature - Body");
 
          var sMessageData = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
 
@@ -42,7 +42,7 @@ namespace RegressionTests.SMTP
       }
 
       /// <summary>
-      ///  Test different setups for domain signature.
+      ///    Test different setups for domain signature.
       /// </summary>
       [Test]
       public void TestDomainSignature()
@@ -53,14 +53,15 @@ namespace RegressionTests.SMTP
          _domain.AddSignaturesToLocalMail = true;
 
          var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "domainsignature@example.test",
-                                                                              "test");
+            "test");
          account1.SignatureEnabled = true;
          account1.SignaturePlainText = "PlainTextSignature";
          account1.Save();
 
 
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send(account1.Address, account1.Address, "Test of signature, 1", "Test of signature - Body");
+         smtpClientSimulator.Send(account1.Address, account1.Address, "Test of signature, 1",
+            "Test of signature - Body");
 
          var sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
          if (sMessageContents.IndexOf("PlainTextSignature") <= 0)
@@ -71,7 +72,8 @@ namespace RegressionTests.SMTP
          _domain.SignaturePlainText = "DomainSignature";
          _domain.SignatureMethod = eDomainSignatureMethod.eSMAppendToAccountSignature;
          _domain.Save();
-         smtpClientSimulator.Send(account1.Address, account1.Address, "Test of signature, 1", "Test of signature - Body");
+         smtpClientSimulator.Send(account1.Address, account1.Address, "Test of signature, 1",
+            "Test of signature - Body");
 
          sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
          if (sMessageContents.IndexOf("PlainTextSignature") <= 0 ||
@@ -83,7 +85,8 @@ namespace RegressionTests.SMTP
          _domain.SignaturePlainText = "DomainSignature";
          _domain.SignatureMethod = eDomainSignatureMethod.eSMOverwriteAccountSignature;
          _domain.Save();
-         smtpClientSimulator.Send(account1.Address, account1.Address, "Test of signature, 1", "Test of signature - Body");
+         smtpClientSimulator.Send(account1.Address, account1.Address, "Test of signature, 1",
+            "Test of signature - Body");
 
          sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
          if (sMessageContents.IndexOf("PlainTextSignature") >= 0 ||
@@ -95,7 +98,8 @@ namespace RegressionTests.SMTP
          _domain.SignaturePlainText = "DomainSignature";
          _domain.SignatureMethod = eDomainSignatureMethod.eSMSetIfNotSpecifiedInAccount;
          _domain.Save();
-         smtpClientSimulator.Send(account1.Address, account1.Address, "Test of signature, 1", "Test of signature - Body");
+         smtpClientSimulator.Send(account1.Address, account1.Address, "Test of signature, 1",
+            "Test of signature - Body");
 
          sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
          if (sMessageContents.IndexOf("DomainSignature") >= 0)
@@ -109,7 +113,8 @@ namespace RegressionTests.SMTP
          account1.SignaturePlainText = "";
          account1.Save();
 
-         smtpClientSimulator.Send(account1.Address, account1.Address, "Test of signature, 1", "Test of signature - Body");
+         smtpClientSimulator.Send(account1.Address, account1.Address, "Test of signature, 1",
+            "Test of signature - Body");
 
          sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
          if (sMessageContents.IndexOf("DomainSignature") <= 0)
@@ -120,7 +125,8 @@ namespace RegressionTests.SMTP
          _domain.Save();
          account1.SignaturePlainText = "PlainTextSignature";
          account1.Save();
-         smtpClientSimulator.Send(account1.Address, account1.Address, "Test of signature, 1", "Test of signature - Body");
+         smtpClientSimulator.Send(account1.Address, account1.Address, "Test of signature, 1",
+            "Test of signature - Body");
 
          sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
          if (sMessageContents.IndexOf("PlainTextSignature") > 0)
@@ -129,7 +135,8 @@ namespace RegressionTests.SMTP
          _domain.AddSignaturesToLocalMail = true;
          _domain.Save();
 
-         smtpClientSimulator.Send(account1.Address, account1.Address, "Test of signature, 1", "Test of signature - Body");
+         smtpClientSimulator.Send(account1.Address, account1.Address, "Test of signature, 1",
+            "Test of signature - Body");
 
          sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
          if (sMessageContents.IndexOf("PlainTextSignature") <= 0)
@@ -150,7 +157,7 @@ namespace RegressionTests.SMTP
          _account.Save();
 
          SmtpClientSimulator.StaticSend(_account.Address, _account.Address, "Test of signature, 2",
-                                        "Test of signature - Body");
+            "Test of signature - Body");
 
          var sMessageData = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
 
@@ -165,7 +172,8 @@ namespace RegressionTests.SMTP
 
          _account.SignatureEnabled = true;
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send(_account.Address, _account.Address, "Test of signature, 1", "Test of signature - Body");
+         smtpClientSimulator.Send(_account.Address, _account.Address, "Test of signature, 1",
+            "Test of signature - Body");
 
          var sMessageData = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
 
@@ -174,7 +182,8 @@ namespace RegressionTests.SMTP
 
          _account.SignaturePlainText = "PlainTextSignature";
          _account.Save();
-         smtpClientSimulator.Send(_account.Address, _account.Address, "Test of signature, 2", "Test of signature - Body");
+         smtpClientSimulator.Send(_account.Address, _account.Address, "Test of signature, 2",
+            "Test of signature - Body");
 
 
          sMessageData = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
@@ -186,7 +195,8 @@ namespace RegressionTests.SMTP
          _account.SignatureEnabled = false;
          _account.Save();
 
-         smtpClientSimulator.Send(_account.Address, _account.Address, "Test of signature, 2", "Test of signature - Body");
+         smtpClientSimulator.Send(_account.Address, _account.Address, "Test of signature, 2",
+            "Test of signature - Body");
          sMessageData = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
 
          if (sMessageData.IndexOf("PlainTextSignature") > 0)
@@ -194,7 +204,7 @@ namespace RegressionTests.SMTP
       }
 
       /// <summary>
-      /// Check that domain signature is not added to message sent from external domain.
+      ///    Check that domain signature is not added to message sent from external domain.
       /// </summary>
       [Test]
       public void TestSignatureExternalDomain()
@@ -207,7 +217,8 @@ namespace RegressionTests.SMTP
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "list@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("nonexistant@dummy-example.com", account.Address, "SignatureTest", "SignaturerTestBody");
+         smtpClientSimulator.Send("nonexistant@dummy-example.com", account.Address, "SignatureTest",
+            "SignaturerTestBody");
 
          var messageData = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
 
@@ -215,8 +226,8 @@ namespace RegressionTests.SMTP
       }
 
       /// <summary>
-      ///  Check that domain signature is added to mail sent from local domain but non-existent account.
-      ///  This may be the case if an email is sent for example from an alias address.
+      ///    Check that domain signature is added to mail sent from local domain but non-existent account.
+      ///    This may be the case if an email is sent for example from an alias address.
       /// </summary>
       [Test]
       public void TestSignatureLocalDomainNonExistantAccount()
@@ -229,7 +240,8 @@ namespace RegressionTests.SMTP
          var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "list@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("nonexistant@" + _domain.Name, account.Address, "SignatureTest", "SignaturerTestBody");
+         smtpClientSimulator.Send("nonexistant@" + _domain.Name, account.Address, "SignatureTest",
+            "SignaturerTestBody");
 
          var messageData = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
 
@@ -237,8 +249,8 @@ namespace RegressionTests.SMTP
       }
 
       /// <summary>
-      ///  Test a combination of external accounts and signature macros. If this test fails,
-      ///  something is terrible broken with the signature functionality...
+      ///    Test a combination of external accounts and signature macros. If this test fails,
+      ///    something is terrible broken with the signature functionality...
       /// </summary>
       [Test]
       public void TestSignatureMacroLocalDomainNonExistantAccount()
@@ -252,7 +264,8 @@ namespace RegressionTests.SMTP
          account.PersonFirstName = "Martin";
 
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("nonexistant@" + _domain.Name, account.Address, "SignatureTest", "SignaturerTestBody");
+         smtpClientSimulator.Send("nonexistant@" + _domain.Name, account.Address, "SignatureTest",
+            "SignaturerTestBody");
 
          var messageData = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
 
@@ -260,7 +273,7 @@ namespace RegressionTests.SMTP
       }
 
       [Test]
-      public void  TestMimeModificationEmailWithPlaintextAttachment()
+      public void TestMimeModificationEmailWithPlaintextAttachment()
       {
          var message = SendMessageWithSignature("PlainTextSignature", "HtmlSignature",
             TestResources.EmailWith_TextPlainBody_TextHtmlBody_TextPlainAttachment);
@@ -333,7 +346,6 @@ namespace RegressionTests.SMTP
 
          Assert.AreEqual("", message.Body);
          Assert.IsTrue(message.HTMLBody.Contains("<b>HtmlBody</b>\r\n\r\n<br/>\r\nHtmlSignature"), message.HTMLBody);
-         
       }
 
       [Test]
@@ -344,7 +356,6 @@ namespace RegressionTests.SMTP
 
          Assert.IsTrue(message.Body.Contains("PlainTextBody\r\n\r\nPlainTextSignature"), message.Body);
          Assert.IsTrue(message.HTMLBody.Contains("<b>HtmlBody</b>\r\n<br/>\r\nHtmlSignature"), message.HTMLBody);
-
       }
 
 
@@ -361,8 +372,6 @@ namespace RegressionTests.SMTP
          SmtpClientSimulator.StaticSendRaw(_account.Address, _account.Address, message);
 
          return CustomAsserts.AssertGetFirstMessage(_account, "Inbox");
-
-
       }
    }
 }

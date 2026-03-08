@@ -181,7 +181,7 @@ namespace RegressionTests.IMAP
       }
 
       /// <summary>
-      ///  Tests that the LSUB resposne doesn't contain an empty line if a folder is not subscribed to.
+      ///    Tests that the LSUB resposne doesn't contain an empty line if a folder is not subscribed to.
       /// </summary>
       [Test]
       public void TestFolderLSUBUnsubscribedFolder()
@@ -200,9 +200,9 @@ namespace RegressionTests.IMAP
 
 
       /// <summary>
-      /// Test that folder names in the LSUB response are put in quotes.
-      /// This is how gmail acts, and Thunderbird crashes if a folder name
-      /// is * without quotes.
+      ///    Test that folder names in the LSUB response are put in quotes.
+      ///    This is how gmail acts, and Thunderbird crashes if a folder name
+      ///    is * without quotes.
       /// </summary>
       [Test]
       public void TestFolderQuote()
@@ -345,7 +345,7 @@ namespace RegressionTests.IMAP
       }
 
       /// <summary>
-      ///  Tests that a folder which is not subscribed to isn't included and vice versa.
+      ///    Tests that a folder which is not subscribed to isn't included and vice versa.
       /// </summary>
       [Test]
       public void TestLsubInclusion()

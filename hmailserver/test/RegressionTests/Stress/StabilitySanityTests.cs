@@ -85,7 +85,7 @@ namespace RegressionTests.Stress
             serverSocket.StartListen();
 
             application.Start();
-            
+
             // make sure it's possible to connect to the non blocked port.
 
             sock.IsPortOpen(110);

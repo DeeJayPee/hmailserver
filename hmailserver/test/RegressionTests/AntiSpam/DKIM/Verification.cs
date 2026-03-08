@@ -10,8 +10,6 @@ namespace RegressionTests.AntiSpam.DKIM
    [TestFixture]
    public class Verification : TestFixtureBase
    {
-      #region Setup/Teardown
-      
       [SetUp]
       public new void SetUp()
       {
@@ -19,8 +17,6 @@ namespace RegressionTests.AntiSpam.DKIM
 
          _antiSpam.SpamDeleteThreshold = 5;
       }
-
-      #endregion
 
       private hMailServer.AntiSpam _antiSpam;
 
@@ -31,10 +27,11 @@ namespace RegressionTests.AntiSpam.DKIM
          _antiSpam.DKIMVerificationEnabled = true;
          _antiSpam.DKIMVerificationFailureScore = 100;
 
-         
 
          var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
-         CustomAsserts.Throws<DeliveryFailedException>(() => SmtpClientSimulator.StaticSendRaw(account1.Address, account1.Address, TestResources.MessageWithInvalidDkim));
+         CustomAsserts.Throws<DeliveryFailedException>(() =>
+            SmtpClientSimulator.StaticSendRaw(account1.Address, account1.Address,
+               TestResources.MessageWithInvalidDkim));
       }
 
       [Test]
@@ -61,7 +58,9 @@ namespace RegressionTests.AntiSpam.DKIM
          _antiSpam.DKIMVerificationFailureScore = 100;
 
          var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
-         CustomAsserts.Throws<DeliveryFailedException>(() => SmtpClientSimulator.StaticSendRaw(account1.Address, account1.Address, TestResources.MessageWithInvalidDkim));
+         CustomAsserts.Throws<DeliveryFailedException>(() =>
+            SmtpClientSimulator.StaticSendRaw(account1.Address, account1.Address,
+               TestResources.MessageWithInvalidDkim));
       }
 
       [Test]
@@ -70,7 +69,7 @@ namespace RegressionTests.AntiSpam.DKIM
       {
          _antiSpam.DKIMVerificationEnabled = true;
          _antiSpam.DKIMVerificationFailureScore = 100;
-         
+
          var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSendRaw(account1.Address, account1.Address, TestResources.MessageWithValidDkim);
          var text = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");

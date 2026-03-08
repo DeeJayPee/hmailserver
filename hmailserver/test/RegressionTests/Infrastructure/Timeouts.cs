@@ -10,8 +10,6 @@ namespace RegressionTests.Infrastructure
    [TestFixture]
    public class Timeouts : TestFixtureBase
    {
-      
-
       [Test]
       public void TestImproperDisconnect()
       {

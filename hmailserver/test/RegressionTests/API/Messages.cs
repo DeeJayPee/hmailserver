@@ -29,7 +29,7 @@ namespace RegressionTests.API
          var thirdId = messages[2].ID;
 
          messages.DeleteByDBID(secondId);
-         
+
          Assert.AreEqual(2, messages.Count);
          Assert.AreEqual(firstId, messages[0].ID);
          Assert.AreEqual(thirdId, messages[1].ID);
@@ -37,7 +37,6 @@ namespace RegressionTests.API
          imapClientSimulator.ConnectAndLogon("test@example.test", "test");
          var imapMessageCount = imapClientSimulator.GetMessageCount("Inbox");
          Assert.AreEqual(imapMessageCount, messages.Count);
-
       }
 
       [Test]
@@ -76,6 +75,5 @@ namespace RegressionTests.API
             Assert.IsNotNull(message);
          }
       }
-
    }
 }

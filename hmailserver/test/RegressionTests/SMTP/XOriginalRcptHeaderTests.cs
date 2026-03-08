@@ -10,9 +10,6 @@ namespace RegressionTests.SMTP
    [TestFixture]
    public class XOriginalRcptHeaderTests : TestFixtureBase
    {
-      private const string Password = "test";
-      private static Random random = new Random();
-
       [SetUp]
       public void VerifyFeatureEnabled()
       {
@@ -21,11 +18,14 @@ namespace RegressionTests.SMTP
 
          var isEnabled =
             (from line in File.ReadAllLines(hMailServerFile)
-            where line.StartsWith("AddXOriginalRcptTo") && line.EndsWith("1")
-            select line).Any();
+               where line.StartsWith("AddXOriginalRcptTo") && line.EndsWith("1")
+               select line).Any();
 
          if (!isEnabled) Assert.Inconclusive("Setting AddXOriginalRcptTo is not set to 1.");
       }
+
+      private const string Password = "test";
+      private static readonly Random random = new Random();
 
       [Test]
       public void ShouldAddSingleLocalAddress()
@@ -44,11 +44,11 @@ namespace RegressionTests.SMTP
          var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", Password);
          var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test2@example.test", Password);
 
-         var recipients = new List<string>()
-            {
-               account1.Address,
-               account2.Address
-            };
+         var recipients = new List<string>
+         {
+            account1.Address,
+            account2.Address
+         };
 
          SmtpClientSimulator.StaticSend(account1.Address, recipients, "Test", "Test");
 
@@ -65,7 +65,7 @@ namespace RegressionTests.SMTP
 
          var alias = SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "my-alias@example.test", account3.Address);
 
-         var recipients = new List<string>()
+         var recipients = new List<string>
          {
             account1.Address,
             account2.Address,
@@ -75,7 +75,9 @@ namespace RegressionTests.SMTP
          SmtpClientSimulator.StaticSend(account1.Address, recipients, "Test", "Test");
 
          var text = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, Password);
-         StringAssert.Contains("X-Original-Rcpt-To: my-alias@example.test,test1@example.test,test2@example.test" + Environment.NewLine, text);
+         StringAssert.Contains(
+            "X-Original-Rcpt-To: my-alias@example.test,test1@example.test,test2@example.test" + Environment.NewLine,
+            text);
       }
 
       [Test]
@@ -84,7 +86,8 @@ namespace RegressionTests.SMTP
          var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", Password);
          var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test2@example.test", Password);
 
-         var distributionList = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "my-list@example.test", new List<string>()
+         var distributionList = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain,
+            "my-list@example.test", new List<string>
             {
                account1.Address,
                account2.Address
@@ -100,15 +103,18 @@ namespace RegressionTests.SMTP
       [Test]
       public void ShouldFoldLongLines()
       {
-         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "a-very-very-very-very-very-very-very-very-very-long-address-1@example.test", Password);
-         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "a-very-very-very-very-very-very-very-very-very-long-address-2@example.test", Password);
-         var account3 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "z-very-very-very-very-very-very-very-very-very-long-address-3@example.test", Password);
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+            "a-very-very-very-very-very-very-very-very-very-long-address-1@example.test", Password);
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+            "a-very-very-very-very-very-very-very-very-very-long-address-2@example.test", Password);
+         var account3 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+            "z-very-very-very-very-very-very-very-very-very-long-address-3@example.test", Password);
          var account4 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "short-1@example.test", Password);
          var account5 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "short-2@example.test", Password);
          var account6 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "short-3@example.test", Password);
-         
 
-         var recipients = new List<string>()
+
+         var recipients = new List<string>
          {
             account1.Address,
             account2.Address,
@@ -122,11 +128,13 @@ namespace RegressionTests.SMTP
 
          var text = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, Password);
 
-         var expected = "X-Original-Rcpt-To: a-very-very-very-very-very-very-very-very-very-long-address-1@example.test," + Environment.NewLine +
-	                           "\ta-very-very-very-very-very-very-very-very-very-long-address-2@example.test," + Environment.NewLine +
-                              "\tshort-1@example.test,short-2@example.test,short-3@example.test," + Environment.NewLine +
-	                           "\tz-very-very-very-very-very-very-very-very-very-long-address-3@example.test" + Environment.NewLine;
-         
+         var expected =
+            "X-Original-Rcpt-To: a-very-very-very-very-very-very-very-very-very-long-address-1@example.test," +
+            Environment.NewLine +
+            "\ta-very-very-very-very-very-very-very-very-very-long-address-2@example.test," + Environment.NewLine +
+            "\tshort-1@example.test,short-2@example.test,short-3@example.test," + Environment.NewLine +
+            "\tz-very-very-very-very-very-very-very-very-very-long-address-3@example.test" + Environment.NewLine;
+
          StringAssert.Contains(expected, text);
       }
 
@@ -137,7 +145,7 @@ namespace RegressionTests.SMTP
 
          for (var i = 0; i < 25; i++)
          {
-            var address = "test" + i +  "-" + GenerateRandomNumberString() + "@example.test";
+            var address = "test" + i + "-" + GenerateRandomNumberString() + "@example.test";
             var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, address, Password);
             accountAddresses.Add(address);
 

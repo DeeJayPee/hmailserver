@@ -8,8 +8,6 @@ namespace RegressionTests.AntiVirus
    [TestFixture]
    public class ClamAV : TestFixtureBase
    {
-      #region Setup/Teardown
-
       [SetUp]
       public new void SetUp()
       {
@@ -19,8 +17,6 @@ namespace RegressionTests.AntiVirus
 
          _antiVirus.Action = eAntivirusAction.hDeleteEmail;
       }
-
-      #endregion
 
       private hMailServer.AntiVirus _antiVirus;
 
@@ -33,7 +29,7 @@ namespace RegressionTests.AntiVirus
          var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSend(account1.Address, account1.Address, "Mail 1", "DummyBody");
          Pop3ClientSimulator.AssertMessageCount(account1.Address, "test", 1);
-         
+
          // +OK POP3, since we are connecting to POP3 port
          var defaultLog = LogHandler.ReadCurrentDefaultLog();
          Assert.IsTrue(defaultLog.Contains("No virus detected: +OK POP3"));
@@ -82,7 +78,7 @@ namespace RegressionTests.AntiVirus
          var firstPart = @"X5O!P%@AP[4\PZX54(P^)7CC)7}";
          var secondPart = @"$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
          SmtpClientSimulator.StaticSend(account1.Address, account1.Address, "Mail 1",
-                                                      firstPart + secondPart);
+            firstPart + secondPart);
 
          CustomAsserts.AssertRecipientsInDeliveryQueue(0);
          Pop3ClientSimulator.AssertMessageCount(account1.Address, "test", 0);

@@ -18,15 +18,9 @@ namespace RegressionTests.Shared
 {
    public class TestSetup
    {
-      private Application application;
-      private Settings _settings;
-
       private static int _freePort = 20000;
-
-      public TestSetup()
-      {
-
-      }
+      private Settings _settings;
+      private Application application;
 
       public void Authenticate()
       {
@@ -185,8 +179,8 @@ namespace RegressionTests.Shared
 
          if (!_settings.TlsVersion13Enabled)
          {
-             _settings.TlsVersion13Enabled = true;
-             restartRequired = true;
+            _settings.TlsVersion13Enabled = true;
+            restartRequired = true;
          }
 
 
@@ -211,18 +205,17 @@ namespace RegressionTests.Shared
          if (application.ServerState == eServerState.hStateStopped)
             application.Start();
          else if (application.ServerState == eServerState.hStateRunning)
-         {
             if (restartRequired)
             {
                application.Stop();
                application.Start();
             }
-         }
+
          CustomAsserts.AssertRecipientsInDeliveryQueue(0);
 
          return domain;
       }
-	  
+
       private string GetCipherList()
       {
          return
@@ -407,8 +400,8 @@ namespace RegressionTests.Shared
       {
          var domains = application.Domains;
 
-         while (domains.Count 
-            > 0)
+         while (domains.Count
+                > 0)
          {
             var domain = domains[0];
             domain.Delete();
@@ -474,12 +467,10 @@ namespace RegressionTests.Shared
          var surblServers = antiSpam.SURBLServers;
 
          for (var i = surblServers.Count - 1; i >= 0; i--)
-         {
             if (surblServers[i].DNSHost != "multi.surbl.org")
                surblServers.DeleteByDBID(surblServers[i].ID);
             else
                surblServers[i].Active = false;
-         }
 
          if (surblServers.Count == 0)
          {
@@ -610,7 +601,7 @@ namespace RegressionTests.Shared
          return s;
       }
 
-      
+
       public static string ReadExistingTextFile(string fileName)
       {
          CustomAsserts.AssertFileExists(fileName, false);
@@ -626,10 +617,7 @@ namespace RegressionTests.Shared
                stream.Close();
 
                // Check that some data has actually been read.
-               if (!string.IsNullOrEmpty(contents))
-               {
-                  return contents;
-               }
+               if (!string.IsNullOrEmpty(contents)) return contents;
             }
             catch (Exception ex)
             {
@@ -649,15 +637,9 @@ namespace RegressionTests.Shared
          var iphostentry = Dns.GetHostEntry(Dns.GetHostName());
 
          foreach (var ipaddress in iphostentry.AddressList)
-         {
             if (ipaddress.AddressFamily == AddressFamily.InterNetwork)
-            {
                if (ipaddress.ToString().Contains("192.168."))
-               {
                   return ipaddress;
-               }
-            }
-         }
 
          Assert.Fail("No local internet address found.");
          return null;
@@ -711,7 +693,8 @@ namespace RegressionTests.Shared
       }
 
 
-      internal static Route AddRoutePointingAtLocalhost(int numberOfTries, int port, bool treatSecurityAsLocal, eConnectionSecurity connectionSecurity)
+      internal static Route AddRoutePointingAtLocalhost(int numberOfTries, int port, bool treatSecurityAsLocal,
+         eConnectionSecurity connectionSecurity)
       {
          // Add a route pointing at localhost
          var settings = SingletonProvider<TestSetup>.Instance.GetApp().Settings;
@@ -748,6 +731,5 @@ namespace RegressionTests.Shared
 
          return route;
       }
-
    }
 }

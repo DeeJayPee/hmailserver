@@ -16,7 +16,7 @@ namespace RegressionTests.API
       [Description("Import the same message twice.")]
       public void TestImportDuplicateMessage()
       {
-         var @messageText =
+         var messageText =
             "From: test@example.test\r\n" +
             "\r\n" +
             "Test\r\n";
@@ -42,7 +42,7 @@ namespace RegressionTests.API
       [Description("Import a mail located properly in a sub directory.")]
       public void TestImportOfMessageInInvalidSubName()
       {
-         var @messageText =
+         var messageText =
             "From: test@example.test\r\n" +
             "\r\n" +
             "Test\r\n";
@@ -70,10 +70,10 @@ namespace RegressionTests.API
       [Test]
       [Description(
          "Import all messages in public folders. This must fail, since we don't know what public folder to put it into."
-         )]
+      )]
       public void TestImportOfMessageInPublicFolder()
       {
-         var @messageText =
+         var messageText =
             "From: test@example.test\r\n" +
             "\r\n" +
             "Test\r\n";
@@ -95,7 +95,7 @@ namespace RegressionTests.API
       [Description("Import a mail located properly in a sub directory.")]
       public void TestImportOfMessageInSubdirectory()
       {
-         var @messageText =
+         var messageText =
             "From: test@example.test\r\n" +
             "\r\n" +
             "Test\r\n";
@@ -124,7 +124,7 @@ namespace RegressionTests.API
       [Description("Import a message using the mail importer")]
       public void TestImportOfMessageIntoInbox()
       {
-         var @messageText =
+         var messageText =
             "From: test@example.test\r\n" +
             "\r\n" +
             "Test\r\n";
@@ -150,7 +150,7 @@ namespace RegressionTests.API
       [Description("Import a message using the mail importer")]
       public void TestImportOfMessageIntoInbox2()
       {
-         var @messageText =
+         var messageText =
             "From: test@example.test\r\n" +
             "\r\n" +
             "Test\r\n";
@@ -176,7 +176,7 @@ namespace RegressionTests.API
       [Description("Import a message using the mail importer")]
       public void TestImportOfMessageIntoOtherFolder()
       {
-         var @messageText =
+         var messageText =
             "From: test@example.test\r\n" +
             "\r\n" +
             "Test\r\n";
@@ -224,7 +224,7 @@ namespace RegressionTests.API
 
          // Update the database with the 'invalid' path.
          var sql = string.Format("update hm_messages set messagefilename = '{0}' where messageid = {1}",
-                                    TestSetup.Escape(fileName), message.ID);
+            TestSetup.Escape(fileName), message.ID);
          SingletonProvider<TestSetup>.Instance.GetApp().Database.ExecuteSQL(sql);
 
          // Now try to insert the message.
@@ -260,7 +260,7 @@ namespace RegressionTests.API
 
          // Update the database with the 'invalid' path.
          var sql = string.Format("update hm_messages set messagefilename = '{0}' where messageid = {1}",
-                                    TestSetup.Escape(fileName), message.ID);
+            TestSetup.Escape(fileName), message.ID);
          SingletonProvider<TestSetup>.Instance.GetApp().Database.ExecuteSQL(sql);
 
          Assert.IsTrue(File.Exists(fileName));
@@ -295,7 +295,7 @@ namespace RegressionTests.API
          Assert.IsTrue(File.Exists(filename));
 
          var sql = string.Format("update hm_messages set messagefilename = '{0}' where messageid = {1}",
-                                    TestSetup.Escape(message.Filename), message.ID);
+            TestSetup.Escape(message.Filename), message.ID);
 
          SingletonProvider<TestSetup>.Instance.GetApp().Database.ExecuteSQL(sql);
 

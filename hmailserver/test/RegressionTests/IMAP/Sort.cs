@@ -13,8 +13,6 @@ namespace RegressionTests.IMAP
    [TestFixture]
    public class Sort : TestFixtureBase
    {
-      #region Setup/Teardown
-
       [SetUp]
       public new void SetUp()
       {
@@ -22,8 +20,6 @@ namespace RegressionTests.IMAP
 
          base.SetUp();
       }
-
-      #endregion
 
       [Test]
       [Description("Issue 340, Incorrect date sorting order")]
@@ -38,19 +34,19 @@ namespace RegressionTests.IMAP
 
          var response =
             simulator.SendSingleCommandWithLiteral("A04 APPEND INBOX \"22-Feb-2008 22:00:00 +0200\" {37}",
-                                                    "Date: Wed, 15 Dec 2010 13:00:00 +0000");
+               "Date: Wed, 15 Dec 2010 13:00:00 +0000");
          Assert.IsTrue(response.Contains("* 1 EXISTS"), response);
 
          response = simulator.SendSingleCommandWithLiteral("A04 APPEND INBOX \"22-Feb-2008 21:00:00 +0200\" {37}",
-                                                            "Date: Wed, 15 Dec 2010 14:00:00 +0000");
+            "Date: Wed, 15 Dec 2010 14:00:00 +0000");
          Assert.IsTrue(response.Contains("* 2 EXISTS"), response);
 
          response = simulator.SendSingleCommandWithLiteral("A04 APPEND INBOX \"22-Feb-2008 20:00:00 +0200\" {37}",
-                                                            "Date: Wed, 15 Dec 2010 12:00:00 +0000");
+            "Date: Wed, 15 Dec 2010 12:00:00 +0000");
          Assert.IsTrue(response.Contains("* 3 EXISTS"), response);
 
          response = simulator.SendSingleCommandWithLiteral("A04 APPEND INBOX \"23-Feb-2008 01:30:23 +0200\" {37}",
-                                                            "Date: Wed, 15 Dec 2010 11:00:00 +0000");
+            "Date: Wed, 15 Dec 2010 11:00:00 +0000");
          Assert.IsTrue(response.Contains("* 4 EXISTS"), response);
 
          var sortDateResponse = simulator.SendSingleCommand("A10 SORT (DATE) US-ASCII ALL");
@@ -75,15 +71,15 @@ namespace RegressionTests.IMAP
          Assert.IsTrue(response.Contains("* 1 EXISTS"), response);
 
          response = simulator.SendSingleCommandWithLiteral("A04 APPEND INBOX \"22-Feb-2008 21:00:00 +0200\" {4}",
-                                                            "ABCD");
+            "ABCD");
          Assert.IsTrue(response.Contains("* 2 EXISTS"), response);
 
          response = simulator.SendSingleCommandWithLiteral("A04 APPEND INBOX \"22-Feb-2008 20:00:00 +0200\" {4}",
-                                                            "ABCD");
+            "ABCD");
          Assert.IsTrue(response.Contains("* 3 EXISTS"), response);
 
          response = simulator.SendSingleCommandWithLiteral("A04 APPEND INBOX \"23-Feb-2008 01:30:23 +0200\" {4}",
-                                                            "ABCD");
+            "ABCD");
          Assert.IsTrue(response.Contains("* 4 EXISTS"), response);
 
          /*
@@ -108,7 +104,8 @@ namespace RegressionTests.IMAP
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
          for (var i = 0; i < 5; i++)
-            smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+            smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1",
+               "This is a test of IMAP Search");
 
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 5);
 
@@ -124,7 +121,8 @@ namespace RegressionTests.IMAP
          simulator.Logon("search@example.test", "test");
          Assert.IsTrue(simulator.SelectFolder("INBOX"));
 
-         var result = simulator.SendSingleCommand(string.Format("a01 SORT (REVERSE DATE) UTF-8 ALL UID {0},{1}", second, third));
+         var result =
+            simulator.SendSingleCommand(string.Format("a01 SORT (REVERSE DATE) UTF-8 ALL UID {0},{1}", second, third));
          AssertSortResultContains(result, 2, 3);
 
          result = simulator.SendSingleCommand(string.Format("a01 SORT (DATE) UTF-8 ALL UID {0},{1}", third, second));
@@ -194,13 +192,15 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
 
          // The two messages needs to be sent a second apart, so we actually need to pause a bit here.
 
          Thread.Sleep(1000);
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
@@ -248,9 +248,11 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
@@ -270,9 +272,11 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
@@ -304,18 +308,18 @@ namespace RegressionTests.IMAP
 
          Assert.AreEqual("1 2", simulator.Sort("(DATE) UTF-8 ALL UNANSWERED OR HEADER SUBJECT aa HEADER SUBJECT bb"));
          Assert.AreEqual("1 2",
-                         simulator.Sort("(DATE) UTF-8 ALL UNANSWERED OR (HEADER SUBJECT aa) (HEADER SUBJECT bb)"));
+            simulator.Sort("(DATE) UTF-8 ALL UNANSWERED OR (HEADER SUBJECT aa) (HEADER SUBJECT bb)"));
          Assert.AreEqual("1 2",
-                         simulator.Sort("(DATE) UTF-8 ALL UNANSWERED (OR HEADER SUBJECT aa HEADER SUBJECT bb)"));
+            simulator.Sort("(DATE) UTF-8 ALL UNANSWERED (OR HEADER SUBJECT aa HEADER SUBJECT bb)"));
 
          Assert.AreEqual("1", simulator.Sort("(DATE) UTF-8 ALL UNANSWERED OR HEADER SUBJECT aa HEADER SUBJECT cc"));
          Assert.AreEqual("1",
-                         simulator.Sort("(DATE) UTF-8 ALL UNANSWERED OR (HEADER SUBJECT aa) (HEADER SUBJECT cc)"));
+            simulator.Sort("(DATE) UTF-8 ALL UNANSWERED OR (HEADER SUBJECT aa) (HEADER SUBJECT cc)"));
          Assert.AreEqual("1", simulator.Sort("(DATE) UTF-8 ALL UNANSWERED (OR HEADER SUBJECT aa HEADER SUBJECT cc)"));
 
          Assert.AreEqual("2", simulator.Sort("(DATE) UTF-8 ALL UNANSWERED OR HEADER SUBJECT bb HEADER SUBJECT cc"));
          Assert.AreEqual("2",
-                         simulator.Sort("(DATE) UTF-8 ALL UNANSWERED OR (HEADER SUBJECT bb) (HEADER SUBJECT cc)"));
+            simulator.Sort("(DATE) UTF-8 ALL UNANSWERED OR (HEADER SUBJECT bb) (HEADER SUBJECT cc)"));
          Assert.AreEqual("2", simulator.Sort("(DATE) UTF-8 ALL UNANSWERED (OR HEADER SUBJECT bb HEADER SUBJECT cc)"));
       }
 
@@ -328,9 +332,11 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test2",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();
@@ -354,11 +360,14 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "TestA", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "TestA",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Test1",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 3);
 
          var simulator = new ImapClientSimulator();
@@ -383,9 +392,11 @@ namespace RegressionTests.IMAP
 
          // Send a message to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Te(st1", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Te(st1",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 1);
-         smtpClientSimulator.Send("search@example.test", "search@example.test", "Te)st2", "This is a test of IMAP Search");
+         smtpClientSimulator.Send("search@example.test", "search@example.test", "Te)st2",
+            "This is a test of IMAP Search");
          ImapClientSimulator.AssertMessageCount("search@example.test", "test", "INBOX", 2);
 
          var simulator = new ImapClientSimulator();

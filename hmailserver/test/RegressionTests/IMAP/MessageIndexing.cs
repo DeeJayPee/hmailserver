@@ -14,16 +14,12 @@ namespace RegressionTests.IMAP
    [TestFixture]
    public class MessageIndexing : TestFixtureBase
    {
-      #region Setup/Teardown
-
       [SetUp]
       public new void SetUp()
       {
          _application.Settings.IMAPSortEnabled = true;
          _indexing = _application.Settings.MessageIndexing;
       }
-
-      #endregion
 
       private hMailServer.MessageIndexing _indexing;
 
@@ -42,7 +38,8 @@ namespace RegressionTests.IMAP
             Thread.Sleep(20);
          }
 
-         Assert.Fail("Messages not indexed. Message count: " + _indexing.TotalMessageCount + ", indexed count: " + _indexing.TotalIndexedCount);
+         Assert.Fail("Messages not indexed. Message count: " + _indexing.TotalMessageCount + ", indexed count: " +
+                     _indexing.TotalIndexedCount);
       }
 
       private void SendMessage(string subject, string body, string to, string cc)
@@ -95,7 +92,7 @@ namespace RegressionTests.IMAP
             default:
                throw new InvalidOperationException("Unsupported system locale: " + locale);
          }
-         
+
 
          // Disable the indexing functionality
          _indexing.Enabled = false;
@@ -387,8 +384,7 @@ namespace RegressionTests.IMAP
          var result = GetSystemDefaultLocaleName(localeName, LOCALE_NAME_MAX_LENGTH);
          if (result > 0)
             return localeName.ToString();
-         else
-            throw new InvalidOperationException("Unable to read system locale.");
+         throw new InvalidOperationException("Unable to read system locale.");
       }
    }
 }

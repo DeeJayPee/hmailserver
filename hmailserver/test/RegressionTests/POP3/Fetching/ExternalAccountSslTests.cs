@@ -11,10 +11,9 @@ namespace RegressionTests.POP3.Fetching
    [TestFixture]
    public class ExternalAccountSslTests : TestFixtureBase
    {
-
-
       [Test]
-      [Description("Tests to connect to a normal non-SSL POP3 server using SSL. An error should be reported and hMailServer should disconnect correctly.")]
+      [Description(
+         "Tests to connect to a normal non-SSL POP3 server using SSL. An error should be reported and hMailServer should disconnect correctly.")]
       public void POP3ServerNotSupportingSSL()
       {
          var messages = new List<string>();
@@ -171,7 +170,8 @@ namespace RegressionTests.POP3.Fetching
 
             var expectedMessage =
                string.Format(
-                  "The download of messages from external account {0} failed. The external aAccount is configured to use STARTTLS connection security, but the POP3 server does not support it.", fa.Name);
+                  "The download of messages from external account {0} failed. The external aAccount is configured to use STARTTLS connection security, but the POP3 server does not support it.",
+                  fa.Name);
 
             var contentSoFar = "";
 

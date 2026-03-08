@@ -16,11 +16,7 @@ namespace RegressionTests.Infrastructure
       {
          var errorLog = GetErrorLogFileName();
 
-         if (File.Exists(errorLog))
-         {
-            File.Delete(errorLog);
-         }
-
+         if (File.Exists(errorLog)) File.Delete(errorLog);
       }
 
       public static string ReadAndDeleteErrorLog()
@@ -61,7 +57,6 @@ namespace RegressionTests.Infrastructure
       public static void DeleteCurrentDefaultLog()
       {
          for (var i = 0; i < 50; i++)
-         {
             try
             {
                var filename = GetDefaultLogFileName();
@@ -74,7 +69,6 @@ namespace RegressionTests.Infrastructure
             {
                Thread.Sleep(100);
             }
-         }
 
          throw new Exception("Failed to delete default log file.");
       }
@@ -112,7 +106,5 @@ namespace RegressionTests.Infrastructure
       {
          return SingletonProvider<TestSetup>.Instance.GetApp().Settings.Logging.CurrentEventLog;
       }
-
-
    }
 }

@@ -25,7 +25,7 @@ namespace RegressionTests.SMTP
       {
          var smtpConn = new SmtpClientSimulator();
          smtpConn.Connect();
-         
+
          smtpConn.Receive();
 
          var A = smtpConn.SendAndReceive("EHLO example.com\r\n");

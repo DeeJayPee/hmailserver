@@ -170,7 +170,7 @@ namespace RegressionTests.POP3.Fetching
          {
             var
                log = LogHandler.ReadCurrentDefaultLog();
-            
+
             if (!log.Contains("The IP address for external account Test could not be resolved. Aborting fetch."))
                throw new Exception("Expected message not appearing in log.");
          });
@@ -299,7 +299,7 @@ namespace RegressionTests.POP3.Fetching
             var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "test");
             var catchallAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "catchall@example.test",
-                                                                                       "test");
+               "test");
 
             _domain.Postmaster = catchallAccount.Address;
             _domain.Save();
@@ -369,7 +369,7 @@ namespace RegressionTests.POP3.Fetching
                var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
                var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "test");
                var catchallAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "catchall@example.test",
-                                                                                          "test");
+                  "test");
 
                _domain.Postmaster = catchallAccount.Address;
                _domain.Save();
@@ -413,7 +413,7 @@ namespace RegressionTests.POP3.Fetching
       [Test]
       [Description(
          "Issue 215, Mail not delivered to MIME recipients (if external). Test to deliver when the route is external."
-         )]
+      )]
       public void TestDeliverToExternalMimeRecipientsEnabledRouteAsExternal()
       {
          var messages = new List<string>();
@@ -433,9 +433,9 @@ namespace RegressionTests.POP3.Fetching
 
             var userAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
             var recipientAccount1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test",
-                                                                                         "test");
+               "test");
             var catchallAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "catchall@example.test",
-                                                                                       "test");
+               "test");
 
             _domain.Postmaster = catchallAccount.Address;
             _domain.Save();
@@ -490,7 +490,7 @@ namespace RegressionTests.POP3.Fetching
             var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "test");
             var account3 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test2@example.test", "test");
             var catchallAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "catchall@example.test",
-                                                                                       "test");
+               "test");
 
             _domain.Postmaster = catchallAccount.Address;
             _domain.Save();
@@ -641,7 +641,7 @@ namespace RegressionTests.POP3.Fetching
 
          _application.Settings.AntiSpam.SpamMarkThreshold = 5;
          _application.Settings.AntiSpam.SpamDeleteThreshold = 9999;
-         _application.Settings.AntiSpam.MaximumMessageSize = 1024*1024;
+         _application.Settings.AntiSpam.MaximumMessageSize = 1024 * 1024;
          _application.Settings.AntiSpam.AddHeaderReason = false;
          _application.Settings.AntiSpam.AddHeaderSpam = false;
          _application.Settings.AntiSpam.PrependSubject = false;
@@ -1001,12 +1001,13 @@ namespace RegressionTests.POP3.Fetching
 
          var messages = new List<string>();
 
-         var message = "Received: from nonexistent.hmailserver.com (nonexistent.hmailserver.com [1.2.3]) by nonexistent.hmailserver.com\r\n" +
-                       "From: example@nonexistent.hmailserver.com\r\n" +
-                       "To: Martin@example.com\r\n" +
-                       "Subject: Test\r\n" +
-                       "\r\n" +
-                       "Should NOT be blocked by SPF.";
+         var message =
+            "Received: from nonexistent.hmailserver.com (nonexistent.hmailserver.com [1.2.3]) by nonexistent.hmailserver.com\r\n" +
+            "From: example@nonexistent.hmailserver.com\r\n" +
+            "To: Martin@example.com\r\n" +
+            "Subject: Test\r\n" +
+            "\r\n" +
+            "Should NOT be blocked by SPF.";
 
          messages.Add(message);
 
@@ -1041,19 +1042,18 @@ namespace RegressionTests.POP3.Fetching
          }
       }
 
-      
+
       [Test]
       [Description("Issue 14, Potentially invalid sender address when fetching from external account")]
       public void TestFetchMessageWithValidFromAddress()
       {
-
          var message = string.Format("From: A@example.com\r\n" +
                                      "To: someone@example.com\r\n" +
                                      "Subject: Test\r\n" +
                                      "\r\n" +
                                      "Hello!");
 
-         var messages = new List<string>() { message };
+         var messages = new List<string> { message };
 
 
          var port = TestSetup.GetNextFreePort();
@@ -1095,14 +1095,13 @@ namespace RegressionTests.POP3.Fetching
       [Description("Issue 14, Potentially invalid sender address when fetching from external account")]
       public void TestFetchMessageWithInvalidFromAddress()
       {
-
-         var message = string.Format("From: A\r\n" + 
+         var message = string.Format("From: A\r\n" +
                                      "To: someone@example.com\r\n" +
                                      "Subject: Test\r\n" +
                                      "\r\n" +
                                      "Hello!");
 
-         var messages = new List<string>() {message};
+         var messages = new List<string> { message };
 
 
          var port = TestSetup.GetNextFreePort();
@@ -1139,6 +1138,5 @@ namespace RegressionTests.POP3.Fetching
             Assert.IsTrue(log.Contains("Delivering message from <Empty> to user@example.test."));
          }
       }
-
    }
 }
