@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Runtime.Remoting;
-using System.Text;
-using System.Threading;
-using hMailServer;
+﻿using System.Threading;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
 using RegressionTests.Shared;

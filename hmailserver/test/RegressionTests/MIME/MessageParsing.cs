@@ -1,6 +1,6 @@
-﻿using NUnit.Framework;
+﻿using hMailServer;
+using NUnit.Framework;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.MIME
 {

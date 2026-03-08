@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Shared;
@@ -11,7 +8,7 @@ namespace RegressionTests.SSL.StartTls
    [TestFixture]
    public class Pop3ServerTests : TestFixtureBase
    {
-      private hMailServer.Account _account;
+      private Account _account;
 
       [OneTimeSetUp]
       public new void TestFixtureSetUp()

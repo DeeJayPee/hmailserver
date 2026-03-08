@@ -1,13 +1,13 @@
 // Copyright (c) 2010 Martin Knafve / hMailServer.com.  
 // http://www.hmailserver.com
 
-using System;
 using System.ComponentModel;
+using System.IO;
 using System.Net;
 using System.Security.Authentication;
 using System.Threading;
+using hMailServer;
 using NUnit.Framework;
-using RegressionTests.Infrastructure;
 using RegressionTests.Shared;
 
 namespace RegressionTests.SSL
@@ -15,7 +15,7 @@ namespace RegressionTests.SSL
    [TestFixture]
    public class SslTlsVersionTests : TestFixtureBase
    {
-      private hMailServer.Account _account;
+      private Account _account;
 
       private void SetSslVersions(bool tlsv10, bool tlsv11, bool tlsv12, bool tlsv13)
       {
@@ -51,7 +51,7 @@ namespace RegressionTests.SSL
 
             Assert.Fail("Was able to establish SSLv3 connection");
          }
-         catch (System.Security.Authentication.AuthenticationException)
+         catch (AuthenticationException)
          {
             // on windows 10
          }
@@ -59,7 +59,7 @@ namespace RegressionTests.SSL
          {
             // on newer windows 10
          }
-         catch (System.IO.IOException)
+         catch (IOException)
          {
             // on windows xp
          }

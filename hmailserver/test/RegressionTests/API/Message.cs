@@ -7,10 +7,10 @@ using System.IO;
 using System.Net.Mail;
 using System.Reflection;
 using System.Text;
+using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
 using RegressionTests.Shared;
-using hMailServer;
 using Attachment = System.Net.Mail.Attachment;
 
 namespace RegressionTests.API

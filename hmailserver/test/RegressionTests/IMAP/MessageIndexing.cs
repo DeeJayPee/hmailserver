@@ -5,9 +5,9 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.IMAP
 {

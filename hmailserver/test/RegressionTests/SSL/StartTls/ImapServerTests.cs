@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Threading;
+﻿using System.Threading;
 using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Shared;
@@ -9,7 +8,7 @@ namespace RegressionTests.SSL.StartTls
    [TestFixture]
    class ImapServerTests : TestFixtureBase
    {
-      private hMailServer.Account _account;
+      private Account _account;
 
       [OneTimeSetUp]
       public new void TestFixtureSetUp()

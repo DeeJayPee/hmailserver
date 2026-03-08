@@ -1,10 +1,11 @@
 ﻿// Copyright (c) 2010 Martin Knafve / hMailServer.com.  
 // http://www.hmailserver.com
 
+using System;
+using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.Security
 {
@@ -187,7 +188,7 @@ namespace RegressionTests.Security
          // fail to log on 3 times.
          for (int i = 0; i < 2; i++)
          {
-            CustomAsserts.Throws<System.Exception>(() => sim.ConnectAndLogon("dGVzdEBleGFtcGxlLnRlc3Q=", "Vaffe==", out errorMessage));
+            CustomAsserts.Throws<Exception>(() => sim.ConnectAndLogon("dGVzdEBleGFtcGxlLnRlc3Q=", "Vaffe==", out errorMessage));
             sim.Disconnect();
 
             if (i == 2)

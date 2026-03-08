@@ -1,14 +1,13 @@
 ﻿// Copyright (c) 2010 Martin Knafve / hMailServer.com.  
 // http://www.hmailserver.com
 
-using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
+using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.Stress
 {
@@ -69,7 +68,7 @@ namespace RegressionTests.Stress
             string response = socket.Receive();
             Assert.IsTrue(response.StartsWith("* BYE"));
          }
-         catch (System.IO.IOException ex)
+         catch (IOException ex)
          {
             AssertIsConnectionTerminatedException(ex);
          }

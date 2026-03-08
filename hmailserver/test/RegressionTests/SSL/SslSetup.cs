@@ -9,7 +9,7 @@ namespace RegressionTests.SSL
 {
    public class SslSetup
    {
-      public static void SetupSSLPorts(hMailServer.Application application, SslVersions sslVersions = null)
+      public static void SetupSSLPorts(Application application, SslVersions sslVersions = null)
       {
          SSLCertificate sslCeritifcate = SetupSSLCertificate(application);
 
@@ -83,7 +83,7 @@ namespace RegressionTests.SSL
          return x509;
       }
 
-      private static SSLCertificate SetupSSLCertificate(hMailServer.Application application)
+      private static SSLCertificate SetupSSLCertificate(Application application)
       {
          var sslPath = GetSslCertPath();
 
