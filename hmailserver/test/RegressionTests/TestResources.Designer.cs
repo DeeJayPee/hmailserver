@@ -62,7 +62,7 @@ namespace RegressionTests {
         
         /// <summary>
         ///   Looks up a localized string similar to From: &quot;Example&quot; &lt;sender@example.com&gt;
-        ///To: &lt;test@test.com&gt;
+        ///To: &lt;test@example.test&gt;
         ///Subject: test
         ///Date: Tue, 7 Oct 2014 10:21:38 +0700
         ///MIME-Version: 1.0
@@ -79,7 +79,7 @@ namespace RegressionTests {
         
         /// <summary>
         ///   Looks up a localized string similar to From: &quot;Example&quot; &lt;sender@example.com&gt;
-        ///To: &lt;test@test.com&gt;
+        ///To: &lt;test@example.test&gt;
         ///Subject: test
         ///Date: Tue, 7 Oct 2014 10:21:38 +0700
         ///MIME-Version: 1.0
@@ -94,8 +94,8 @@ namespace RegressionTests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to From: &quot;Test&quot; &lt;test@test.com&gt;
-        ///To: &lt;test@test.com&gt;
+        ///   Looks up a localized string similar to From: &quot;Test&quot; &lt;test@example.test&gt;
+        ///To: &lt;test@example.test&gt;
         ///Subject: test
         ///Date: Thu, 9 Oct 2014 15:53:22 +0200
         ///Content-Type: multipart/alternative;
@@ -123,7 +123,7 @@ namespace RegressionTests {
         
         /// <summary>
         ///   Looks up a localized string similar to From: &quot;Example&quot; &lt;sender@example.com&gt;
-        ///To: &lt;test@test.com&gt;
+        ///To: &lt;test@example.test&gt;
         ///Subject: test
         ///Date: Tue, 7 Oct 2014 10:21:38 +0700
         ///MIME-Version: 1.0
@@ -148,7 +148,7 @@ namespace RegressionTests {
         
         /// <summary>
         ///   Looks up a localized string similar to From: &quot;Example&quot; &lt;sender@example.com&gt;
-        ///To: &lt;test@test.com&gt;
+        ///To: &lt;test@example.test&gt;
         ///Subject: test
         ///Date: Tue, 7 Oct 2014 10:21:38 +0700
         ///MIME-Version: 1.0
@@ -173,7 +173,7 @@ namespace RegressionTests {
         
         /// <summary>
         ///   Looks up a localized string similar to From: &quot;Example&quot; &lt;sender@example.com&gt;
-        ///To: &lt;test@test.com&gt;
+        ///To: &lt;test@example.test&gt;
         ///Subject: test
         ///Date: Tue, 7 Oct 2014 10:21:38 +0700
         ///MIME-Version: 1.0

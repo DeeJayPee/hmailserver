@@ -4,18 +4,16 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.AntiSpam.DKIM
 {
    [TestFixture]
    public class Signing : TestFixtureBase
    {
-      #region Setup/Teardown
-
       [SetUp]
       public new void SetUp()
       {
@@ -24,16 +22,14 @@ namespace RegressionTests.AntiSpam.DKIM
          _antiSpam.SpamDeleteThreshold = 5;
       }
 
-      #endregion
-
       private hMailServer.AntiSpam _antiSpam;
 
       private string GetPrivateKeyFile()
       {
-         string sslPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..\\..\\..\\..\\SSL examples");
+         var sslPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..\\..\\..\\..\\SSL examples");
 
          var exampleKeyFile = Path.Combine(sslPath, "example.key");
-         if (!File.Exists((exampleKeyFile)))
+         if (!File.Exists(exampleKeyFile))
             throw new Exception("Example key file could not be found.");
 
          return exampleKeyFile;
@@ -46,12 +42,12 @@ namespace RegressionTests.AntiSpam.DKIM
 
       private string SendMessage(string body)
       {
-         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@example.com"] = 250;
 
-         int port = TestSetup.GetNextFreePort();
+         var port = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, port))
          {
             server.SecondsToWaitBeforeTerminate = 60;
@@ -65,11 +61,11 @@ namespace RegressionTests.AntiSpam.DKIM
             var smtp = new SmtpClientSimulator();
             var recipients = new List<string>();
             recipients.Add("test@example.com");
-            smtp.Send("test@test.com", recipients, "Test", body);
+            smtp.Send("test@example.test", recipients, "Test", body);
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
-            string messageData = server.MessageData;
+            var messageData = server.MessageData;
 
             CustomAsserts.AssertRecipientsInDeliveryQueue(0);
 
@@ -80,9 +76,9 @@ namespace RegressionTests.AntiSpam.DKIM
       internal static Route AddRoutePointingAtLocalhost(int numberOfTries, int port)
       {
          // Add a route pointing at localhost
-         Settings settings = SingletonProvider<TestSetup>.Instance.GetApp().Settings;
+         var settings = SingletonProvider<TestSetup>.Instance.GetApp().Settings;
 
-         Route route = settings.Routes.Add();
+         var route = settings.Routes.Add();
          route.DomainName = "example.com";
          route.TargetSMTPHost = "localhost";
          route.TargetSMTPPort = port;
@@ -103,7 +99,7 @@ namespace RegressionTests.AntiSpam.DKIM
          _domain.DKIMSignEnabled = true;
          _domain.Save();
 
-         string result = SendMessage();
+         var result = SendMessage();
          Assert.IsTrue(result.ToLower().Contains("a=rsa-sha1"), result);
       }
 
@@ -117,12 +113,9 @@ namespace RegressionTests.AntiSpam.DKIM
          _domain.DKIMSignEnabled = true;
          _domain.Save();
 
-         string result = SendMessage();
+         var result = SendMessage();
 
-         if (result.ToLower().Contains("a=rsa-sha256") == false)
-         {
-            Assert.Fail(result);
-         }
+         if (result.ToLower().Contains("a=rsa-sha256") == false) Assert.Fail(result);
       }
 
       [Test]
@@ -136,7 +129,7 @@ namespace RegressionTests.AntiSpam.DKIM
          _domain.DKIMSignEnabled = true;
          _domain.Save();
 
-         string result = SendMessage();
+         var result = SendMessage();
          Assert.IsTrue(result.ToLower().Contains("simple/simple"), result);
       }
 
@@ -149,7 +142,7 @@ namespace RegressionTests.AntiSpam.DKIM
          _domain.DKIMSignEnabled = true;
          _domain.Save();
 
-         string result = SendMessage();
+         var result = SendMessage();
          Assert.IsTrue(result.ToLower().Contains("a=rsa-sha256"), result);
       }
 
@@ -162,7 +155,7 @@ namespace RegressionTests.AntiSpam.DKIM
          _domain.DKIMSignEnabled = true;
          _domain.Save();
 
-         string result = SendMessage();
+         var result = SendMessage();
          Assert.IsTrue(result.ToLower().Contains("relaxed/relaxed"), result);
       }
 
@@ -175,7 +168,7 @@ namespace RegressionTests.AntiSpam.DKIM
          _domain.DKIMSignEnabled = true;
          _domain.Save();
 
-         string result = SendMessage();
+         var result = SendMessage();
          Assert.IsTrue(result.ToLower().Contains("dkim-signature"), result);
          Assert.IsTrue(result.ToLower().Contains("d=" + _domain.Name.ToLower()), result);
       }
@@ -189,7 +182,7 @@ namespace RegressionTests.AntiSpam.DKIM
          _domain.DKIMSignEnabled = true;
          _domain.Save();
 
-         string result = SendMessage();
+         var result = SendMessage();
          Assert.IsTrue(result.ToLower().Contains("dkim-signature"), result);
          Assert.IsTrue(result.Contains("s=MySelector"), result);
       }
@@ -204,7 +197,7 @@ namespace RegressionTests.AntiSpam.DKIM
          _domain.DKIMSignEnabled = true;
          _domain.Save();
 
-         string result = SendMessage("");
+         var result = SendMessage("");
          Assert.IsTrue(result.Contains("bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;"), result);
       }
 
@@ -217,7 +210,7 @@ namespace RegressionTests.AntiSpam.DKIM
          _domain.DKIMSignEnabled = true;
          _domain.Save();
 
-         string result = SendMessage("Whati\r\nwhati\r\n\r\nwhati\r\n\r\n");
+         var result = SendMessage("Whati\r\nwhati\r\n\r\nwhati\r\n\r\n");
          Assert.IsTrue(result.Contains("bh=HfVBKUbHPvnfdY6y9RCu4IDyM+v+0HkekU0RPi3bgCk=;"), result);
       }
 
@@ -230,7 +223,7 @@ namespace RegressionTests.AntiSpam.DKIM
          _domain.DKIMSignEnabled = true;
          _domain.Save();
 
-         string result = SendMessage("Test");
+         var result = SendMessage("Test");
          Assert.IsTrue(result.Contains("bh=fdkeB/A0FkbVP2k4J4pNPoeWH6vqBm9+b0C3OY87Cw8=;"), result);
       }
 
@@ -238,7 +231,7 @@ namespace RegressionTests.AntiSpam.DKIM
       [Description("Test that a message sent through a new domain is not tagged.")]
       public void TestSigningDisabled()
       {
-         string result = SendMessage();
+         var result = SendMessage();
          Assert.IsFalse(result.ToLower().Contains("dkim-signature"), result);
       }
 
@@ -251,7 +244,7 @@ namespace RegressionTests.AntiSpam.DKIM
          _domain.DKIMSignEnabled = true;
          _domain.Save();
 
-         string result = SendMessage();
+         var result = SendMessage();
          Assert.IsTrue(result.ToLower().Contains("dkim-signature"), result);
       }
 
@@ -262,7 +255,7 @@ namespace RegressionTests.AntiSpam.DKIM
          _domain.DKIMSignEnabled = true;
          _domain.Save();
 
-         string result = SendMessage();
+         var result = SendMessage();
          Assert.IsFalse(result.ToLower().Contains("dkim-signature"), result);
 
          CustomAsserts.AssertReportedError("Either the selector or private key file was not specified.");
@@ -276,7 +269,7 @@ namespace RegressionTests.AntiSpam.DKIM
          _domain.DKIMSignEnabled = true;
          _domain.Save();
 
-         string result = SendMessage();
+         var result = SendMessage();
          Assert.IsFalse(result.ToLower().Contains("dkim-signature"), result);
 
          CustomAsserts.AssertReportedError("Either the selector or private key file was not specified.");

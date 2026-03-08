@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.InteropServices;
 using NUnit.Framework;
 using RegressionTests.Shared;
 
@@ -44,9 +41,10 @@ namespace RegressionTests.Infrastructure.Persistence
       {
          var domain = _application.Domains.Add();
          domain.Name = domainName;
-         
+
          var exception = Assert.Throws<COMException>(() => domain.Save());
-         Assert.AreEqual("Failed to save object. The domain name you have entered is not a valid domain name.", exception.Message);
+         Assert.AreEqual("Failed to save object. The domain name you have entered is not a valid domain name.",
+            exception.Message);
       }
 
       private void AssertValidDomainName(string domainName)

@@ -1,5 +1,5 @@
 Param(
-    [string]$Configuration = 'Release'
+    [string]$Configuration = 'Debug'
 )
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition

@@ -2,30 +2,26 @@
 // http://www.hmailserver.com
 
 using System;
+using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.Infrastructure
 {
    [TestFixture]
    public class IPRanges : TestFixtureBase
    {
-      #region Setup/Teardown
-
       [SetUp]
       public new void SetUp()
       {
          _ipRanges = SingletonProvider<TestSetup>.Instance.GetApp().Settings.SecurityRanges;
       }
 
-      #endregion
-
       private SecurityRanges _ipRanges;
 
       private void AddIPRange()
       {
-         SecurityRange oRange = _ipRanges.Add();
+         var oRange = _ipRanges.Add();
          oRange.LowerIP = "127.0.0.1";
          oRange.UpperIP = "127.0.0.1";
          oRange.Name = "My computer";

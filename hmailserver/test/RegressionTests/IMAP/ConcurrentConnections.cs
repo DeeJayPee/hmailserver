@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using hMailServer;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using RegressionTests.Shared;
 
 namespace RegressionTests.IMAP
@@ -13,7 +9,7 @@ namespace RegressionTests.IMAP
       [Test]
       public void ChangingFlagShouldAffectAllConnections()
       {
-         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "Test");
 
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
@@ -33,7 +29,6 @@ namespace RegressionTests.IMAP
 
          Assert.IsTrue(flags2.Contains(@"* 1 FETCH (FLAGS (\Deleted))"), flags2);
          Assert.IsTrue(flags2.Contains(@"* 1 FETCH (FLAGS (\Deleted) UID 1)"), flags2);
-         
       }
    }
 }
