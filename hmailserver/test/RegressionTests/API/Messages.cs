@@ -18,7 +18,7 @@ namespace RegressionTests.API
          // Add 3 messages to the inbox
          var imapClientSimulator = new ImapClientSimulator();
          imapClientSimulator.ConnectAndLogon("test@example.test", "test");
-         for (int i = 0; i < 3; i++)
+         for (var i = 0; i < 3; i++)
             imapClientSimulator.SendSingleCommandWithLiteral("A01 APPEND INBOX {4}", "ABCD");
          imapClientSimulator.Disconnect();
 
@@ -47,7 +47,7 @@ namespace RegressionTests.API
 
          var imapClientSimulator = new ImapClientSimulator();
          imapClientSimulator.ConnectAndLogon("test@example.test", "test");
-         for (int i = 0; i < 10; i++)
+         for (var i = 0; i < 10; i++)
             imapClientSimulator.SendSingleCommandWithLiteral("A01 APPEND INBOX {4}", "ABCD");
          imapClientSimulator.Disconnect();
 
@@ -56,13 +56,11 @@ namespace RegressionTests.API
          var messagesToDelete = new List<long>();
          var messagesToSave = new List<long>();
 
-         for (int i = 0; i < 10; i++)
-         {
+         for (var i = 0; i < 10; i++)
             if (i <= 3)
                messagesToDelete.Add(messages[i].ID);
             else
                messagesToSave.Add(messages[i].ID);
-         }
 
          // Delete the 4 messages
          foreach (var messageToDelete in messagesToDelete)

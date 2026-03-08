@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.ServiceProcess;
 using NUnit.Framework;
 using RegressionTests.Shared;
 
@@ -93,7 +91,7 @@ namespace RegressionTests.Infrastructure
       {
          _settings.CrashSimulationMode = 4;
 
-         for (int i = 0; i < 20; i++)
+         for (var i = 0; i < 20; i++)
          {
             TriggerCrashSimulationError();   
          }
@@ -110,7 +108,7 @@ namespace RegressionTests.Infrastructure
          _settings.CrashSimulationMode = 3;
 
          // 11 errors triggered, but only 10 should generate minidumps.
-         for (int i = 1; i <= 11; i++)
+         for (var i = 1; i <= 11; i++)
             TriggerCrashSimulationError();
 
          AssertMinidumpsGeneratedAndErrorsLogged(10, false);
@@ -140,7 +138,7 @@ namespace RegressionTests.Infrastructure
          _settings.CrashSimulationMode = 3;
 
          // 11 errors triggered, but only 10 should generate minidumps.
-         for (int i = 1; i <= 11; i++)
+         for (var i = 1; i <= 11; i++)
             TriggerCrashSimulationError();
 
          AssertMinidumpsGeneratedAndErrorsLogged(10, false);
@@ -191,7 +189,7 @@ namespace RegressionTests.Infrastructure
 
             if (count > 0 || expectedLoggedErrors.Length > 0)
             {
-               string errorLog = LogHandler.ReadErrorLog();
+               var errorLog = LogHandler.ReadErrorLog();
                foreach (var minidump in minidumps)
                {
                   if (!errorLog.Contains(minidump))

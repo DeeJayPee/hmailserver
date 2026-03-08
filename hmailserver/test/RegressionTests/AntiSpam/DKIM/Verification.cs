@@ -1,11 +1,9 @@
 ﻿// Copyright (c) 2010 Martin Knafve / hMailServer.com.  
 // http://www.hmailserver.com
 
-using System;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.AntiSpam.DKIM
 {
@@ -35,7 +33,7 @@ namespace RegressionTests.AntiSpam.DKIM
 
          
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          CustomAsserts.Throws<DeliveryFailedException>(() => SmtpClientSimulator.StaticSendRaw(account1.Address, account1.Address, TestResources.MessageWithInvalidDkim));
       }
 
@@ -48,9 +46,9 @@ namespace RegressionTests.AntiSpam.DKIM
          _antiSpam.DKIMVerificationEnabled = true;
          _antiSpam.DKIMVerificationFailureScore = 6;
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSendRaw(account1.Address, account1.Address, TestResources.MessageWithInvalidDkim);
-         string text = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
+         var text = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
 
          Assert.IsTrue(text.Contains("Rejected by DKIM. - (Score: 6)"));
       }
@@ -62,7 +60,7 @@ namespace RegressionTests.AntiSpam.DKIM
          _antiSpam.DKIMVerificationEnabled = true;
          _antiSpam.DKIMVerificationFailureScore = 100;
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          CustomAsserts.Throws<DeliveryFailedException>(() => SmtpClientSimulator.StaticSendRaw(account1.Address, account1.Address, TestResources.MessageWithInvalidDkim));
       }
 
@@ -73,9 +71,9 @@ namespace RegressionTests.AntiSpam.DKIM
          _antiSpam.DKIMVerificationEnabled = true;
          _antiSpam.DKIMVerificationFailureScore = 100;
          
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SmtpClientSimulator.StaticSendRaw(account1.Address, account1.Address, TestResources.MessageWithValidDkim);
-         string text = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
+         var text = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
       }
    }
 }

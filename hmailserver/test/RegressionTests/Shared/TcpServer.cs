@@ -101,7 +101,7 @@ namespace RegressionTests.Shared
 
       private void HandleClients()
       {
-         for (int i = 0; i < _maxNumberOfConnections; i++)
+         for (var i = 0; i < _maxNumberOfConnections; i++)
          {
             _clientCompleted.Reset();
 
@@ -176,7 +176,7 @@ namespace RegressionTests.Shared
          if (_workerThreadException != null)
             throw new Exception("An error occurred when calling AcceptSocket.", _workerThreadException);
 
-         for (int i = 0; i < SecondsToWaitBeforeTerminate; i++)
+         for (var i = 0; i < SecondsToWaitBeforeTerminate; i++)
          {
             if (_workerThreadFinished.WaitOne(1000, true))
             {
@@ -184,7 +184,7 @@ namespace RegressionTests.Shared
             }
          }
 
-         string log = LogHandler.ReadCurrentDefaultLog();
+         var log = LogHandler.ReadCurrentDefaultLog();
 
          if (_numberOfConnectedClients < _maxNumberOfConnections)
             Assert.Fail(
@@ -223,21 +223,21 @@ namespace RegressionTests.Shared
       
       public string Receive()
       {
-         string data = _tcpConnection.Receive();
+         var data = _tcpConnection.Receive();
          _conversation += data;
          return data;
       }
 
       public string ReadUntil(string text)
       {
-         string data = _tcpConnection.ReadUntil(text);
+         var data = _tcpConnection.ReadUntil(text);
          _conversation += data;
          return data;
       }
 
       public string ReadUntil(List<string> possibleReplies)
       {
-         string data =_tcpConnection.ReadUntil(possibleReplies);
+         var data =_tcpConnection.ReadUntil(possibleReplies);
          _conversation += data;
          return data;
       }

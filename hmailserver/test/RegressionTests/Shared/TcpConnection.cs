@@ -97,7 +97,7 @@ namespace RegressionTests.Shared
 
          try
          {
-            for (int i = 0; i < 40; i++)
+            for (var i = 0; i < 40; i++)
             {
                if (_tcpClient.Available > 0)
                   return true;
@@ -182,9 +182,9 @@ namespace RegressionTests.Shared
 
       public string ReadUntil(string text, TimeSpan timeout)
       {
-         DateTime stopTime = DateTime.Now + timeout;
+         var stopTime = DateTime.Now + timeout;
 
-         string result = Receive();
+         var result = Receive();
 
          while (DateTime.Now < stopTime)
          {
@@ -205,11 +205,11 @@ namespace RegressionTests.Shared
 
       public string ReadUntil(List<string> possibleReplies)
       {
-         string result = Receive();
+         var result = Receive();
 
-         for (int i = 0; i < 1000; i++)
+         for (var i = 0; i < 1000; i++)
          {
-            foreach (string s in possibleReplies)
+            foreach (var s in possibleReplies)
             {
                if (result.Contains(s))
                   return result;
@@ -238,7 +238,7 @@ namespace RegressionTests.Shared
                   return "";
 
                bytesRead = _sslStream.Read(buffer, 0, buffer.Length);
-               Decoder decoder = Encoding.UTF8.GetDecoder();
+               var decoder = Encoding.UTF8.GetDecoder();
                var chars = new char[decoder.GetCharCount(buffer, 0, bytesRead)];
                decoder.GetChars(buffer, 0, bytesRead, chars, 0);
                messageData.Append(chars);
@@ -254,7 +254,7 @@ namespace RegressionTests.Shared
                   return "";
 
                bytesRead = stream.Read(buffer, 0, buffer.Length);
-               char[] chars = Encoding.ASCII.GetChars(buffer);
+               var chars = Encoding.ASCII.GetChars(buffer);
                var s = new string(chars, 0, bytesRead);
                messageData.Append(s);
             } while (_tcpClient.Available > 0);
@@ -290,7 +290,7 @@ namespace RegressionTests.Shared
 
       public bool TestConnect(int iPort)
       {
-         bool bRetVal = Connect(iPort);
+         var bRetVal = Connect(iPort);
          Disconnect();
          return bRetVal;
       }

@@ -11,7 +11,7 @@ namespace RegressionTests.SSL
    {
       public static void SetupSSLPorts(Application application, SslVersions sslVersions = null)
       {
-         SSLCertificate sslCeritifcate = SetupSSLCertificate(application);
+         var sslCeritifcate = SetupSSLCertificate(application);
 
          var settings = application.Settings;
 
@@ -57,7 +57,7 @@ namespace RegressionTests.SSL
 
       public static string GetSslCertPath()
       {
-         string sslPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..\\..\\..\\..\\SSL examples");
+         var sslPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "..\\..\\..\\..\\SSL examples");
 
          return sslPath;
       }
@@ -75,10 +75,7 @@ namespace RegressionTests.SSL
          Console.WriteLine("Using certificate: " + pfxPath);
          var x509 = new X509Certificate2(pfxPath, "Secret1");
 
-         if (!x509.HasPrivateKey)
-         {
-            throw new Exception("Private key could not be accessed for test certificate.");
-         }
+         if (!x509.HasPrivateKey) throw new Exception("Private key could not be accessed for test certificate.");
 
          return x509;
       }
@@ -96,7 +93,7 @@ namespace RegressionTests.SSL
             Assert.Fail("Private key " + exampleKey + " was not found");
 
 
-         SSLCertificate sslCertificate = application.Settings.SSLCertificates.Add();
+         var sslCertificate = application.Settings.SSLCertificates.Add();
          sslCertificate.Name = "Example";
          sslCertificate.CertificateFile = exampleCert;
          sslCertificate.PrivateKeyFile = exampleKey;

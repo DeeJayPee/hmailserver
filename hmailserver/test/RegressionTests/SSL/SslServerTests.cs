@@ -37,11 +37,11 @@ namespace RegressionTests.SSL
 
          cs.Disconnect();
 
-         for (int i = 0; i <= 40; i++)
+         for (var i = 0; i <= 40; i++)
          {
             Assert.IsTrue(i != 40);
 
-            string liveLog = _application.Settings.Logging.LiveLog;
+            var liveLog = _application.Settings.Logging.LiveLog;
             if (liveLog.Contains("TCPConnection - TLS/SSL handshake failed."))
                break;
 
@@ -56,10 +56,9 @@ namespace RegressionTests.SSL
       {
          LogHandler.DeleteCurrentDefaultLog();
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "imap-ssl@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "imap-ssl@example.test", "test");
 
-         for (int i = 0; i < 30; i++)
-         {
+         for (var i = 0; i < 30; i++)
             try
             {
                var imapSim = new ImapClientSimulator(true, 14301);
@@ -77,24 +76,22 @@ namespace RegressionTests.SSL
                if (i == 29)
                   throw;
             }
-         }
       }
 
       [Test]
       public void TestPOP3Server()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "pop3-ssl@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "pop3-ssl@example.test", "test");
 
          var smtpSim = new SmtpClientSimulator();
          smtpSim.Send("test@example.test", account.Address, "Test", "MyBody");
 
-         for (int i = 0; i < 10; i++)
-         {
+         for (var i = 0; i < 10; i++)
             try
             {
                Pop3ClientSimulator.AssertMessageCount(account.Address, "test", 1);
                var pop3Sim = new Pop3ClientSimulator(true, 11001);
-               string text = pop3Sim.GetFirstMessageText(account.Address, "test");
+               var text = pop3Sim.GetFirstMessageText(account.Address, "test");
 
                Assert.IsTrue(text.Contains("MyBody"));
 
@@ -109,17 +106,15 @@ namespace RegressionTests.SSL
                if (i == 9)
                   throw;
             }
-         }
       }
 
       [Test]
       public void TestSMTPServer()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "smtp-ssl@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "smtp-ssl@example.test", "test");
 
-         int i = 0;
+         var i = 0;
          for (i = 0; i < 10; i++)
-         {
             try
             {
                var smtpSim = new SmtpClientSimulator(true, 25001);
@@ -132,11 +127,10 @@ namespace RegressionTests.SSL
                if (i == 9)
                   throw;
             }
-         }
 
          Pop3ClientSimulator.AssertMessageCount(account.Address, "test", i + 1);
          var pop3Sim = new Pop3ClientSimulator(false, 110);
-         string text = pop3Sim.GetFirstMessageText(account.Address, "test");
+         var text = pop3Sim.GetFirstMessageText(account.Address, "test");
          Assert.IsTrue(text.Contains("MyBody"));
       }
 
@@ -152,7 +146,6 @@ namespace RegressionTests.SSL
             // Since there may be other connections lingering, we just check the increased count if
             // it was zero previous to this test. Otherwise we might end up with false positives.
             if (countBefore == 0)
-            {
                RetryHelper.TryAction(TimeSpan.FromSeconds(10), () =>
                {
                   var countWhileConnected = _application.Status.get_SessionCount(eSessionType.eSTSMTP);
@@ -160,8 +153,6 @@ namespace RegressionTests.SSL
                   if (countWhileConnected != 1)
                      throw new ArgumentException($"Connection count not decreased. Expected: 1, Actual: {countWhileConnected}");
                });
-
-            }
          }
 
          RetryHelper.TryAction(TimeSpan.FromSeconds(10), () =>

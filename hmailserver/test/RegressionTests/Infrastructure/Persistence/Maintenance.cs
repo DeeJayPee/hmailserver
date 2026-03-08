@@ -2,9 +2,9 @@
 // http://www.hmailserver.com
 
 using System.Runtime.InteropServices;
+using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.Infrastructure.Persistence
 {

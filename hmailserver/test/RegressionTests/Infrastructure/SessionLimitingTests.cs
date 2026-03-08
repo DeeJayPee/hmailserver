@@ -77,7 +77,7 @@ namespace RegressionTests.Infrastructure
       {
          var app = SingletonProvider<TestSetup>.Instance.GetApp();
          var status = app.Status;
-         int countBefore = status.get_SessionCount(eSessionType.eSTSMTP);
+         var countBefore = status.get_SessionCount(eSessionType.eSTSMTP);
 
          using (var conn1 = new TcpConnection())
          {
@@ -93,7 +93,7 @@ namespace RegressionTests.Infrastructure
       {
          var app = SingletonProvider<TestSetup>.Instance.GetApp();
          var status = app.Status;
-         int countBefore = status.get_SessionCount(eSessionType.eSTIMAP);
+         var countBefore = status.get_SessionCount(eSessionType.eSTIMAP);
 
          using (var conn1 = new TcpConnection())
          {
@@ -108,7 +108,7 @@ namespace RegressionTests.Infrastructure
       {
          var app = SingletonProvider<TestSetup>.Instance.GetApp();
          var status = app.Status;
-         int countBefore = status.get_SessionCount(eSessionType.eSTPOP3);
+         var countBefore = status.get_SessionCount(eSessionType.eSTPOP3);
 
          using (var conn1 = new TcpConnection())
          {
@@ -125,7 +125,7 @@ namespace RegressionTests.Infrastructure
          var app = SingletonProvider<TestSetup>.Instance.GetApp();
          var status = app.Status;
 
-         int countBefore = status.get_SessionCount(eSessionType.eSTSMTP);
+         var countBefore = status.get_SessionCount(eSessionType.eSTSMTP);
          using (var conn1 = new TcpConnection())
          {
             Assert.IsTrue(conn1.Connect(25));
@@ -140,7 +140,7 @@ namespace RegressionTests.Infrastructure
          var app = SingletonProvider<TestSetup>.Instance.GetApp();
          var status = app.Status;
 
-         int countBefore = status.get_SessionCount(eSessionType.eSTIMAP);
+         var countBefore = status.get_SessionCount(eSessionType.eSTIMAP);
          using (var conn1 = new TcpConnection())
          {
             Assert.IsTrue(conn1.Connect(143));
@@ -155,7 +155,7 @@ namespace RegressionTests.Infrastructure
          var app = SingletonProvider<TestSetup>.Instance.GetApp();
          var status = app.Status;
 
-         int countBefore = status.get_SessionCount(eSessionType.eSTPOP3);
+         var countBefore = status.get_SessionCount(eSessionType.eSTPOP3);
          using (var conn1 = new TcpConnection())
          {
             Assert.IsTrue(conn1.Connect(110));
@@ -167,16 +167,16 @@ namespace RegressionTests.Infrastructure
       [Test]
       public void TestDisconnectingClientWithOnClientConnectEventShouldDecreaseConnectionCount()
       {
-         Application app = SingletonProvider<TestSetup>.Instance.GetApp();
+         var app = SingletonProvider<TestSetup>.Instance.GetApp();
 
          var status = app.Status;
-         int countBefore = status.get_SessionCount(eSessionType.eSTSMTP);
+         var countBefore = status.get_SessionCount(eSessionType.eSTSMTP);
 
-         Scripting scripting = app.Settings.Scripting;
+         var scripting = app.Settings.Scripting;
 
-         string script = "Sub OnClientConnect(oClient) " + Environment.NewLine +
-                         "   Result.Value = 1" + Environment.NewLine +
-                         "End Sub" + Environment.NewLine + Environment.NewLine;
+         var script = "Sub OnClientConnect(oClient) " + Environment.NewLine +
+                      "   Result.Value = 1" + Environment.NewLine +
+                      "End Sub" + Environment.NewLine + Environment.NewLine;
 
          File.WriteAllText(scripting.CurrentScriptFile, script);
          scripting.Enabled = true;
@@ -192,11 +192,11 @@ namespace RegressionTests.Infrastructure
 
       public static void AssertMaxSessionCount(eSessionType sessionType, int maxExpectedCount)
       {
-         Application application = SingletonProvider<TestSetup>.Instance.GetApp();
+         var application = SingletonProvider<TestSetup>.Instance.GetApp();
 
          RetryHelper.TryAction(TimeSpan.FromSeconds(10), () =>
          {
-            int count = application.Status.get_SessionCount(sessionType);
+            var count = application.Status.get_SessionCount(sessionType);
 
             RetryableAssert.GreaterOrEqual(maxExpectedCount, count);
          });

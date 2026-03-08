@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using NUnit.Framework;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.Infrastructure.Persistence
 {
@@ -19,9 +18,9 @@ namespace RegressionTests.Infrastructure.Persistence
       [Test]
       public void TestDomainAliasRenameToSameNameAsDomain()
       {
-         Domains domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
+         var domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
 
-         DomainAlias da = _domain.DomainAliases.Add();
+         var da = _domain.DomainAliases.Add();
          da.AliasName = "test2.com";
          da.Save();
 
@@ -40,9 +39,9 @@ namespace RegressionTests.Infrastructure.Persistence
       [Test]
       public void TestDomainAliasWithSameNameAsDomain()
       {
-         Domains domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
+         var domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
 
-         DomainAlias da = _domain.DomainAliases.Add();
+         var da = _domain.DomainAliases.Add();
          da.AliasName = "example.test";
 
          try
@@ -62,7 +61,7 @@ namespace RegressionTests.Infrastructure.Persistence
          _domain.MaxAccountSize = 25;
          _domain.Save();
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "secret1", 1);
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "secret1", 1);
          account.Save();
       }
 
@@ -92,7 +91,7 @@ namespace RegressionTests.Infrastructure.Persistence
 
          try
          {
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "secret1",
+            var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test1@example.test", "secret1",
                                                                                0);
          }
          catch (Exception)
@@ -182,7 +181,7 @@ namespace RegressionTests.Infrastructure.Persistence
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "secret1", 0);
          var message = new StringBuilder();
 
-         for (int i = 0; i < 10000; i++)
+         for (var i = 0; i < 10000; i++)
          {
             message.Append("ABCDEFGH");
          }
@@ -242,7 +241,7 @@ namespace RegressionTests.Infrastructure.Persistence
       [Test]
       public void TestDomainNameDuplicate()
       {
-         Domains domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
+         var domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
          SingletonProvider<TestSetup>.Instance.AddDomain(domains, "test2.com");
 
          try
@@ -260,8 +259,8 @@ namespace RegressionTests.Infrastructure.Persistence
       [Test]
       public void TestDomainNameDuplicateDomainRename()
       {
-         Domains domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
-         Domain domain = SingletonProvider<TestSetup>.Instance.AddDomain(domains, "test2.com");
+         var domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
+         var domain = SingletonProvider<TestSetup>.Instance.AddDomain(domains, "test2.com");
 
          domain.Name = "example.test";
 
@@ -279,9 +278,9 @@ namespace RegressionTests.Infrastructure.Persistence
       [Test]
       public void TestDomainWithSameNameAsDomainAlias()
       {
-         Domains domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
+         var domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
 
-         DomainAlias da = _domain.DomainAliases.Add();
+         var da = _domain.DomainAliases.Add();
          da.AliasName = "test2.com";
          da.Save();
 
@@ -300,14 +299,14 @@ namespace RegressionTests.Infrastructure.Persistence
       [Description("Issue 195, Creating two SMTP routes allowed for same domain.")]
       public void TestDuplicateRoutes()
       {
-         Application app = SingletonProvider<TestSetup>.Instance.GetApp();
-         Routes routes = app.Settings.Routes;
+         var app = SingletonProvider<TestSetup>.Instance.GetApp();
+         var routes = app.Settings.Routes;
 
-         Route route = routes.Add();
+         var route = routes.Add();
          route.DomainName = "example.test";
          route.Save();
 
-         Route route2 = routes.Add();
+         var route2 = routes.Add();
          route2.DomainName = "example.test";
 
          var ex = Assert.Throws<COMException>(() => route2.Save());
@@ -383,8 +382,8 @@ namespace RegressionTests.Infrastructure.Persistence
       [Test]
       public void TestSaveInvalidIPRange()
       {
-         Application app = SingletonProvider<TestSetup>.Instance.GetApp();
-         SecurityRange range = app.Settings.SecurityRanges.Add();
+         var app = SingletonProvider<TestSetup>.Instance.GetApp();
+         var range = app.Settings.SecurityRanges.Add();
 
          range.Name = "Test";
          range.LowerIP = "1.1.1.1";
@@ -398,8 +397,8 @@ namespace RegressionTests.Infrastructure.Persistence
       [Test]
       public void TestSaveValidIPRange()
       {
-         Application app = SingletonProvider<TestSetup>.Instance.GetApp();
-         SecurityRange range = app.Settings.SecurityRanges.Add();
+         var app = SingletonProvider<TestSetup>.Instance.GetApp();
+         var range = app.Settings.SecurityRanges.Add();
 
          range.Name = "Test";
          range.LowerIP = "0.0.0.0";

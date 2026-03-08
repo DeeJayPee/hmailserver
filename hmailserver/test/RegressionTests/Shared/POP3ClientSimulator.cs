@@ -49,7 +49,7 @@ namespace RegressionTests.Shared
 
       public bool TestConnect(int iPort)
       {
-         bool bRetVal = _tcpConnection.Connect(_ipaddress, iPort);
+         var bRetVal = _tcpConnection.Connect(_ipaddress, iPort);
          _tcpConnection.Disconnect();
          return bRetVal;
       }
@@ -57,7 +57,7 @@ namespace RegressionTests.Shared
       public string GetWelcomeMessage()
       {
          _tcpConnection.Connect(_ipaddress, _port);
-         string sData = _tcpConnection.Receive();
+         var sData = _tcpConnection.Receive();
 
          _tcpConnection.Disconnect();
          return sData;
@@ -118,7 +118,7 @@ namespace RegressionTests.Shared
 
          var result = new StringBuilder();
 
-         string eofCheck = "";
+         var eofCheck = "";
 
          while (eofCheck.IndexOf("\r\n.\r\n") < 0)
          {
@@ -128,7 +128,7 @@ namespace RegressionTests.Shared
                throw new Exception(string.Format("Message with index {0} does not exist.", index));
             }
 
-            string data = _tcpConnection.Receive();
+            var data = _tcpConnection.Receive();
 
             eofCheck += data;
 
@@ -146,7 +146,7 @@ namespace RegressionTests.Shared
 
       public string LIST()
       {
-         string sRetVal = "";
+         var sRetVal = "";
 
          _tcpConnection.Send("LIST\r\n");
 
@@ -186,7 +186,7 @@ namespace RegressionTests.Shared
 
       public string UIDL()
       {
-         string sRetVal = "";
+         var sRetVal = "";
 
          _tcpConnection.Send("UIDL\r\n");
 
@@ -218,7 +218,7 @@ namespace RegressionTests.Shared
       public bool DELE(int index)
       {
          _tcpConnection.Send("DELE " + index.ToString() + "\r\n");
-         string data = _tcpConnection.ReadUntil(new List<string> { "+OK msg deleted", "-ERR No such message" });
+         var data = _tcpConnection.ReadUntil(new List<string> { "+OK msg deleted", "-ERR No such message" });
          return data.StartsWith("+OK msg deleted");
       }
 
@@ -245,7 +245,7 @@ namespace RegressionTests.Shared
          else
             _tcpConnection.Send("TOP " + index.ToString() + "\r\n");
 
-         string sRetVal = _tcpConnection.Receive();
+         var sRetVal = _tcpConnection.Receive();
          while (sRetVal.IndexOf("\r\n.\r\n") < 0)
          {
             if (sRetVal.IndexOf("-ERR No such message") >= 0)
@@ -277,7 +277,7 @@ namespace RegressionTests.Shared
          if (!ConnectAndLogon(sUsername, sPassword))
             throw new Exception("Unable to connect to server.");
 
-         string sRetVal = RETR(1);
+         var sRetVal = RETR(1);
          DELE(1);
          QUIT();
 
@@ -292,7 +292,7 @@ namespace RegressionTests.Shared
             throw new Exception(string.Format("Unable to connect to POP3 server on localhost on port {0}", _port));
 
          // Receive welcome message.
-         string sData = _tcpConnection.Receive();
+         var sData = _tcpConnection.Receive();
 
          _tcpConnection.Send("USER " + sUsername + "\r\n");
          sData = _tcpConnection.ReadUntil("+OK Send your password");
@@ -305,10 +305,10 @@ namespace RegressionTests.Shared
          sData = _tcpConnection.ReadUntil("+OK");
 
          // Check EXISTS header.
-         int iStartPos = 4;
-         int iEndPos = sData.IndexOf(" ", iStartPos);
-         int iLength = iEndPos - iStartPos;
-         string sValue = sData.Substring(iStartPos, iLength);
+         var iStartPos = 4;
+         var iEndPos = sData.IndexOf(" ", iStartPos);
+         var iLength = iEndPos - iStartPos;
+         var sValue = sData.Substring(iStartPos, iLength);
 
          _tcpConnection.Send("QUIT\r\n");
          sData = _tcpConnection.ReadUntil("+OK POP3 server saying goodbye...");
@@ -338,9 +338,9 @@ namespace RegressionTests.Shared
             CustomAsserts.AssertRecipientsInDeliveryQueue(0);
          }
 
-         int actualCount = 0;
+         var actualCount = 0;
 
-         DateTime lastDebugEntryTimestamp = DateTime.UtcNow;
+         var lastDebugEntryTimestamp = DateTime.UtcNow;
 
 
          while (DateTime.UtcNow < timeoutTime)
@@ -375,7 +375,7 @@ namespace RegressionTests.Shared
       {
          // Wait for the message to appear.
          var pop3 = new Pop3ClientSimulator();
-         for (int i = 0; i < 5000; i++)
+         for (var i = 0; i < 5000; i++)
          {
             if (pop3.GetMessageCount(accountName, accountPassword) > 0)
                break;
@@ -384,7 +384,7 @@ namespace RegressionTests.Shared
          }
 
          // Download it.
-         string text = pop3.GetFirstMessageText(accountName, accountPassword);
+         var text = pop3.GetFirstMessageText(accountName, accountPassword);
 
          if (text.Length == 0)
             Assert.Fail("Message was found but contents could not be received");

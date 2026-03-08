@@ -27,13 +27,13 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort, eConnectionSecurity.eCSSTARTTLSOptional))
          {
             server.AddRecipientResult(deliveryResults);
             server.StartListen();
 
-            Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false, eConnectionSecurity.eCSSTARTTLSOptional);
+            var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false, eConnectionSecurity.eCSSTARTTLSOptional);
 
             // Send message to this route.
             var smtp = new SmtpClientSimulator();
@@ -57,13 +57,13 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort, eConnectionSecurity.eCSNone))
          {
             server.AddRecipientResult(deliveryResults);
             server.StartListen();
 
-            Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false, eConnectionSecurity.eCSSTARTTLSOptional);
+            var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false, eConnectionSecurity.eCSSTARTTLSOptional);
 
             // Send message to this route.
             var smtp = new SmtpClientSimulator();
@@ -87,13 +87,13 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort, eConnectionSecurity.eCSSTARTTLSOptional))
          {
             server.AddRecipientResult(deliveryResults);
             server.StartListen();
 
-            Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false, eConnectionSecurity.eCSNone);
+            var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false, eConnectionSecurity.eCSNone);
 
             // Send message to this route.
             var smtp = new SmtpClientSimulator();
@@ -118,13 +118,13 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort, eConnectionSecurity.eCSNone))
          {
             server.AddRecipientResult(deliveryResults);
             server.StartListen();
 
-            Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false, eConnectionSecurity.eCSNone);
+            var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false, eConnectionSecurity.eCSNone);
 
             // Send message to this route.
             var smtp = new SmtpClientSimulator();
@@ -153,7 +153,7 @@ namespace RegressionTests.SMTP
                {"user1@dummy-example.com", 250}
             };
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.ServerSupportsEhlo = false;
@@ -186,7 +186,7 @@ namespace RegressionTests.SMTP
                {"user1@dummy-example.com", 250}
             };
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.ServerSupportsEhlo = false;

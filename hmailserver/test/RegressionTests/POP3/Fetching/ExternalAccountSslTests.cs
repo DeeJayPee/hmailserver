@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
 using hMailServer;
 using NUnit.Framework;
@@ -21,15 +19,15 @@ namespace RegressionTests.POP3.Fetching
       {
          var messages = new List<string>();
 
-         string message = "From: Martin@example.com\r\n" +
-                          "To: Martin@example.com\r\n" +
-                          "Subject: Test\r\n" +
-                          "\r\n" +
-                          "Hello!";
+         var message = "From: Martin@example.com\r\n" +
+                       "To: Martin@example.com\r\n" +
+                       "Subject: Test\r\n" +
+                       "\r\n" +
+                       "Hello!";
 
          messages.Add(message);
 
-         int port = TestSetup.GetNextFreePort();
+         var port = TestSetup.GetNextFreePort();
          using (var pop3Server = new Pop3ServerSimulator(2, port, messages))
          {
             pop3Server.DisconnectImmediate = true;
@@ -37,8 +35,8 @@ namespace RegressionTests.POP3.Fetching
 
             LogHandler.DeleteCurrentDefaultLog();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
-            FetchAccount fa = account.FetchAccounts.Add();
+            var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+            var fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
             fa.MinutesBetweenFetch = 10;
@@ -52,8 +50,8 @@ namespace RegressionTests.POP3.Fetching
             fa.Save();
 
             fa.DownloadNow();
-            string contentSoFar = "";
-            for (int i = 0; i <= 10; i++)
+            var contentSoFar = "";
+            for (var i = 0; i <= 10; i++)
             {
                if (i == 5)
                   Assert.Fail("No connection: " + contentSoFar);
@@ -72,7 +70,7 @@ namespace RegressionTests.POP3.Fetching
 
             contentSoFar = "";
 
-            for (int i = 0; i <= 10; i++)
+            for (var i = 0; i <= 10; i++)
             {
                if (i == 5)
                   Assert.Fail("No connection: " + contentSoFar);
@@ -95,15 +93,15 @@ namespace RegressionTests.POP3.Fetching
       {
          var messages = new List<string>();
 
-         string message = "From: Martin@example.com\r\n" +
-                          "To: Martin@example.com\r\n" +
-                          "Subject: Test\r\n" +
-                          "\r\n" +
-                          "Hello!";
+         var message = "From: Martin@example.com\r\n" +
+                       "To: Martin@example.com\r\n" +
+                       "Subject: Test\r\n" +
+                       "\r\n" +
+                       "Hello!";
 
          messages.Add(message);
 
-         int port = TestSetup.GetNextFreePort();
+         var port = TestSetup.GetNextFreePort();
          using (var pop3Server = new Pop3ServerSimulator(1, port, messages, eConnectionSecurity.eCSTLS))
          {
             pop3Server.SetCertificate(SslSetup.GetCertificate());
@@ -111,8 +109,8 @@ namespace RegressionTests.POP3.Fetching
 
             LogHandler.DeleteCurrentDefaultLog();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
-            FetchAccount fa = account.FetchAccounts.Add();
+            var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+            var fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
             fa.MinutesBetweenFetch = 10;
@@ -139,15 +137,15 @@ namespace RegressionTests.POP3.Fetching
       {
          var messages = new List<string>();
 
-         string message = "From: Martin@example.com\r\n" +
-                          "To: Martin@example.com\r\n" +
-                          "Subject: Test\r\n" +
-                          "\r\n" +
-                          "Hello!";
+         var message = "From: Martin@example.com\r\n" +
+                       "To: Martin@example.com\r\n" +
+                       "Subject: Test\r\n" +
+                       "\r\n" +
+                       "Hello!";
 
          messages.Add(message);
 
-         int port = TestSetup.GetNextFreePort();
+         var port = TestSetup.GetNextFreePort();
          using (var pop3Server = new Pop3ServerSimulator(1, port, messages, eConnectionSecurity.eCSNone))
          {
             pop3Server.SetCertificate(SslSetup.GetCertificate());
@@ -155,8 +153,8 @@ namespace RegressionTests.POP3.Fetching
 
             LogHandler.DeleteCurrentDefaultLog();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
-            FetchAccount fa = account.FetchAccounts.Add();
+            var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+            var fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
             fa.MinutesBetweenFetch = 10;
@@ -171,13 +169,13 @@ namespace RegressionTests.POP3.Fetching
 
             fa.DownloadNow();
 
-            string expectedMessage =
+            var expectedMessage =
                string.Format(
                   "The download of messages from external account {0} failed. The external aAccount is configured to use STARTTLS connection security, but the POP3 server does not support it.", fa.Name);
 
-            string contentSoFar = "";
+            var contentSoFar = "";
 
-            for (int i = 0; i <= 10; i++)
+            for (var i = 0; i <= 10; i++)
             {
                if (i == 5)
                   Assert.Fail("No connection: " + contentSoFar);
@@ -200,15 +198,15 @@ namespace RegressionTests.POP3.Fetching
       {
          var messages = new List<string>();
 
-         string message = "From: Martin@example.com\r\n" +
-                          "To: Martin@example.com\r\n" +
-                          "Subject: Test\r\n" +
-                          "\r\n" +
-                          "Hello!";
+         var message = "From: Martin@example.com\r\n" +
+                       "To: Martin@example.com\r\n" +
+                       "Subject: Test\r\n" +
+                       "\r\n" +
+                       "Hello!";
 
          messages.Add(message);
 
-         int port = TestSetup.GetNextFreePort();
+         var port = TestSetup.GetNextFreePort();
          using (var pop3Server = new Pop3ServerSimulator(1, port, messages, eConnectionSecurity.eCSNone))
          {
             pop3Server.SetCertificate(SslSetup.GetCertificate());
@@ -216,8 +214,8 @@ namespace RegressionTests.POP3.Fetching
 
             LogHandler.DeleteCurrentDefaultLog();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
-            FetchAccount fa = account.FetchAccounts.Add();
+            var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+            var fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
             fa.MinutesBetweenFetch = 10;
@@ -244,15 +242,15 @@ namespace RegressionTests.POP3.Fetching
       {
          var messages = new List<string>();
 
-         string message = "From: Martin@example.com\r\n" +
-                          "To: Martin@example.com\r\n" +
-                          "Subject: Test\r\n" +
-                          "\r\n" +
-                          "Hello!";
+         var message = "From: Martin@example.com\r\n" +
+                       "To: Martin@example.com\r\n" +
+                       "Subject: Test\r\n" +
+                       "\r\n" +
+                       "Hello!";
 
          messages.Add(message);
 
-         int port = TestSetup.GetNextFreePort();
+         var port = TestSetup.GetNextFreePort();
          using (var pop3Server = new Pop3ServerSimulator(1, port, messages, eConnectionSecurity.eCSSTARTTLSRequired))
          {
             pop3Server.SetCertificate(SslSetup.GetCertificate());
@@ -260,8 +258,8 @@ namespace RegressionTests.POP3.Fetching
 
             LogHandler.DeleteCurrentDefaultLog();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
-            FetchAccount fa = account.FetchAccounts.Add();
+            var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+            var fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
             fa.MinutesBetweenFetch = 10;
@@ -288,15 +286,15 @@ namespace RegressionTests.POP3.Fetching
       {
          var messages = new List<string>();
 
-         string message = "From: Martin@example.com\r\n" +
-                          "To: Martin@example.com\r\n" +
-                          "Subject: Test\r\n" +
-                          "\r\n" +
-                          "Hello!";
+         var message = "From: Martin@example.com\r\n" +
+                       "To: Martin@example.com\r\n" +
+                       "Subject: Test\r\n" +
+                       "\r\n" +
+                       "Hello!";
 
          messages.Add(message);
 
-         int port = TestSetup.GetNextFreePort();
+         var port = TestSetup.GetNextFreePort();
          using (var pop3Server = new Pop3ServerSimulator(1, port, messages, eConnectionSecurity.eCSSTARTTLSRequired))
          {
             pop3Server.SetCertificate(SslSetup.GetCertificate());
@@ -304,8 +302,8 @@ namespace RegressionTests.POP3.Fetching
 
             LogHandler.DeleteCurrentDefaultLog();
 
-            Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
-            FetchAccount fa = account.FetchAccounts.Add();
+            var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+            var fa = account.FetchAccounts.Add();
 
             fa.Enabled = true;
             fa.MinutesBetweenFetch = 10;

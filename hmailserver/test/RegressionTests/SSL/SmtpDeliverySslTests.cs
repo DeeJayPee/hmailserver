@@ -11,20 +11,20 @@ namespace RegressionTests.SSL
       [Test]
       public void SmtpServerSupportingSSL()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@example.test", "test");
 
          // Set up a server listening on port 250 which accepts email for test@otherdomain.com
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort, eConnectionSecurity.eCSTLS))
          {
             server.SetCertificate(SslSetup.GetCertificate());
             server.AddRecipientResult(deliveryResults);
             server.StartListen();
 
-            Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, true, eConnectionSecurity.eCSTLS);
+            var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, true, eConnectionSecurity.eCSTLS);
 
             var smtpClient = new SmtpClientSimulator();
             smtpClient.Send(account.Address, "test@dummy-example.com", "Test", "Test message");
@@ -41,20 +41,20 @@ namespace RegressionTests.SSL
       [Test]
       public void SmtpServerSupportingStartTls_StartTlsRequired()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@example.test", "test");
 
          // Set up a server listening on port 250 which accepts email for test@otherdomain.com
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var smtpServer = new SmtpServerSimulator(1, smtpServerPort, eConnectionSecurity.eCSSTARTTLSRequired))
          {
             smtpServer.SetCertificate(SslSetup.GetCertificate());
             smtpServer.AddRecipientResult(deliveryResults);
             smtpServer.StartListen();
 
-            Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, true, eConnectionSecurity.eCSSTARTTLSRequired);
+            var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, true, eConnectionSecurity.eCSSTARTTLSRequired);
 
             var smtpClient = new SmtpClientSimulator();
             smtpClient.Send(account.Address, "test@dummy-example.com", "Test", "Test message");
@@ -70,20 +70,20 @@ namespace RegressionTests.SSL
       [Test]
       public void SmtpServerSupportingStartTls_StartTlsOptional()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@example.test", "test");
 
          // Set up a server listening on port 250 which accepts email for test@otherdomain.com
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort, eConnectionSecurity.eCSSTARTTLSRequired))
          {
             server.SetCertificate(SslSetup.GetCertificate());
             server.AddRecipientResult(deliveryResults);
             server.StartListen();
 
-            Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, true, eConnectionSecurity.eCSSTARTTLSOptional);
+            var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, true, eConnectionSecurity.eCSSTARTTLSOptional);
 
             var smtpClient = new SmtpClientSimulator();
             smtpClient.Send(account.Address, "test@dummy-example.com", "Test", "Test message");
@@ -99,20 +99,20 @@ namespace RegressionTests.SSL
       [Test]
       public void SmtpServerNOTSupportingStartTls_StartTlsRequired()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@example.test", "test");
 
          // Set up a server listening on port 250 which accepts email for test@otherdomain.com
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort, eConnectionSecurity.eCSNone))
          {
             server.SetCertificate(SslSetup.GetCertificate());
             server.AddRecipientResult(deliveryResults);
             server.StartListen();
 
-            Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, true, eConnectionSecurity.eCSSTARTTLSRequired);
+            var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, true, eConnectionSecurity.eCSSTARTTLSRequired);
 
             var smtpClient = new SmtpClientSimulator();
             smtpClient.Send(account.Address, "test@dummy-example.com", "Test", "Test message");
@@ -131,20 +131,20 @@ namespace RegressionTests.SSL
       [Test]
       public void SmtpServerNOTSupportingStartTls_StartTlsOptional()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sender@example.test", "test");
 
          // Set up a server listening on port 250 which accepts email for test@otherdomain.com
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort, eConnectionSecurity.eCSNone))
          {
             server.SetCertificate(SslSetup.GetCertificate());
             server.AddRecipientResult(deliveryResults);
             server.StartListen();
 
-            Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, true, eConnectionSecurity.eCSSTARTTLSOptional);
+            var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, true, eConnectionSecurity.eCSSTARTTLSOptional);
 
             var smtpClient = new SmtpClientSimulator();
             smtpClient.Send(account.Address, "test@dummy-example.com", "Test", "Test message");

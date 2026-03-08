@@ -1,12 +1,10 @@
 ﻿// Copyright (c) 2010 Martin Knafve / hMailServer.com.  
 // http://www.hmailserver.com
 
-using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.AntiSpam
 {
@@ -29,7 +27,7 @@ namespace RegressionTests.AntiSpam
       [Description("Test that grey listing can be enabled if message arrives from A or MX record.")]
       public void ItShouldBePossibleToBypassGreylistingOnMessagesArrivingFromMXorA()
       {
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "grey@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "grey@example.test", "test");
 
          _antiSpam.GreyListingEnabled = true;
 
@@ -50,7 +48,7 @@ namespace RegressionTests.AntiSpam
       {
          _antiSpam.GreyListingEnabled = false;
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "grey@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "grey@example.test", "test");
 
          var smtp = new SmtpClientSimulator();
          var recipients = new List<string>();
@@ -76,10 +74,10 @@ namespace RegressionTests.AntiSpam
       {
          _antiSpam.GreyListingEnabled = true;
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "grey@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "grey@example.test", "test");
 
-         GreyListingWhiteAddresses whiteAddresses = _antiSpam.GreyListingWhiteAddresses;
-         GreyListingWhiteAddress whiteAddress = whiteAddresses.Add();
+         var whiteAddresses = _antiSpam.GreyListingWhiteAddresses;
+         var whiteAddress = whiteAddresses.Add();
          whiteAddress.IPAddress = "127.0.0.5";
          whiteAddress.Save();
 
@@ -98,7 +96,7 @@ namespace RegressionTests.AntiSpam
       {
          _antiSpam.GreyListingEnabled = false;
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "grey@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "grey@example.test", "test");
 
          var smtp = new SmtpClientSimulator();
          var recipients = new List<string>();
@@ -119,7 +117,7 @@ namespace RegressionTests.AntiSpam
 
          Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
 
-         DomainAlias da = _domain.DomainAliases.Add();
+         var da = _domain.DomainAliases.Add();
          da.AliasName = "test2.com";
          da.Save();
 

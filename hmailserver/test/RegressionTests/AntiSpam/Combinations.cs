@@ -1,11 +1,9 @@
 // Copyright (c) 2010 Martin Knafve / hMailServer.com.  
 // http://www.hmailserver.com
 
-using System;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.AntiSpam
 {
@@ -28,9 +26,9 @@ namespace RegressionTests.AntiSpam
          "the mark threshold is reached.")]
       public void TestDeleteThresholdLowerThanMarkThreshold()
       {
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "multihit@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "multihit@example.test", "test");
 
-         hMailServer.AntiSpam antiSpam = _settings.AntiSpam;
+         var antiSpam = _settings.AntiSpam;
 
          antiSpam.SpamMarkThreshold = 15;
          antiSpam.SpamDeleteThreshold = 0;
@@ -44,7 +42,7 @@ namespace RegressionTests.AntiSpam
          antiSpam.CheckHostInHeloScore = 10;
 
          // Enable SURBL.
-         SURBLServer surblServer = antiSpam.SURBLServers[0];
+         var surblServer = antiSpam.SURBLServers[0];
          surblServer.Active = true;
          surblServer.Score = 10;
          surblServer.Save();
@@ -58,7 +56,7 @@ namespace RegressionTests.AntiSpam
          smtpClientSimulator.Send("test@example.com", account1.Address, "INBOX",
                                   "Test http://surbl-org-permanent-test-point.com/ Test 2");
 
-         string message = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
+         var message = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
 
          Assert.IsTrue(message.Contains("X-hMailServer-Reason-1:"));
          Assert.IsTrue(message.Contains("X-hMailServer-Reason-2:"));
@@ -68,7 +66,7 @@ namespace RegressionTests.AntiSpam
       [Description("Test that only one result header is added if one test passes and one fails.")]
       public void TestOneFailOnePass()
       {
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "multihit@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "multihit@example.test", "test");
 
          _settings.AntiSpam.SpamMarkThreshold = 1;
          _settings.AntiSpam.SpamDeleteThreshold = 100;
@@ -82,7 +80,7 @@ namespace RegressionTests.AntiSpam
          _settings.AntiSpam.CheckHostInHeloScore = 5;
 
          // Enable SURBL.
-         SURBLServer surblServer = _settings.AntiSpam.SURBLServers[0];
+         var surblServer = _settings.AntiSpam.SURBLServers[0];
          surblServer.Active = true;
          surblServer.Score = 5;
          surblServer.Save();
@@ -96,7 +94,7 @@ namespace RegressionTests.AntiSpam
          smtpClientSimulator.Send("test@domain.without.mxrecords.example.com", account1.Address, "INBOX",
                                   "This is a test message.");
 
-         string message = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
+         var message = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
 
          Assert.IsTrue(message.Contains("X-hMailServer-Reason-1:"));
          Assert.IsFalse(message.Contains("X-hMailServer-Reason-2:"));
@@ -107,7 +105,7 @@ namespace RegressionTests.AntiSpam
       {
          CustomAsserts.AssertSpamAssassinIsRunning();  
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mult'ihit@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "mult'ihit@example.test", "test");
 
          _settings.AntiSpam.SpamMarkThreshold = 1;
          _settings.AntiSpam.SpamDeleteThreshold = 2;
@@ -126,7 +124,7 @@ namespace RegressionTests.AntiSpam
 
 
          // Enable SURBL.
-         SURBLServer surblServer = _settings.AntiSpam.SURBLServers[0];
+         var surblServer = _settings.AntiSpam.SURBLServers[0];
          surblServer.Active = true;
          surblServer.Score = 5;
          surblServer.Save();
@@ -141,7 +139,7 @@ namespace RegressionTests.AntiSpam
          _settings.Logging.EnableLiveLogging(true);
 
          // Access the log once to make sure it's cleared.
-         string liveLog = _settings.Logging.LiveLog;
+         var liveLog = _settings.Logging.LiveLog;
 
          // Should not be possible to send this email since it's results in a spam
          // score over the delete threshold.
@@ -152,8 +150,8 @@ namespace RegressionTests.AntiSpam
 
          _settings.Logging.EnableLiveLogging(false);
 
-         int iFirst = liveLog.IndexOf("Spam test:");
-         int iLast = liveLog.LastIndexOf("Spam test:");
+         var iFirst = liveLog.IndexOf("Spam test:");
+         var iLast = liveLog.LastIndexOf("Spam test:");
          Assert.AreNotEqual(-1, iFirst);
 
          // there should only be one spam test, since any spam match

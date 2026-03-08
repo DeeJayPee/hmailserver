@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using hMailServer;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using RegressionTests.Shared;
 
 namespace RegressionTests.SMTP
@@ -178,7 +174,7 @@ namespace RegressionTests.SMTP
          smtpClientSimulator.Send("MAIL FROM: <test@example.test>\r\n");
          Assert.IsTrue(smtpClientSimulator.Receive().StartsWith("250"));
 
-         string result = smtpClientSimulator.SendAndReceive(command+ "\r\n");
+         var result = smtpClientSimulator.SendAndReceive(command+ "\r\n");
 
          smtpClientSimulator.Disconnect();
 
@@ -195,7 +191,7 @@ namespace RegressionTests.SMTP
          smtpClientSimulator.Send("MAIL FROM: <test@example.test>\r\n");
          Assert.IsTrue(smtpClientSimulator.Receive().StartsWith("250"));
 
-         string result = smtpClientSimulator.SendAndReceive(comamnd + "\r\n");
+         var result = smtpClientSimulator.SendAndReceive(comamnd + "\r\n");
 
          smtpClientSimulator.Disconnect();
 

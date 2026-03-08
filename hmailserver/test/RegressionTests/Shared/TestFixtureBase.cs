@@ -2,9 +2,8 @@
 // http://www.hmailserver.com
 
 using System;
-using NUnit.Framework;
 using hMailServer;
-using NUnit.Framework.Interfaces;
+using NUnit.Framework;
 using RegressionTests.Infrastructure;
 
 namespace RegressionTests.Shared

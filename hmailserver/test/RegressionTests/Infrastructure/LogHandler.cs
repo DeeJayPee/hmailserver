@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading;
-using NUnit.Framework;
 using RegressionTests.Shared;
 
 namespace RegressionTests.Infrastructure
@@ -28,7 +25,7 @@ namespace RegressionTests.Infrastructure
 
       public static string ReadAndDeleteErrorLog()
       {
-         string contents = ReadErrorLog();
+         var contents = ReadErrorLog();
 
          DeleteErrorLog();
 
@@ -37,7 +34,7 @@ namespace RegressionTests.Infrastructure
 
       public static string ReadErrorLog()
       {
-         string file = GetErrorLogFileName();
+         var file = GetErrorLogFileName();
          CustomAsserts.AssertFileExists(file, false);
 
          // Read the file without taking a lock.
@@ -63,11 +60,11 @@ namespace RegressionTests.Infrastructure
 
       public static void DeleteCurrentDefaultLog()
       {
-         for (int i = 0; i < 50; i++)
+         for (var i = 0; i < 50; i++)
          {
             try
             {
-               string filename = GetDefaultLogFileName();
+               var filename = GetDefaultLogFileName();
                if (File.Exists(filename))
                   File.Delete(filename);
 
@@ -84,8 +81,8 @@ namespace RegressionTests.Infrastructure
 
       public static string ReadCurrentDefaultLog()
       {
-         string filename = GetDefaultLogFileName();
-         string content = string.Empty;
+         var filename = GetDefaultLogFileName();
+         var content = string.Empty;
          if (File.Exists(filename))
             return TestSetup.ReadExistingTextFile(filename);
 
@@ -94,13 +91,13 @@ namespace RegressionTests.Infrastructure
 
       public static bool DefaultLogContains(string data)
       {
-         string filename = GetDefaultLogFileName();
+         var filename = GetDefaultLogFileName();
 
-         for (int i = 0; i < 40; i++)
+         for (var i = 0; i < 40; i++)
          {
             if (File.Exists(filename))
             {
-               string content = TestSetup.ReadExistingTextFile(filename);
+               var content = TestSetup.ReadExistingTextFile(filename);
                if (content.Contains(data))
                   return true;
             }

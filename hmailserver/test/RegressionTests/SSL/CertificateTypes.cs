@@ -16,15 +16,15 @@ namespace RegressionTests.SSL
       [Description("Test that loading a private key with password does not hang")]
       public void SetupSSLCertificateWithPassword()
       {
-         string sslPath = Path.Combine(SslSetup.GetSslCertPath(), "WithPassword");
+         var sslPath = Path.Combine(SslSetup.GetSslCertPath(), "WithPassword");
 
-         SSLCertificate sslCertificate = _application.Settings.SSLCertificates.Add();
+         var sslCertificate = _application.Settings.SSLCertificates.Add();
          sslCertificate.Name = "Example";
          sslCertificate.CertificateFile = sslPath + "\\server.crt";
          sslCertificate.PrivateKeyFile = sslPath + "\\server.key";
          sslCertificate.Save();
 
-         TCPIPPort port = _application.Settings.TCPIPPorts.Add();
+         var port = _application.Settings.TCPIPPorts.Add();
          port.Address = "0.0.0.0";
          port.PortNumber = 251;
          port.UseSSL = true;

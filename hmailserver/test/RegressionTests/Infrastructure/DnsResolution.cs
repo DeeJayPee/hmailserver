@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using hMailServer;
+using NUnit.Framework;
 using RegressionTests.Shared;
 
 namespace RegressionTests.Infrastructure
@@ -6,7 +7,7 @@ namespace RegressionTests.Infrastructure
    [TestFixture]
    public class DnsResolution : TestFixtureBase
    {
-      private hMailServer.Utilities _utilities;
+      private Utilities _utilities;
 
       [OneTimeSetUp]
       public void OneTimeSetUp()

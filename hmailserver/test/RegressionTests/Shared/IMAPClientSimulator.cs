@@ -39,7 +39,7 @@ namespace RegressionTests.Shared
 
       public bool TestConnect(int iPort)
       {
-         bool bRetVal = _tcpConnection.Connect(iPort);
+         var bRetVal = _tcpConnection.Connect(iPort);
          _tcpConnection.Disconnect();
          return bRetVal;
       }
@@ -53,14 +53,14 @@ namespace RegressionTests.Shared
       public string Connect()
       {
          _tcpConnection.Connect(_port);
-         string sData = _tcpConnection.Receive();
+         var sData = _tcpConnection.Receive();
 
          return sData;
       }
 
       public string GetWelcomeMessage()
       {
-         string result = Connect();
+         var result = Connect();
          Disconnect();
          return result;
       }
@@ -73,7 +73,7 @@ namespace RegressionTests.Shared
       public bool Logout()
       {
          _tcpConnection.Send("A99 LOGOUT\r\n");
-         string sData = _tcpConnection.Receive();
+         var sData = _tcpConnection.Receive();
 
          if (sData.StartsWith("*"))
             return true;
@@ -97,7 +97,7 @@ namespace RegressionTests.Shared
       public void LogonWithLiteral(string sUsername, string sPassword)
       {
          _tcpConnection.Send("A01 LOGIN " + sUsername + " {" + sPassword.Length.ToString() + "}\r\n");
-         string sData = _tcpConnection.Receive();
+         var sData = _tcpConnection.Receive();
 
          if (sData.IndexOf("+ Ready") != 0)
             Assert.Fail("Literal ready not received.");
@@ -134,7 +134,7 @@ namespace RegressionTests.Shared
          sFolder = sFolder.Replace("\\", "\\\\");
          sFolder = sFolder.Replace("\"", "\\\"");
 
-         string result = SendSingleCommand("A03 CREATE \"" + sFolder + "\"");
+         var result = SendSingleCommand("A03 CREATE \"" + sFolder + "\"");
 
          if (result.StartsWith("A03 OK"))
             return true;
@@ -144,44 +144,44 @@ namespace RegressionTests.Shared
 
       public bool SetACL(string sFolder, string identifier, string access)
       {
-         string command = string.Format("A04 SETACL {0} {1} {2}\r\n",
+         var command = string.Format("A04 SETACL {0} {1} {2}\r\n",
                                         sFolder,
                                         identifier,
                                         access
             );
          _tcpConnection.Send(command);
-         string result = _tcpConnection.Receive();
+         var result = _tcpConnection.Receive();
 
          return result.StartsWith("A04 OK");
       }
 
       public bool DeleteACL(string sFolder, string identifier)
       {
-         string command = string.Format("A05 DELETEACL \"{0}\" {1}\r\n",
+         var command = string.Format("A05 DELETEACL \"{0}\" {1}\r\n",
                                         sFolder,
                                         identifier);
          _tcpConnection.Send(command);
-         string result = _tcpConnection.Receive();
+         var result = _tcpConnection.Receive();
 
          return result.StartsWith("A05 OK");
       }
 
       public string GetACL(string sFolder)
       {
-         string command = string.Format("A06 GETACL \"{0}\"\r\n",
+         var command = string.Format("A06 GETACL \"{0}\"\r\n",
                                         sFolder);
          _tcpConnection.Send(command);
-         string result = _tcpConnection.Receive();
+         var result = _tcpConnection.Receive();
 
          return result;
       }
 
       public string GetMyRights(string sFolder)
       {
-         string command = string.Format("A07 MYRIGHTS \"{0}\"\r\n",
+         var command = string.Format("A07 MYRIGHTS \"{0}\"\r\n",
                                         sFolder);
          _tcpConnection.Send(command);
-         string result = _tcpConnection.Receive();
+         var result = _tcpConnection.Receive();
 
          return result;
       }
@@ -189,7 +189,7 @@ namespace RegressionTests.Shared
 
       public string Status(string folderName, string dataItem)
       {
-         string command = string.Format("A08 STATUS \"{0}\" ({1})", folderName, dataItem);
+         var command = string.Format("A08 STATUS \"{0}\" ({1})", folderName, dataItem);
 
          return SendSingleCommand(command);
       }
@@ -197,17 +197,17 @@ namespace RegressionTests.Shared
 
       public string GetQuota(string folderName)
       {
-         string command = string.Format("A09 GETQUOTA \"{0}\"", folderName);
+         var command = string.Format("A09 GETQUOTA \"{0}\"", folderName);
 
          return SendSingleCommand(command);
       }
 
       public string ListRights(string sFolder, string identifier)
       {
-         string command = string.Format("A10 LISTRIGHTS \"{0}\" \"{1}\"\r\n",
+         var command = string.Format("A10 LISTRIGHTS \"{0}\" \"{1}\"\r\n",
                                         sFolder, identifier);
          _tcpConnection.Send(command);
-         string result = _tcpConnection.Receive();
+         var result = _tcpConnection.Receive();
 
          return result;
       }
@@ -215,7 +215,7 @@ namespace RegressionTests.Shared
       public bool Subscribe(string sFolder)
       {
          _tcpConnection.Send("A11 SUBSCRIBE " + sFolder + "\r\n");
-         string result = _tcpConnection.Receive().Substring(0, 6);
+         var result = _tcpConnection.Receive().Substring(0, 6);
 
          if (result.StartsWith("A11 OK"))
             return true;
@@ -226,7 +226,7 @@ namespace RegressionTests.Shared
       public bool Unsubscribe(string sFolder)
       {
          _tcpConnection.Send("A12 UNSUBSCRIBE \"" + sFolder + "\"\r\n");
-         string result = _tcpConnection.Receive().Substring(0, 6);
+         var result = _tcpConnection.Receive().Substring(0, 6);
 
          if (result.StartsWith("A12 OK"))
             return true;
@@ -238,7 +238,7 @@ namespace RegressionTests.Shared
       public bool CheckFolder(string sFolder)
       {
          _tcpConnection.Send("A13 CHECK " + sFolder + "\r\n");
-         string result = _tcpConnection.Receive().Substring(0, 6);
+         var result = _tcpConnection.Receive().Substring(0, 6);
 
          return result.StartsWith("A13 OK");
       }
@@ -246,7 +246,7 @@ namespace RegressionTests.Shared
       public bool Close()
       {
          _tcpConnection.Send("A14 CLOSE\r\n");
-         string result = _tcpConnection.ReadUntil(new List<string>() {"A14 BAD", "A14 OK"});
+         var result = _tcpConnection.ReadUntil(new List<string>() {"A14 BAD", "A14 OK"});
 
          if (result.Contains("A14 BAD"))
             return false;
@@ -261,17 +261,17 @@ namespace RegressionTests.Shared
       {
          sFolder = sFolder.Replace("\\", "\\\\");
          sFolder = sFolder.Replace("\"", "\\\"");
-         string sData = SendSingleCommand("A15 SELECT " + sFolder);
+         var sData = SendSingleCommand("A15 SELECT " + sFolder);
          return sData.StartsWith("*");
       }
 
       public bool SelectFolder(string folderName, out string text)
       {
-         string sData = Send("A16 SELECT {" + folderName.Length + "}");
+         var sData = Send("A16 SELECT {" + folderName.Length + "}");
 
          if (sData.IndexOf("+ Ready") != 0)
          {
-            string message = string.Format("Literal request not received from server. Time: {0}, Response: {1}",
+            var message = string.Format("Literal request not received from server. Time: {0}, Response: {1}",
                                            DateTime.Now.ToShortDateString(),
                                            sData);
 
@@ -287,14 +287,14 @@ namespace RegressionTests.Shared
 
       public bool SelectFolder(string sFolder)
       {
-         string result = string.Empty;
+         var result = string.Empty;
          SelectFolder(sFolder, out result);
          return result.StartsWith("*");
       }
 
       public string Fetch(string sParameters)
       {
-         string sData = SendSingleCommand("A17 FETCH " + sParameters);
+         var sData = SendSingleCommand("A17 FETCH " + sParameters);
 
          return sData;
       }
@@ -306,7 +306,7 @@ namespace RegressionTests.Shared
 
       public bool Copy(int messageIndex, string destinationFolder)
       {
-         string sData = SendSingleCommand("A18 COPY 1 \"" + destinationFolder + "\"");
+         var sData = SendSingleCommand("A18 COPY 1 \"" + destinationFolder + "\"");
          return sData.StartsWith("A18 OK");
       }
 
@@ -324,7 +324,7 @@ namespace RegressionTests.Shared
 
       public string ExamineFolder(string sFolder)
       {
-         string sData = SendSingleCommand("A20 EXAMINE " + sFolder);
+         var sData = SendSingleCommand("A20 EXAMINE " + sFolder);
          return sData;
       }
 
@@ -332,7 +332,7 @@ namespace RegressionTests.Shared
       public bool DeleteFolder(string sFolder)
       {
          _tcpConnection.Send("A21 DELETE " + sFolder + "\r\n");
-         string sData = _tcpConnection.Receive();
+         var sData = _tcpConnection.Receive();
 
          if (sData.StartsWith("A21 OK"))
             return true;
@@ -342,9 +342,9 @@ namespace RegressionTests.Shared
 
       public bool SetFlagOnMessage(int index, bool bSet, string sFlag)
       {
-         string sSetUnset = bSet ? "+" : "-";
-         string sData = "A22 STORE " + index.ToString() + " " + sSetUnset + "FLAGS (" + sFlag + ")";
-         string result = SendSingleCommand(sData);
+         var sSetUnset = bSet ? "+" : "-";
+         var sData = "A22 STORE " + index.ToString() + " " + sSetUnset + "FLAGS (" + sFlag + ")";
+         var result = SendSingleCommand(sData);
 
          if (result.Contains("A22 OK"))
             return true;
@@ -359,32 +359,32 @@ namespace RegressionTests.Shared
 
       public string Sort(string sSearchString)
       {
-         string sData = SendSingleCommand("A23 SORT " + sSearchString);
+         var sData = SendSingleCommand("A23 SORT " + sSearchString);
 
-         int iStart = sData.IndexOf(" ", 4) + 1;
-         int iLineEnd = sData.IndexOf("\r\n");
+         var iStart = sData.IndexOf(" ", 4) + 1;
+         var iLineEnd = sData.IndexOf("\r\n");
 
          if (iStart > iLineEnd)
             return "";
 
-         int iLength = iLineEnd - iStart;
-         string sMatch = sData.Substring(iStart, iLength);
+         var iLength = iLineEnd - iStart;
+         var sMatch = sData.Substring(iStart, iLength);
 
          return sMatch;
       }
 
       public string Search(string sSearchString)
       {
-         string sData = SendSingleCommand("A24 SEARCH " + sSearchString);
+         var sData = SendSingleCommand("A24 SEARCH " + sSearchString);
 
-         int iStart = sData.IndexOf(" ", 4) + 1;
-         int iLineEnd = sData.IndexOf("\r\n");
+         var iStart = sData.IndexOf(" ", 4) + 1;
+         var iLineEnd = sData.IndexOf("\r\n");
 
          if (iStart > iLineEnd)
             return "";
 
-         int iLength = iLineEnd - iStart;
-         string sMatch = sData.Substring(iStart, iLength);
+         var iLength = iLineEnd - iStart;
+         var sMatch = sData.Substring(iStart, iLength);
 
          return sMatch;
       }
@@ -392,7 +392,7 @@ namespace RegressionTests.Shared
       public bool StartIdle()
       {
          _tcpConnection.Send("A25 IDLE\r\n");
-         string sData = _tcpConnection.Receive();
+         var sData = _tcpConnection.Receive();
          return sData.StartsWith("+ idling");
       }
 
@@ -407,7 +407,7 @@ namespace RegressionTests.Shared
 
          _tcpConnection.Send("DONE\r\n");
 
-         for (int i = 0; i < 10; i++)
+         for (var i = 0; i < 10; i++)
          {
             output += _tcpConnection.Receive();
 
@@ -429,7 +429,7 @@ namespace RegressionTests.Shared
       /// <returns>true if data exists</returns>
       public bool AssertPendingDataExists()
       {
-         for (int i = 0; i < 40; i++)
+         for (var i = 0; i < 40; i++)
          {
             if (GetPendingDataExists())
                return true;
@@ -463,7 +463,7 @@ namespace RegressionTests.Shared
 
       public string List(string wildcard, bool unescapeResponse)
       {
-         string result = SendSingleCommand("A26 LIST \"\" \"" + wildcard + "\"");
+         var result = SendSingleCommand("A26 LIST \"\" \"" + wildcard + "\"");
 
          if (unescapeResponse)
          {
@@ -476,7 +476,7 @@ namespace RegressionTests.Shared
 
       public string List(string reference, string wildcard, bool unescapeResponse)
       {
-         string result = SendSingleCommand("A27 LIST \"" + reference + "\" \"" + wildcard + "\"");
+         var result = SendSingleCommand("A27 LIST \"" + reference + "\" \"" + wildcard + "\"");
 
          if (unescapeResponse)
          {
@@ -499,7 +499,7 @@ namespace RegressionTests.Shared
 
       public string LSUB(string reference, string wildcard)
       {
-         string result = SendSingleCommand("A28 LSUB \"" + reference + "\" \"" + wildcard + "\"");
+         var result = SendSingleCommand("A28 LSUB \"" + reference + "\" \"" + wildcard + "\"");
 
          result = result.Replace("\\\\", "\\");
          result = result.Replace("\\\"", "\"");
@@ -514,13 +514,13 @@ namespace RegressionTests.Shared
 
       public bool SetDeletedFlag(int messageIndex)
       {
-         string result = SendSingleCommand("A29 STORE " + messageIndex + " +FLAGS (\\Deleted)");
+         var result = SendSingleCommand("A29 STORE " + messageIndex + " +FLAGS (\\Deleted)");
          return result.StartsWith("*");
       }
 
       public bool SetSeenFlag(int messageIndex)
       {
-         string result = SendSingleCommand("A30 STORE " + messageIndex + " +FLAGS (\\Seen)");
+         var result = SendSingleCommand("A30 STORE " + messageIndex + " +FLAGS (\\Seen)");
          return result.StartsWith("*");
       }
 
@@ -540,30 +540,29 @@ namespace RegressionTests.Shared
       {
          // Capability
          _tcpConnection.Send("A32 CAPABILITY\r\n");
-         string sData = _tcpConnection.Receive();
+         var sData = _tcpConnection.Receive();
          return sData;
       }
 
       public int GetMessageCount(string sFolder)
       {
-         string sData = SendSingleCommand("A33 SELECT " + sFolder);
+         var sData = SendSingleCommand("A33 SELECT " + sFolder);
 
          if (!sData.Contains("A33 OK"))
          {
             throw new ArgumentException("The folder " + sFolder + " was not selectable. Result: " + sData);
-            return 0;
          }
 
-         int iStartPos = 2;
-         int iEndPos = sData.IndexOf(" ", iStartPos);
-         int iLength = iEndPos - iStartPos;
+         var iStartPos = 2;
+         var iEndPos = sData.IndexOf(" ", iStartPos);
+         var iLength = iEndPos - iStartPos;
 
          if (iLength == 0)
          {
             Assert.Fail("Unparseable SELECT response");
          }
 
-         string sValue = sData.Substring(iStartPos, iLength);
+         var sValue = sData.Substring(iStartPos, iLength);
 
          return Convert.ToInt32(sValue);
       }
@@ -572,7 +571,7 @@ namespace RegressionTests.Shared
       {
          // Capability
          _tcpConnection.Send(s + "\r\n");
-         string sData = _tcpConnection.Receive();
+         var sData = _tcpConnection.Receive();
          return sData;
       }
 
@@ -588,13 +587,13 @@ namespace RegressionTests.Shared
 
       public string SendSingleCommandWithLiteral(string command, string literalData)
       {
-         string commandName = command.Substring(0, command.IndexOf(" "));
+         var commandName = command.Substring(0, command.IndexOf(" "));
 
-         string result = Send(command);
+         var result = Send(command);
 
-         bool expectingLiteral = result.StartsWith("+ Ready");
+         var expectingLiteral = result.StartsWith("+ Ready");
 
-         DateTime startTime = DateTime.Now;
+         var startTime = DateTime.Now;
 
          // If the commandName is found in the middle of the stream, we shouldn't consider
          // the command completed. Otherwise this code will fail if the subject or message
@@ -631,7 +630,7 @@ namespace RegressionTests.Shared
       private void AssertFolderExists(string folderName)
       {
          // wait for the folder to appear.
-         for (int i = 1; i <= 1000; i++)
+         for (var i = 1; i <= 1000; i++)
          {
             if (SelectFolder(folderName))
                return;
@@ -658,8 +657,8 @@ namespace RegressionTests.Shared
          if (expectedCount != 0)
             imap.AssertFolderExists(folderName);
 
-         int currentCount = 0;
-         int timeout = 1000; // 1000 * 25 = 25 seconds.
+         var currentCount = 0;
+         var timeout = 1000; // 1000 * 25 = 25 seconds.
          while (timeout > 0)
          {
             currentCount = imap.GetMessageCount(folderName);
@@ -679,8 +678,8 @@ namespace RegressionTests.Shared
 
          imap.Disconnect();
 
-         string error = "Wrong number of messages in mailbox " + folderName + " in account " + accountName +
-                        " Actual: " + currentCount.ToString() + " Expected: " + expectedCount.ToString();
+         var error = "Wrong number of messages in mailbox " + folderName + " in account " + accountName +
+                     " Actual: " + currentCount.ToString() + " Expected: " + expectedCount.ToString();
          Assert.Fail(error);
       }
 

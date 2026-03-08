@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO.Ports;
 using System.Text;
 using System.Threading;
 using hMailServer;
@@ -106,12 +105,12 @@ namespace RegressionTests.Shared
 
          while (true)
          {
-            string text = ReadUntil("\r\n");
+            var text = ReadUntil("\r\n");
 
             if (string.IsNullOrEmpty(text))
                break;
 
-            bool quit = ProcessCommand(text);
+            var quit = ProcessCommand(text);
 
             if (quit)
                break;
@@ -188,16 +187,16 @@ namespace RegressionTests.Shared
                Send("503 must have sender first.\r\n");
                return false;
             }
-            int StartPos = command.IndexOf("<") + 1;
-            int EndPos = command.LastIndexOf(">");
-            int length = EndPos - StartPos;
+            var StartPos = command.IndexOf("<") + 1;
+            var EndPos = command.LastIndexOf(">");
+            var length = EndPos - StartPos;
 
-            string address = command.Substring(StartPos, length);
+            var address = command.Substring(StartPos, length);
 
             if (!_currentRecipientResult.ContainsKey(address))
                throw new Exception("Unexpected address");
 
-            string result = _currentRecipientResult[address].ToString();
+            var result = _currentRecipientResult[address].ToString();
 
             Send(result + " " + address + "\r\n");
             

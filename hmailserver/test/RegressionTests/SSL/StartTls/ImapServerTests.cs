@@ -6,7 +6,7 @@ using RegressionTests.Shared;
 namespace RegressionTests.SSL.StartTls
 {
    [TestFixture]
-   class ImapServerTests : TestFixtureBase
+   internal class ImapServerTests : TestFixtureBase
    {
       private Account _account;
 

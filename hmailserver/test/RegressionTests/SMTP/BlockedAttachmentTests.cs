@@ -6,21 +6,22 @@ using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
 using RegressionTests.Shared;
+using Attachment = System.Net.Mail.Attachment;
 
 namespace RegressionTests.SMTP
 {
    [TestFixture]
    public class BlockedAttachmentTests : TestFixtureBase
    {
-      private hMailServer.Account _account;
+      private Account _account;
 
       [SetUp]
       public new void SetUp()
       {
-         bool attachmentSetUp = false;
+         var attachmentSetUp = false;
          var blockedAttachments = _settings.AntiVirus.BlockedAttachments;
 
-         for (int i = 0; i < blockedAttachments.Count; i++)
+         for (var i = 0; i < blockedAttachments.Count; i++)
          {
             var ba = blockedAttachments[i];
 
@@ -47,44 +48,44 @@ namespace RegressionTests.SMTP
       public void TestAttachmentRemoval()
       {
          // Send a message to the account.
-         string messageText = @"Date: Thu, 03 Jul 2008 22:01:53 +0200\r\n" +
-                              "From: Test <test@example.test>\r\n" +
-                              "MIME-Version: 1.0\r\n" +
-                              "To: test@example.test\r\n" +
-                              "Subject: test\r\n" +
-                              "Content-Type: multipart/mixed;\r\n" +
-                              "  boundary=\"------------050908050500020808050006\"\r\n" +
-                              "\r\n" +
-                              "This is a multi-part message in MIME format.\r\n" +
-                              "--------------050908050500020808050006\r\n" +
-                              "Content-Type: text/plain; charset=ISO-8859-1; format=flowed\r\n" +
-                              "Content-Transfer-Encoding: 7bit\r\n" +
-                              "\r\n" +
-                              "Test\r\n" +
-                              "\r\n" +
-                              "--------------050908050500020808050006\r\n" +
-                              "Content-Type: text/plain;\r\n" +
-                              " name=\"AUTOEXEC.dll\"\r\n" +
-                              "Content-Transfer-Encoding: base64\r\n" +
-                              "Content-Disposition: inline;\r\n" +
-                              " filename=\"AUTOEXEC.dll\"\r\n" +
-                              "\r\n" +
-                              "\r\n" +
-                              "--------------050908050500020808050006--\r\n";
+         var messageText = @"Date: Thu, 03 Jul 2008 22:01:53 +0200\r\n" +
+                           "From: Test <test@example.test>\r\n" +
+                           "MIME-Version: 1.0\r\n" +
+                           "To: test@example.test\r\n" +
+                           "Subject: test\r\n" +
+                           "Content-Type: multipart/mixed;\r\n" +
+                           "  boundary=\"------------050908050500020808050006\"\r\n" +
+                           "\r\n" +
+                           "This is a multi-part message in MIME format.\r\n" +
+                           "--------------050908050500020808050006\r\n" +
+                           "Content-Type: text/plain; charset=ISO-8859-1; format=flowed\r\n" +
+                           "Content-Transfer-Encoding: 7bit\r\n" +
+                           "\r\n" +
+                           "Test\r\n" +
+                           "\r\n" +
+                           "--------------050908050500020808050006\r\n" +
+                           "Content-Type: text/plain;\r\n" +
+                           " name=\"AUTOEXEC.dll\"\r\n" +
+                           "Content-Transfer-Encoding: base64\r\n" +
+                           "Content-Disposition: inline;\r\n" +
+                           " filename=\"AUTOEXEC.dll\"\r\n" +
+                           "\r\n" +
+                           "\r\n" +
+                           "--------------050908050500020808050006--\r\n";
 
          SmtpClientSimulator.StaticSendRaw("test@example.test", "test@example.test", messageText);
 
          ImapClientSimulator.AssertMessageCount("test@example.test", "test", "Inbox", 1);
 
-         Message message = CustomAsserts.AssertRetrieveFirstMessage(_account.IMAPFolders.get_ItemByName("INBOX"));
+         var message = CustomAsserts.AssertRetrieveFirstMessage(_account.IMAPFolders.get_ItemByName("INBOX"));
          Assert.AreEqual(1, message.Attachments.Count);
          Assert.AreEqual("AUTOEXEC.dll.txt", message.Attachments[0].Filename);
 
-         string tempFile = Path.GetTempFileName();
+         var tempFile = Path.GetTempFileName();
          message.Attachments[0].SaveAs(tempFile);
-         string contents = File.ReadAllText(tempFile);
+         var contents = File.ReadAllText(tempFile);
 
-         string removedMessage =
+         var removedMessage =
             SingletonProvider<TestSetup>.Instance.GetApp().Settings.ServerMessages.get_ItemByName(
                "ATTACHMENT_REMOVED").Text;
          removedMessage = removedMessage.Replace("%MACRO_FILE%",
@@ -106,7 +107,7 @@ namespace RegressionTests.SMTP
 
          try
          {
-            using (var attachment = new System.Net.Mail.Attachment(tempFile))
+            using (var attachment = new Attachment(tempFile))
             {
                var mail = new MailMessage();
                mail.From = new MailAddress("test@example.test");
@@ -122,7 +123,7 @@ namespace RegressionTests.SMTP
             }
 
             // Check that the message exists
-            string message = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
+            var message = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
             Assert.IsTrue(message.Contains(string.Format("The attachment {0} was blocked for delivery by the e-mail server.", attachmentName)));
 
          }
@@ -146,8 +147,8 @@ namespace RegressionTests.SMTP
 
          try
          {
-            using (var attachment1 = new System.Net.Mail.Attachment(tempFile1))
-            using (var attachment2 = new System.Net.Mail.Attachment(tempFile2))
+            using (var attachment1 = new Attachment(tempFile1))
+            using (var attachment2 = new Attachment(tempFile2))
             {
                var mail = new MailMessage();
                mail.From = new MailAddress("test@example.test");
@@ -164,7 +165,7 @@ namespace RegressionTests.SMTP
             }
 
             // Check that the message exists
-            string message = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
+            var message = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
             Assert.IsTrue(message.Contains(string.Format("The attachment {0} was blocked for delivery by the e-mail server.", attachment1Name)));
             Assert.IsTrue(message.Contains(string.Format("The attachment {0} was blocked for delivery by the e-mail server.", attachment2Name)));
 
@@ -187,7 +188,7 @@ namespace RegressionTests.SMTP
 
          try
          {
-            using (var attachment = new System.Net.Mail.Attachment(tempFile))
+            using (var attachment = new Attachment(tempFile))
             {
                var mail = new MailMessage();
                mail.From = new MailAddress("test@example.test");
@@ -202,17 +203,17 @@ namespace RegressionTests.SMTP
                smtpClient.Send(mail);
             }
 
-            string expectedNewAttachmentName = attachmentName + ".txt";
+            var expectedNewAttachmentName = attachmentName + ".txt";
 
             ImapClientSimulator.AssertMessageCount("test@example.test", "test", "Inbox", 1);
 
-            Message message = CustomAsserts.AssertRetrieveFirstMessage(_account.IMAPFolders.get_ItemByName("INBOX"));
+            var message = CustomAsserts.AssertRetrieveFirstMessage(_account.IMAPFolders.get_ItemByName("INBOX"));
             Assert.AreEqual(1, message.Attachments.Count);
             Assert.AreEqual(expectedNewAttachmentName, message.Attachments[0].Filename);
 
-            string attachmentOnDisk = Path.GetTempFileName();
+            var attachmentOnDisk = Path.GetTempFileName();
             message.Attachments[0].SaveAs(attachmentOnDisk);
-            string contents = File.ReadAllText(attachmentOnDisk);
+            var contents = File.ReadAllText(attachmentOnDisk);
 
             Assert.IsTrue(
                contents.Contains(string.Format("The attachment {0} was blocked for delivery by the e-mail server.",

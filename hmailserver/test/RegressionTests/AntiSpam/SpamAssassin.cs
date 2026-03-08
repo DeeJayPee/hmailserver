@@ -2,12 +2,11 @@
 // http://www.hmailserver.com
 
 using System;
-using System.Diagnostics;
 using System.ServiceProcess;
+using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.AntiSpam
 {
@@ -22,7 +21,7 @@ namespace RegressionTests.AntiSpam
          CustomAsserts.AssertSpamAssassinIsRunning();
 
          // Enable spam assassin
-         hMailServer.AntiSpam antiSpam = _settings.AntiSpam;
+         var antiSpam = _settings.AntiSpam;
 
          account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sa@example.test", "test");
 
@@ -50,7 +49,7 @@ namespace RegressionTests.AntiSpam
       [Test]
       public void ItShouldBePossibleToTestSAConnectionUsingAPISuccess()
       {
-         hMailServer.AntiSpam antiSpam = _settings.AntiSpam;
+         var antiSpam = _settings.AntiSpam;
 
          string resultText;
          Assert.IsTrue(antiSpam.TestSpamAssassinConnection("localhost", 783, out resultText));
@@ -60,7 +59,7 @@ namespace RegressionTests.AntiSpam
       [Test]
       public void ItShouldBePossibleToTestSAConnectionUsingAPIFailure()
       {
-         hMailServer.AntiSpam antiSpam = _settings.AntiSpam;
+         var antiSpam = _settings.AntiSpam;
 
          string resultText;
 
@@ -75,7 +74,7 @@ namespace RegressionTests.AntiSpam
          var smtpClientSimulator = new SmtpClientSimulator();
 
          smtpClientSimulator.Send(account.Address, account.Address, "SA test", "This is a test message.");
-         string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
+         var sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
          if (!sMessageContents.Contains("X-Spam-Status"))
          {
             Assert.Fail("SpamAssassin did not run");
@@ -91,7 +90,7 @@ namespace RegressionTests.AntiSpam
          _settings.AntiSpam.SpamAssassinHost = "localhost";
          smtpClientSimulator.Send(account.Address, account.Address, "SA test", "This is a test message.");
 
-         string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
+         var sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
          if (sMessageContents.Contains("X-Spam-Status"))
          {
             _settings.AntiSpam.SpamAssassinEnabled = false;
@@ -107,7 +106,7 @@ namespace RegressionTests.AntiSpam
          _settings.AntiSpam.SpamAssassinEnabled = true;
          _settings.AntiSpam.SpamAssassinHost = "localholst"; // <- mispelled
          smtpClientSimulator.Send(account.Address, account.Address, "SA test", "This is a test message.");
-         string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
+         var sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
          if (sMessageContents.Contains("X-Spam-Status"))
          {
             _settings.AntiSpam.SpamAssassinEnabled = false;
@@ -127,7 +126,7 @@ namespace RegressionTests.AntiSpam
          _settings.AntiSpam.SpamAssassinPort = 12345;
 
          smtpClientSimulator.Send(account.Address, account.Address, "SA test", "This is a test message.");
-         string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
+         var sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
          if (sMessageContents.Contains("X-Spam-Status"))
          {
             _settings.AntiSpam.SpamAssassinEnabled = false;
@@ -145,7 +144,7 @@ namespace RegressionTests.AntiSpam
          _settings.AntiSpam.SpamAssassinEnabled = true;
          _settings.AntiSpam.SpamAssassinHost = "127.0.0.1"; 
          smtpClientSimulator.Send(account.Address, account.Address, "SA test", "This is a test message.");
-         string messageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
+         var messageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
 
          if (!messageContents.Contains("X-Spam-Status"))
          {
@@ -164,15 +163,15 @@ namespace RegressionTests.AntiSpam
          smtpClientSimulator.Send(account.Address, account.Address, "SA test",
                     "This is a test message with spam.\r\n XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X.");
 
-         string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
+         var sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
 
-         int scoreStart = sMessageContents.IndexOf("X-Spam-Status: Yes, score") + "X-Spam-Status: Yes, score".Length +
+         var scoreStart = sMessageContents.IndexOf("X-Spam-Status: Yes, score") + "X-Spam-Status: Yes, score".Length +
                           1;
-         int scoreEnd = sMessageContents.IndexOf(".", scoreStart);
-         int scoreLength = scoreEnd - scoreStart;
+         var scoreEnd = sMessageContents.IndexOf(".", scoreStart);
+         var scoreLength = scoreEnd - scoreStart;
 
-         string score = sMessageContents.Substring(scoreStart, scoreLength);
-         double scoreValue = Convert.ToDouble(score);
+         var score = sMessageContents.Substring(scoreStart, scoreLength);
+         var scoreValue = Convert.ToDouble(score);
 
          Assert.Greater(scoreValue, 500);
       }
@@ -186,17 +185,17 @@ namespace RegressionTests.AntiSpam
          smtpClientSimulator.Send(account.Address, account.Address, "SA test",
                     "This is a test message with spam.\r\n XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X.");
 
-         string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
+         var sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
 
-         int scoreStart = sMessageContents.IndexOf("X-hMailServer-Reason-Score");
+         var scoreStart = sMessageContents.IndexOf("X-hMailServer-Reason-Score");
          Assert.AreNotEqual(0, scoreStart);
 
          scoreStart = sMessageContents.IndexOf(":", scoreStart) + 2;
-         int scoreEnd = sMessageContents.IndexOf("\r\n", scoreStart);
-         int scoreLength = scoreEnd - scoreStart;
-         string score = sMessageContents.Substring(scoreStart, scoreLength);
+         var scoreEnd = sMessageContents.IndexOf("\r\n", scoreStart);
+         var scoreLength = scoreEnd - scoreStart;
+         var score = sMessageContents.Substring(scoreStart, scoreLength);
 
-         double scoreValue = Convert.ToDouble(score);
+         var scoreValue = Convert.ToDouble(score);
          Assert.Less(scoreValue, 10);
       }
 
@@ -209,7 +208,7 @@ namespace RegressionTests.AntiSpam
          var smtpClientSimulator = new SmtpClientSimulator();
 
          smtpClientSimulator.Send(account.Address, account.Address, "SA test", "This is a test message.");
-         string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
+         var sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
 
          Assert.IsFalse(sMessageContents.Contains("X-Spam-Status"));
 
@@ -228,9 +227,9 @@ namespace RegressionTests.AntiSpam
          smtpClientSimulator.Send(account.Address, account.Address, "SA test",
                     "This is a test message with spam.\r\n XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X.");
 
-         string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
+         var sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
 
-         int scoreStart = sMessageContents.IndexOf("X-hMailServer-Reason-Score");
+         var scoreStart = sMessageContents.IndexOf("X-hMailServer-Reason-Score");
          Assert.AreNotEqual(-1, scoreStart, sMessageContents);
 
          try
@@ -244,13 +243,13 @@ namespace RegressionTests.AntiSpam
 
          Assert.AreNotEqual(-1, scoreStart, sMessageContents);
 
-         int scoreEnd = sMessageContents.IndexOf("\r\n", scoreStart);
+         var scoreEnd = sMessageContents.IndexOf("\r\n", scoreStart);
          Assert.AreNotEqual(-1, scoreEnd, sMessageContents);
 
-         int scoreLength = scoreEnd - scoreStart;
-         string score = sMessageContents.Substring(scoreStart, scoreLength);
+         var scoreLength = scoreEnd - scoreStart;
+         var score = sMessageContents.Substring(scoreStart, scoreLength);
 
-         double scoreValue = Convert.ToDouble(score);
+         var scoreValue = Convert.ToDouble(score);
          Assert.Greater(scoreValue, 100);
       }
 
@@ -263,7 +262,7 @@ namespace RegressionTests.AntiSpam
          smtpClientSimulator.Send(account.Address, account.Address, "SA test",
                     "This is a test message with spam.\r\n XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X.");
 
-         string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
+         var sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
          if (!sMessageContents.Contains("X-Spam-Status: Yes"))
             Assert.Fail("Spam message not treated as spam (no X-Spam-Status-header).");
 
@@ -286,9 +285,9 @@ namespace RegressionTests.AntiSpam
         smtpClient.Send(account.Address, account.Address, "SA test",
                     "This is a test message with spam.\r\n XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X.");
 
-         string fullMessage = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
+         var fullMessage = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
 
-         string messageHeader = fullMessage.Substring(0, fullMessage.IndexOf("\r\n\r\n"));
+         var messageHeader = fullMessage.Substring(0, fullMessage.IndexOf("\r\n\r\n"));
          Assert.IsTrue(messageHeader.Contains("Received:"));
          Assert.IsTrue(messageHeader.Contains("Return-Path:"));
          Assert.IsTrue(messageHeader.Contains("From:"));
@@ -300,7 +299,7 @@ namespace RegressionTests.AntiSpam
       public void TestWhiteList()
       {
          // First white-list the sender address
-         WhiteListAddress address = _settings.AntiSpam.WhiteListAddresses.Add();
+         var address = _settings.AntiSpam.WhiteListAddresses.Add();
          address.Description = "TestWhiteList";
          address.EmailAddress = "test-sender@example.test";
          address.LowerIPAddress = "0.0.0.0";
@@ -313,7 +312,7 @@ namespace RegressionTests.AntiSpam
          smtpClientSimulator.Send("test-sender@example.test", account.Address, "SA test",
                     "This is a test message with spam.\r\n XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X.");
 
-         string sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
+         var sMessageContents = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
 
          Assert.IsFalse(sMessageContents.Contains("X-Spam-Status: Yes"));
       }

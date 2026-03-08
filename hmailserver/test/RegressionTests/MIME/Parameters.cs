@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2010 Martin Knafve / hMailServer.com.  
 // http://www.hmailserver.com
 
-using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Shared;
 
@@ -14,7 +13,7 @@ namespace RegressionTests.MIME
       [Description("Issue 238, If charset parameter contains double quotes, the string isn't parsed properly.")]
       public void TestFetchCharsetInQuotesWithSpaceAfter()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSendRaw(account.Address, account.Address,
                                            "From: test@example.test\r\n" +
@@ -25,7 +24,7 @@ namespace RegressionTests.MIME
          ImapClientSimulator.AssertMessageCount(account.Address, "test", "Inbox", 1);
 
          var sim = new ImapClientSimulator(account.Address, "test", "Inbox");
-         string result = sim.Fetch("1 BODYSTRUCTURE");
+         var result = sim.Fetch("1 BODYSTRUCTURE");
          sim.Disconnect();
 
          Assert.IsTrue(result.Contains("(\"CHARSET\" \"iso-8859-1\")"), result);
@@ -35,7 +34,7 @@ namespace RegressionTests.MIME
       [Description("Issue 238, If charset parameter contains double quotes, the string isn't parsed properly.")]
       public void TestFetchCharsetInQuotesWithSpaceBefore()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSendRaw(account.Address, account.Address,
                                            "From: test@example.test\r\n" +
@@ -46,7 +45,7 @@ namespace RegressionTests.MIME
          ImapClientSimulator.AssertMessageCount(account.Address, "test", "Inbox", 1);
 
          var sim = new ImapClientSimulator(account.Address, "test", "Inbox");
-         string result = sim.Fetch("1 BODYSTRUCTURE");
+         var result = sim.Fetch("1 BODYSTRUCTURE");
          sim.Disconnect();
 
          Assert.IsTrue(result.Contains("(\"CHARSET\" \"iso-8859-1\")"), result);
@@ -56,7 +55,7 @@ namespace RegressionTests.MIME
       [Description("Issue 238, If charset parameter contains double quotes, the string isn't parsed properly.")]
       public void TestFetchCharsetInQuotesWithoutQuotesWithSpace()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSendRaw(account.Address, account.Address,
                                            "From: test@example.test\r\n" +
@@ -67,7 +66,7 @@ namespace RegressionTests.MIME
          ImapClientSimulator.AssertMessageCount(account.Address, "test", "Inbox", 1);
 
          var sim = new ImapClientSimulator(account.Address, "test", "Inbox");
-         string result = sim.Fetch("1 BODYSTRUCTURE");
+         var result = sim.Fetch("1 BODYSTRUCTURE");
          sim.Disconnect();
 
          Assert.IsTrue(result.Contains("(\"CHARSET\" \"iso-8859-1\")"), result);
@@ -77,7 +76,7 @@ namespace RegressionTests.MIME
       [Description("Issue 238, If charset parameter contains double quotes, the string isn't parsed properly.")]
       public void TestFetchCharsetInQuotesWithoutQuotesWithoutSpace()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSendRaw(account.Address, account.Address,
                                            "From: test@example.test\r\n" +
@@ -88,7 +87,7 @@ namespace RegressionTests.MIME
          ImapClientSimulator.AssertMessageCount(account.Address, "test", "Inbox", 1);
 
          var sim = new ImapClientSimulator(account.Address, "test", "Inbox");
-         string result = sim.Fetch("1 BODYSTRUCTURE");
+         var result = sim.Fetch("1 BODYSTRUCTURE");
          sim.Disconnect();
 
          Assert.IsTrue(result.Contains("(\"CHARSET\" \"iso-8859-1\")"), result);
@@ -98,7 +97,7 @@ namespace RegressionTests.MIME
       [Description("Issue 238, If charset parameter contains double quotes, the string isn't parsed properly.")]
       public void TestFetchCharsetInQuotesWithoutSpace()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          SmtpClientSimulator.StaticSendRaw(account.Address, account.Address,
                                            "From: test@example.test\r\n" +
@@ -109,7 +108,7 @@ namespace RegressionTests.MIME
          ImapClientSimulator.AssertMessageCount(account.Address, "test", "Inbox", 1);
 
          var sim = new ImapClientSimulator(account.Address, "test", "Inbox");
-         string result = sim.Fetch("1 BODYSTRUCTURE");
+         var result = sim.Fetch("1 BODYSTRUCTURE");
          sim.Disconnect();
 
          Assert.IsTrue(result.Contains("(\"CHARSET\" \"iso-8859-1\")"), result);

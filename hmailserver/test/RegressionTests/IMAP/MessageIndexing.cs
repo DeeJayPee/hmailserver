@@ -34,7 +34,7 @@ namespace RegressionTests.IMAP
 
          _indexing.Index();
 
-         for (int i = 0; i < 1000; i++)
+         for (var i = 0; i < 1000; i++)
          {
             if (_indexing.TotalIndexedCount == _indexing.TotalMessageCount)
                return;
@@ -64,7 +64,7 @@ namespace RegressionTests.IMAP
       [Description("Test message metadata date")]
       public void TestMetaDataSortCC()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
 
          // disable...
          SendMessage("Test C", "Body", "", "ÄÄÄ");
@@ -80,7 +80,7 @@ namespace RegressionTests.IMAP
 
          var sim = new ImapClientSimulator(account.Address, "test", "Inbox");
 
-         string result = sim.Sort("(CC) UTF-8 ALL");
+         var result = sim.Sort("(CC) UTF-8 ALL");
 
          var locale = GetSystemLocaleName();
 
@@ -102,7 +102,7 @@ namespace RegressionTests.IMAP
          _indexing.Clear();
 
          // Make sure the sort order is the same.
-         string resultAfter = sim.Sort("(CC) UTF-8 ALL");
+         var resultAfter = sim.Sort("(CC) UTF-8 ALL");
 
          Assert.AreEqual(result, resultAfter);
       }
@@ -111,8 +111,8 @@ namespace RegressionTests.IMAP
       [Description("Test message metadata date")]
       public void TestMetaDataSortDate()
       {
-         Application application = SingletonProvider<TestSetup>.Instance.GetApp();
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
+         var application = SingletonProvider<TestSetup>.Instance.GetApp();
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
 
          // disable...
          SendMessage("Test A", "Body", "", "");
@@ -134,7 +134,7 @@ namespace RegressionTests.IMAP
 
          var sim = new ImapClientSimulator(account.Address, "test", "Inbox");
 
-         string result = sim.Sort("(DATE) UTF-8 ALL");
+         var result = sim.Sort("(DATE) UTF-8 ALL");
 
          Assert.AreEqual("1 2 3 4 5", result);
 
@@ -143,7 +143,7 @@ namespace RegressionTests.IMAP
          _indexing.Clear();
 
          // Make sure the sort order is the same.
-         string resultAfter = sim.Sort("(SUBJECT) UTF-8 ALL");
+         var resultAfter = sim.Sort("(SUBJECT) UTF-8 ALL");
 
          Assert.AreEqual(result, resultAfter);
       }
@@ -152,8 +152,8 @@ namespace RegressionTests.IMAP
       [Description("Test message metadata subject")]
       public void TestMetaDataSortSubjectAnsi()
       {
-         Application application = SingletonProvider<TestSetup>.Instance.GetApp();
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
+         var application = SingletonProvider<TestSetup>.Instance.GetApp();
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
 
          // disable...
          SendMessage("Test 1", "Body", "", "");
@@ -166,7 +166,7 @@ namespace RegressionTests.IMAP
 
          var sim = new ImapClientSimulator(account.Address, "test", "Inbox");
 
-         string result = sim.Sort("(SUBJECT) UTF-8 ALL");
+         var result = sim.Sort("(SUBJECT) UTF-8 ALL");
 
          Assert.IsTrue(result.StartsWith("1 2"));
 
@@ -175,7 +175,7 @@ namespace RegressionTests.IMAP
          _indexing.Clear();
 
          // Make sure the sort order is the same.
-         string resultAfter = sim.Sort("(SUBJECT) UTF-8 ALL");
+         var resultAfter = sim.Sort("(SUBJECT) UTF-8 ALL");
 
          Assert.AreEqual(result, resultAfter);
       }
@@ -185,8 +185,8 @@ namespace RegressionTests.IMAP
       [Description("Test message metadata subject")]
       public void TestMetaDataSortSubjectGreek()
       {
-         Application application = SingletonProvider<TestSetup>.Instance.GetApp();
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
+         var application = SingletonProvider<TestSetup>.Instance.GetApp();
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
 
          // disable...
          SendMessage("Test Σ", "Body", "", "");
@@ -217,7 +217,7 @@ namespace RegressionTests.IMAP
 
          var sim = new ImapClientSimulator(account.Address, "test", "Inbox");
 
-         string result = sim.Sort("(SUBJECT) UTF-8 ALL");
+         var result = sim.Sort("(SUBJECT) UTF-8 ALL");
 
          Assert.AreEqual("2 4 3 5 1 6", result);
 
@@ -226,7 +226,7 @@ namespace RegressionTests.IMAP
          _indexing.Clear();
 
          // Make sure the sort order is the same.
-         string resultAfter = sim.Sort("(SUBJECT) UTF-8 ALL");
+         var resultAfter = sim.Sort("(SUBJECT) UTF-8 ALL");
 
          Assert.AreEqual(result, resultAfter);
       }
@@ -235,8 +235,8 @@ namespace RegressionTests.IMAP
       [Description("Test message metadata subject")]
       public void TestMetaDataSortSubjectSwedish()
       {
-         Application application = SingletonProvider<TestSetup>.Instance.GetApp();
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
+         var application = SingletonProvider<TestSetup>.Instance.GetApp();
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
 
          // disable...
          SendMessage("Test Ä", "Body", "", "");
@@ -252,7 +252,7 @@ namespace RegressionTests.IMAP
 
          var sim = new ImapClientSimulator(account.Address, "test", "Inbox");
 
-         string result = sim.Sort("(SUBJECT) UTF-8 ALL");
+         var result = sim.Sort("(SUBJECT) UTF-8 ALL");
 
          var locale = GetSystemLocaleName();
 
@@ -273,7 +273,7 @@ namespace RegressionTests.IMAP
          _indexing.Clear();
 
          // Make sure the sort order is the same.
-         string resultAfter = sim.Sort("(SUBJECT) UTF-8 ALL");
+         var resultAfter = sim.Sort("(SUBJECT) UTF-8 ALL");
 
          Assert.AreEqual(result, resultAfter);
       }
@@ -282,8 +282,8 @@ namespace RegressionTests.IMAP
       [Description("Test message metadata subject")]
       public void TestMetaDataSortSubjectTurkish()
       {
-         Application application = SingletonProvider<TestSetup>.Instance.GetApp();
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
+         var application = SingletonProvider<TestSetup>.Instance.GetApp();
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
 
          // disable...
          SendMessage("Test Ç", "Body", "", "");
@@ -310,7 +310,7 @@ namespace RegressionTests.IMAP
 
          var sim = new ImapClientSimulator(account.Address, "test", "Inbox");
 
-         string result = sim.Sort("(SUBJECT) UTF-8 ALL");
+         var result = sim.Sort("(SUBJECT) UTF-8 ALL");
 
          Assert.AreEqual("3 2 1 5 4", result);
 
@@ -319,7 +319,7 @@ namespace RegressionTests.IMAP
          _indexing.Clear();
 
          // Make sure the sort order is the same.
-         string resultAfter = sim.Sort("(SUBJECT) UTF-8 ALL");
+         var resultAfter = sim.Sort("(SUBJECT) UTF-8 ALL");
 
          Assert.AreEqual(result, resultAfter);
       }
@@ -328,8 +328,8 @@ namespace RegressionTests.IMAP
       [Description("Test message metadata date")]
       public void TestMetaDataSortTo()
       {
-         Application application = SingletonProvider<TestSetup>.Instance.GetApp();
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
+         var application = SingletonProvider<TestSetup>.Instance.GetApp();
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "meta'data@example.test", "test");
 
          // disable...
          SendMessage("Test A", "Body", "ÅÅÅ", "");
@@ -345,7 +345,7 @@ namespace RegressionTests.IMAP
 
          var sim = new ImapClientSimulator(account.Address, "test", "Inbox");
 
-         string result = sim.Sort("(TO) UTF-8 ALL");
+         var result = sim.Sort("(TO) UTF-8 ALL");
 
          var locale = GetSystemLocaleName();
 
@@ -366,7 +366,7 @@ namespace RegressionTests.IMAP
          _indexing.Clear();
 
          // Make sure the sort order is the same.
-         string resultAfter = sim.Sort("(TO) UTF-8 ALL");
+         var resultAfter = sim.Sort("(TO) UTF-8 ALL");
 
          Assert.AreEqual(result, resultAfter);
       }
@@ -382,17 +382,13 @@ namespace RegressionTests.IMAP
       private string GetSystemLocaleName()
       {
          const int LOCALE_NAME_MAX_LENGTH = 85; // Max length per Windows API docs
-         StringBuilder localeName = new StringBuilder(LOCALE_NAME_MAX_LENGTH);
+         var localeName = new StringBuilder(LOCALE_NAME_MAX_LENGTH);
 
-         int result = GetSystemDefaultLocaleName(localeName, LOCALE_NAME_MAX_LENGTH);
+         var result = GetSystemDefaultLocaleName(localeName, LOCALE_NAME_MAX_LENGTH);
          if (result > 0)
-         {
             return localeName.ToString();
-         }
          else
-         {
             throw new InvalidOperationException("Unable to read system locale.");
-         }
       }
    }
 }

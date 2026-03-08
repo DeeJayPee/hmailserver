@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.SMTP
 {
@@ -20,12 +20,12 @@ namespace RegressionTests.SMTP
          // 
 
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var recipients = new List<string>();
          recipients.Add("test@dummy-example.com");
 
-         DistributionList list3 = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "list@example.test",
+         var list3 = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "list@example.test",
                                                                                              recipients);
          list3.Mode = eDistributionListMode.eLMAnnouncement;
          list3.RequireSenderAddress = "test@dummy-example.com";
@@ -34,7 +34,7 @@ namespace RegressionTests.SMTP
          // THIS MESSAGE SHOULD FAIL
          CustomAsserts.Throws<DeliveryFailedException>(()=> smtpClientSimulator.Send("test@example.test", "list@example.test", "Mail 1", "Mail 1"));
 
-         DomainAlias domainAlias = _domain.DomainAliases.Add();
+         var domainAlias = _domain.DomainAliases.Add();
          domainAlias.AliasName = "dummy-example.com";
          domainAlias.Save();
 
@@ -54,7 +54,7 @@ namespace RegressionTests.SMTP
          recipients.Add("list1@example.test");
 
          SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "list1@example.test", recipients);
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "recipient1@example.test", "test");
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "recipient2@example.test", "test");
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "recipient3@example.test", "test");
@@ -218,14 +218,14 @@ namespace RegressionTests.SMTP
          var imap = new ImapClientSimulator();
          var smtpClientSimulator = new SmtpClientSimulator();
 
-         Application application = SingletonProvider<TestSetup>.Instance.GetApp();
+         var application = SingletonProvider<TestSetup>.Instance.GetApp();
 
 
-         DomainAlias domainAlias = _domain.DomainAliases.Add();
+         var domainAlias = _domain.DomainAliases.Add();
          domainAlias.AliasName = "dummy-example.com";
          domainAlias.Save();
 
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account1@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account1@example.test", "test");
          account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account2@example.test", "test");
 
 
@@ -238,7 +238,7 @@ namespace RegressionTests.SMTP
          recipients.Clear();
          recipients.Add("vaffe@dummy-example.com");
 
-         DistributionList list3 = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "list@example.test",
+         var list3 = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "list@example.test",
                                                                                              recipients);
          list3.Mode = eDistributionListMode.eLMMembership;
          list3.Save();
@@ -295,15 +295,15 @@ namespace RegressionTests.SMTP
                "acc3@example.test",
             };
 
-         DistributionList daList = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "da@example.test", daRecipients);
+         var daList = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "da@example.test", daRecipients);
          daList.Mode = eDistributionListMode.eLMPublic;
          daList.Save();
          
-         DistributionList dbList = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "db@example.test", dbRecipients);
+         var dbList = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "db@example.test", dbRecipients);
          dbList.Mode = eDistributionListMode.eLMPublic;
          dbList.Save();
 
-         DistributionList dcList = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "dc@example.test", dcRecipients);
+         var dcList = SingletonProvider<TestSetup>.Instance.AddDistributionList(_domain, "dc@example.test", dcRecipients);
          dbList.Mode = eDistributionListMode.eLMPublic;
          dbList.Save();
 

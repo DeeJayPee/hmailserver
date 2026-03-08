@@ -3,10 +3,10 @@
 
 using System.Collections.Generic;
 using System.Threading;
+using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.SMTP
 {
@@ -40,7 +40,7 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -48,7 +48,7 @@ namespace RegressionTests.SMTP
             server.StartListen();
 
             // Add a route so we can connect to localhost.
-            Route route = TestSetup.AddRoutePointingAtLocalhost(5, smtpServerPort, false);
+            var route = TestSetup.AddRoutePointingAtLocalhost(5, smtpServerPort, false);
             route.RelayerRequiresAuth = true;
             route.RelayerAuthUsername = "user@example.com";
             route.SetRelayerAuthPassword("MySecretPassword");
@@ -64,7 +64,7 @@ namespace RegressionTests.SMTP
 
             CustomAsserts.AssertRecipientsInDeliveryQueue(0);
 
-            string messageText = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
+            var messageText = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
 
             Assert.IsFalse(messageText.Contains("MySecretPassword"));
             Assert.IsTrue(messageText.Contains("<Password removed>"));
@@ -85,9 +85,9 @@ namespace RegressionTests.SMTP
          // Send message to this route.
          SmtpClientSimulator.StaticSend("test@example.test", "test@dummy-example.com", "subject", "body");
 
-         for (int i = 0; i < 40; i++)
+         for (var i = 0; i < 40; i++)
          {
-            string s = _status.UndeliveredMessages;
+            var s = _status.UndeliveredMessages;
             if (s.Contains("\t\ttest@example.test"))
                break;
 
@@ -97,7 +97,7 @@ namespace RegressionTests.SMTP
          // Wait for the bounce message to be delivered.
          CustomAsserts.AssertRecipientsInDeliveryQueue(0, true);
 
-         string message = Pop3ClientSimulator.AssertGetFirstMessageText("test@example.test", "test");
+         var message = Pop3ClientSimulator.AssertGetFirstMessageText("test@example.test", "test");
          Assert.IsTrue(message.Contains("this would mean connecting to myself."));
       }
 
@@ -105,10 +105,10 @@ namespace RegressionTests.SMTP
       [Description("Issue 227, Restarting server doesn't refresh local address list")]
       public void TestDeliverToMyselfOnLocalPortAfterChangedLocalPort()
       {
-         TCPIPPorts ports = _application.Settings.TCPIPPorts;
-         for (int i = 0; i < ports.Count; i++)
+         var ports = _application.Settings.TCPIPPorts;
+         for (var i = 0; i < ports.Count; i++)
          {
-            TCPIPPort testPort = ports[i];
+            var testPort = ports[i];
             if (testPort.Protocol == eSessionType.eSTIMAP)
                testPort.PortNumber = 14300;
             else if (testPort.Protocol == eSessionType.eSTSMTP && testPort.PortNumber != 587) // Only change 1 of the 2 default SMTP ports.
@@ -126,7 +126,7 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["user@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -160,10 +160,10 @@ namespace RegressionTests.SMTP
 
          // No valid recipients...
          var deliveryResults = new Dictionary<string, int>();
-         for (int i = 0; i < 250; i++)
+         for (var i = 0; i < 250; i++)
             deliveryResults["user" + i.ToString() + "@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(3, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -178,7 +178,7 @@ namespace RegressionTests.SMTP
             var smtp = new SmtpClientSimulator();
             var recipients = new List<string>();
 
-            for (int i = 0; i < 250; i++)
+            for (var i = 0; i < 250; i++)
                recipients.Add("user" + i.ToString() + "@dummy-example.com");
 
             smtp.Send("test@example.test", recipients, "Test", "Test message");
@@ -200,10 +200,10 @@ namespace RegressionTests.SMTP
 
          // No valid recipients...
          var deliveryResults = new Dictionary<string, int>();
-         for (int i = 0; i < 50; i++)
+         for (var i = 0; i < 50; i++)
             deliveryResults["user" + i.ToString() + "@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -216,7 +216,7 @@ namespace RegressionTests.SMTP
             var smtp = new SmtpClientSimulator();
             var recipients = new List<string>();
 
-            for (int i = 0; i < 50; i++)
+            for (var i = 0; i < 50; i++)
                recipients.Add("user" + i.ToString() + "@dummy-example.com");
 
             smtp.Send("test@example.test", recipients, "Test", "Test message");
@@ -243,7 +243,7 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -277,7 +277,7 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -312,7 +312,7 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -350,7 +350,7 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -385,7 +385,7 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.MailFromResult = 561;
@@ -406,7 +406,7 @@ namespace RegressionTests.SMTP
 
             CustomAsserts.AssertRecipientsInDeliveryQueue(0);
 
-            string bounceMessage = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
+            var bounceMessage = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
 
             Assert.IsTrue(bounceMessage.Contains("MAIL FROM:<test@example.test>"));
             Assert.IsTrue(bounceMessage.Contains("Remote server replied: 561"));
@@ -425,7 +425,7 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -447,7 +447,7 @@ namespace RegressionTests.SMTP
             // Force the message to be bounced.
             CustomAsserts.AssertRecipientsInDeliveryQueue(0, true);
 
-            string bounce = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
+            var bounce = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
 
             Assert.IsTrue(bounce.Contains("test@dummy-example.com"));
             Assert.IsTrue(bounce.Contains("Remote server closed connection."));
@@ -468,7 +468,7 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -505,7 +505,7 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -527,7 +527,7 @@ namespace RegressionTests.SMTP
             // Force the message to be bounced.
             CustomAsserts.AssertRecipientsInDeliveryQueue(0, true);
 
-            string bounce = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
+            var bounce = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
 
             Assert.IsTrue(bounce.Contains("test@dummy-example.com"));
             Assert.IsTrue(bounce.Contains("Remote server closed connection."));
@@ -547,7 +547,7 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -569,7 +569,7 @@ namespace RegressionTests.SMTP
             // Force the message to be bounced.
             CustomAsserts.AssertRecipientsInDeliveryQueue(0, true);
 
-            string bounce = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
+            var bounce = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
 
             Assert.IsTrue(bounce.Contains("test@dummy-example.com"));
             Assert.IsTrue(bounce.Contains("Remote server closed connection."));
@@ -591,7 +591,7 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 550;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -606,13 +606,13 @@ namespace RegressionTests.SMTP
             recipients.Add("test@dummy-example.com");
             smtp.Send("test@example.test", recipients, "Test", "Test message");
 
-            string undeliveredMessages = _status.UndeliveredMessages;
+            var undeliveredMessages = _status.UndeliveredMessages;
 
             // Wait for the client to disconnect.
             server.WaitForCompletion();
 
             // wait for the message to be delivered.
-            for (int i = 1; i <= 40; i++)
+            for (var i = 1; i <= 40; i++)
             {
                Assert.IsFalse(i == 40);
 
@@ -624,7 +624,7 @@ namespace RegressionTests.SMTP
 
             CustomAsserts.AssertRecipientsInDeliveryQueue(0, true);
 
-            string bounceMessage = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
+            var bounceMessage = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
 
             Assert.IsTrue(bounceMessage.Contains("Remote server (127.0.0.1) issued an error."));
             Assert.IsTrue(bounceMessage.Contains("550 test@dummy-example.com"));
@@ -651,7 +651,7 @@ namespace RegressionTests.SMTP
          deliveryResultsSecond["user2@dummy-example.com"] = 550;
          deliveryResultsSecond["user3@dummy-example.com"] = 500;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(2, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -678,7 +678,7 @@ namespace RegressionTests.SMTP
             // Trigger a sending of the bounce message.
             CustomAsserts.AssertRecipientsInDeliveryQueue(0, true);
 
-            string bounceMessage = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
+            var bounceMessage = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
 
             Assert.IsFalse(bounceMessage.Contains("RCPT TO:<user1@dummy-example.com>"));
             Assert.IsFalse(bounceMessage.Contains("RCPT TO:<user2@dummy-example.com>"));
@@ -698,7 +698,7 @@ namespace RegressionTests.SMTP
          deliveryResults["user2@dummy-example.com"] = 250;
          deliveryResults["user3@dummy-example.com"] = 499;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(2, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -706,7 +706,7 @@ namespace RegressionTests.SMTP
             server.StartListen();
 
             // Add a route so we can connect to localhost.
-            Route route = TestSetup.AddRoutePointingAtLocalhostMultipleHosts(2, smtpServerPort);
+            var route = TestSetup.AddRoutePointingAtLocalhostMultipleHosts(2, smtpServerPort);
 
             // Send message to this route.
             var smtp = new SmtpClientSimulator();
@@ -741,7 +741,7 @@ namespace RegressionTests.SMTP
 
             server.WaitForCompletion();
 
-            string bounceMessage = Pop3ClientSimulator.AssertGetFirstMessageText("test@example.test", "test");
+            var bounceMessage = Pop3ClientSimulator.AssertGetFirstMessageText("test@example.test", "test");
 
             Assert.IsFalse(bounceMessage.Contains("user1@dummy-example.com"));
             Assert.IsFalse(bounceMessage.Contains("user2@dummy-example.com"));
@@ -767,7 +767,7 @@ namespace RegressionTests.SMTP
          deliveryResultsSecond["user2@dummy-example.com"] = 250;
          deliveryResultsSecond["user3@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(2, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -811,7 +811,7 @@ namespace RegressionTests.SMTP
          deliveryResults["user2@dummy-example.com"] = 250;
          deliveryResults["user3@dummy-example.com"] = 400;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -852,7 +852,7 @@ namespace RegressionTests.SMTP
             CustomAsserts.AssertRecipientsInDeliveryQueue(0);
             server.WaitForCompletion();
             
-            string bounceMessage = Pop3ClientSimulator.AssertGetFirstMessageText("test@example.test", "test");
+            var bounceMessage = Pop3ClientSimulator.AssertGetFirstMessageText("test@example.test", "test");
 
             Assert.IsTrue(bounceMessage.Contains("400 user3@dummy-example.com"));
             Assert.IsTrue(bounceMessage.Contains("Tried 2 time(s)"));
@@ -870,7 +870,7 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 542;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -893,7 +893,7 @@ namespace RegressionTests.SMTP
 
          CustomAsserts.AssertRecipientsInDeliveryQueue(0);
 
-         string bounce = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
+         var bounce = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
 
          Assert.IsTrue(bounce.Contains("Remote server replied: 542 test@dummy-example.com"));
       }
@@ -907,7 +907,7 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 452;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
@@ -943,7 +943,7 @@ namespace RegressionTests.SMTP
          }
 
          // Now the message has bounced.
-         string message = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
+         var message = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
 
          Assert.IsTrue(message.Contains("452 test@dummy-example.com"));
          Assert.IsTrue(message.Contains("Tried 2 time(s)"));
@@ -959,7 +959,7 @@ namespace RegressionTests.SMTP
                {"user1@dummy-example.com", 250}
             };
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.ServerSupportsEhlo = false;
@@ -991,7 +991,7 @@ namespace RegressionTests.SMTP
                {"user1@dummy-example.com", 250}
             };
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.ServerSupportsHelo = false;

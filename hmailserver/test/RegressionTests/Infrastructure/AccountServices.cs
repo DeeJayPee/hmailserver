@@ -3,9 +3,9 @@
 
 using System;
 using System.IO;
+using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.Infrastructure
 {
@@ -19,8 +19,8 @@ namespace RegressionTests.Infrastructure
       {
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account1@example.test", "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account2@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account1@example.test", "test");
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account2@example.test", "test");
 
          account1.ForwardAddress = account2.Address;
          account1.ForwardEnabled = true;
@@ -34,7 +34,7 @@ namespace RegressionTests.Infrastructure
          _application.SubmitEMail();
 
          // Wait for the auto-reply.
-         string text = Pop3ClientSimulator.AssertGetFirstMessageText(account2.Address, "test");
+         var text = Pop3ClientSimulator.AssertGetFirstMessageText(account2.Address, "test");
 
          Assert.IsFalse(text.Contains("Return-Path: account2@example.test"));
          Assert.IsFalse(text.Contains("Return-Path: account1@example.test"));
@@ -49,15 +49,15 @@ namespace RegressionTests.Infrastructure
       {
          // Create a test account
          // Fetch the default _domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account-a@example.test", "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account-b@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account-a@example.test", "test");
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account-b@example.test", "test");
 
          // Set up a rule to trash the message.
-         Rule rule = account1.Rules.Add();
+         var rule = account1.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTMessageSize;
          ruleCriteria.MatchType = eRuleMatchType.eMTGreaterThan;
@@ -65,7 +65,7 @@ namespace RegressionTests.Infrastructure
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAForwardEmail;
          ruleAction.To = account2.Address;
          ruleAction.Save();
@@ -79,7 +79,7 @@ namespace RegressionTests.Infrastructure
          _application.SubmitEMail();
 
          // Wait for the auto-reply.
-         string text = Pop3ClientSimulator.AssertGetFirstMessageText(account2.Address, "test");
+         var text = Pop3ClientSimulator.AssertGetFirstMessageText(account2.Address, "test");
 
          Assert.IsFalse(text.Contains("Return-Path: account-a@example.test"));
          Assert.IsFalse(text.Contains("Return-Path: account2@example.test"));
@@ -93,13 +93,13 @@ namespace RegressionTests.Infrastructure
       {
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Addr'ess1@example.test", "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Addr'ess2@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Addr'ess1@example.test", "test");
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Addr'ess2@example.test", "test");
          SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "alias2'quoted@example.test", "Addr'ess2@example.test");
 
          // Send 5 messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         for (int i = 0; i < 5; i++)
+         for (var i = 0; i < 5; i++)
             smtpClientSimulator.Send(account1.Address, "alias2'quoted@example.test", "INBOX", "Quoted message test message");
 
          Pop3ClientSimulator.AssertMessageCount(account2.Address, "test", 5);
@@ -112,10 +112,10 @@ namespace RegressionTests.Infrastructure
       {
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
                                                                               TestSetup.UniqueString() + "@example.test",
                                                                               "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
                                                                               TestSetup.UniqueString() + "@example.test",
                                                                               "test");
 
@@ -131,7 +131,7 @@ namespace RegressionTests.Infrastructure
          var pop3ClientSimulator = new Pop3ClientSimulator();
          Pop3ClientSimulator.AssertMessageCount(account1.Address, "test", 1);
          Pop3ClientSimulator.AssertMessageCount(account2.Address, "test", 1);
-         string s = pop3ClientSimulator.GetFirstMessageText(account1.Address, "test");
+         var s = pop3ClientSimulator.GetFirstMessageText(account1.Address, "test");
          if (s.IndexOf("Out of office!") < 0)
             throw new Exception("ERROR - Auto reply subject not set properly.");
 
@@ -165,13 +165,13 @@ namespace RegressionTests.Infrastructure
       {
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
                                                                               TestSetup.UniqueString() + "@example.test",
                                                                               "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
                                                                               TestSetup.UniqueString() + "@example.test",
                                                                               "test");
-         Account account3 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+         var account3 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
                                                                               TestSetup.UniqueString() + "@example.test",
                                                                               "test");
 
@@ -204,10 +204,10 @@ namespace RegressionTests.Infrastructure
       {
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
                                                                               TestSetup.UniqueString() + "@example.test",
                                                                               "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
                                                                               TestSetup.UniqueString() + "@example.test",
                                                                               "test");
 
@@ -227,7 +227,7 @@ namespace RegressionTests.Infrastructure
          var pop3ClientSimulator = new Pop3ClientSimulator();
 
          Pop3ClientSimulator.AssertMessageCount(account1.Address, "test", 1);
-         string s = pop3ClientSimulator.GetFirstMessageText(account1.Address, "test");
+         var s = pop3ClientSimulator.GetFirstMessageText(account1.Address, "test");
          if (s.IndexOf("Subject: Auto-Reply: Test message") < 0)
             throw new Exception("ERROR - Auto reply subject not set properly.");
       }
@@ -239,10 +239,10 @@ namespace RegressionTests.Infrastructure
       {
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
                                                                               TestSetup.UniqueString() + "@example.test",
                                                                               "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
                                                                               TestSetup.UniqueString() + "@example.test",
                                                                               "test");
 
@@ -255,7 +255,7 @@ namespace RegressionTests.Infrastructure
          var smtpClientSimulator = new SmtpClientSimulator();
          smtpClientSimulator.Send(account1.Address, account2.Address, "Test message", "This is the body");
 
-         string s = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
+         var s = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
          if (s.IndexOf("Your message regarding -Test message- was not received.") < 0)
             throw new Exception("ERROR - Auto reply subject not set properly.");
       }
@@ -268,8 +268,8 @@ namespace RegressionTests.Infrastructure
       {
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Forward1@example.test", "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Forward2@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Forward1@example.test", "test");
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Forward2@example.test", "test");
 
          // Set up account 1 to forward to account2.
          account1.ForwardEnabled = true;
@@ -279,7 +279,7 @@ namespace RegressionTests.Infrastructure
 
          // Send 2 messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         for (int i = 0; i < 2; i++)
+         for (var i = 0; i < 2; i++)
             smtpClientSimulator.Send("Forward1@example.test", "Forward1@example.test", "INBOX", "POP3 test message");
 
          Pop3ClientSimulator.AssertMessageCount(account1.Address, "test", 2);
@@ -326,8 +326,8 @@ namespace RegressionTests.Infrastructure
       {
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Forward1@example.test", "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Forward2@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Forward1@example.test", "test");
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Forward2@example.test", "test");
 
          // Set up account 1 to forward to account2.
          account1.ForwardEnabled = true;
@@ -341,13 +341,13 @@ namespace RegressionTests.Infrastructure
          CustomAsserts.AssertRecipientsInDeliveryQueue(0);
          Pop3ClientSimulator.AssertMessageCount(account2.Address, "test", 1);
 
-         string domainDir = Path.Combine(_settings.Directories.DataDirectory, "example.test");
-         string userDir = Path.Combine(domainDir, "Forward1");
+         var domainDir = Path.Combine(_settings.Directories.DataDirectory, "example.test");
+         var userDir = Path.Combine(domainDir, "Forward1");
 
-         string[] dirs = Directory.GetDirectories(userDir);
-         foreach (string dir in dirs)
+         var dirs = Directory.GetDirectories(userDir);
+         foreach (var dir in dirs)
          {
-            string[] files = Directory.GetFiles(dir);
+            var files = Directory.GetFiles(dir);
 
             Assert.AreEqual(0, files.Length);
          }
@@ -360,13 +360,13 @@ namespace RegressionTests.Infrastructure
       {
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
                                                                               TestSetup.UniqueString() + "@example.test",
                                                                               "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
                                                                               TestSetup.UniqueString() + "@example.test",
                                                                               "test");
-         Account account3 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+         var account3 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
                                                                               TestSetup.UniqueString() + "@example.test",
                                                                               "test");
 
@@ -388,11 +388,11 @@ namespace RegressionTests.Infrastructure
          account3.DeleteMessages();
 
          // Set up a rule to trash the message.
-         Rule rule = account2.Rules.Add();
+         var rule = account2.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTMessageSize;
          ruleCriteria.MatchType = eRuleMatchType.eMTGreaterThan;
@@ -400,7 +400,7 @@ namespace RegressionTests.Infrastructure
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRADeleteEmail;
          ruleAction.Save();
 
@@ -421,16 +421,16 @@ namespace RegressionTests.Infrastructure
       {
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
                                                                               "Account1123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890@example.test",
                                                                               "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
                                                                               "Account2123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890@example.test",
                                                                               "test");
 
          // Send 5 messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         for (int i = 0; i < 5; i++)
+         for (var i = 0; i < 5; i++)
             smtpClientSimulator.Send(account1.Address, account2.Address, "INBOX", "POP3 test message");
 
          Pop3ClientSimulator.AssertMessageCount(account2.Address, "test", 5);
@@ -444,13 +444,13 @@ namespace RegressionTests.Infrastructure
       {
          // Create a test account
          // Fetch the default domain
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Addr'ess1@example.test", "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Addr'ess2@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Addr'ess1@example.test", "test");
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Addr'ess2@example.test", "test");
          SingletonProvider<TestSetup>.Instance.AddAlias(_domain, "alias2'quoted@example.test", "Addr'ess2@example.test");
 
          // Send 5 messages to this account.
          var smtpClientSimulator = new SmtpClientSimulator();
-         for (int i = 0; i < 5; i++)
+         for (var i = 0; i < 5; i++)
             smtpClientSimulator.Send(account1.Address, "alias2'quoted@example.test", "INBOX", "Quoted message test message");
 
          Pop3ClientSimulator.AssertMessageCount(account2.Address, "test", 5);

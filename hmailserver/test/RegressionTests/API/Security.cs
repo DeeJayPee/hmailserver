@@ -2,9 +2,9 @@
 // http://www.hmailserver.com
 
 using System.Runtime.InteropServices;
+using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.API
 {
@@ -14,7 +14,7 @@ namespace RegressionTests.API
       [Test]
       public void TestDomainAdminAccessBackupManager()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
          account.AdminLevel = eAdminLevel.hAdminLevelDomainAdmin;
          account.Save();
 
@@ -31,13 +31,13 @@ namespace RegressionTests.API
       [Test]
       public void TestDomainAdminAccessDatabase()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
          account.AdminLevel = eAdminLevel.hAdminLevelDomainAdmin;
          account.Save();
 
          var newApplication = new Application();
          newApplication.Authenticate("user@example.test", "test");
-         Database database = newApplication.Database;
+         var database = newApplication.Database;
          var ex = Assert.Throws<COMException>(() => database.ExecuteSQL("select"));
          StringAssert.Contains("You do not have access to this property / method.", ex.Message);
       }
@@ -45,7 +45,7 @@ namespace RegressionTests.API
       [Test]
       public void TestDomainAdminAccessOtherDomain()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
          account.AdminLevel = eAdminLevel.hAdminLevelDomainAdmin;
          account.Save();
 
@@ -55,12 +55,12 @@ namespace RegressionTests.API
          newApplication.Authenticate("user@example.test", "test");
          Assert.AreEqual(1, newApplication.Domains.Count);
 
-         Domains domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
+         var domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
          Assert.AreEqual(2, domains.Count);
 
          try
          {
-            Domain secondDomain = newApplication.Domains.get_ItemByName("example.com");
+            var secondDomain = newApplication.Domains.get_ItemByName("example.com");
             Assert.Fail("Was able to access other domain.");
          }
          catch (COMException ex)
@@ -72,7 +72,7 @@ namespace RegressionTests.API
       [Test]
       public void TestDomainAdminAccessSettings()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
          account.AdminLevel = eAdminLevel.hAdminLevelDomainAdmin;
          account.Save();
 
@@ -90,7 +90,7 @@ namespace RegressionTests.API
       [Test]
       public void TestNormalUserAccessBackupManager()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
          account.AdminLevel = eAdminLevel.hAdminLevelNormal;
          account.Save();
 
@@ -98,7 +98,7 @@ namespace RegressionTests.API
          newApplication.Authenticate("user@example.test", "test");
          var ex = Assert.Throws<COMException>(() =>
             {
-               BackupManager backupManager = newApplication.BackupManager;
+               var backupManager = newApplication.BackupManager;
             });
          StringAssert.Contains("You do not have access to this property / method.", ex.Message);
       }
@@ -106,13 +106,13 @@ namespace RegressionTests.API
       [Test]
       public void TestNormalUserAccessDatabase()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
          account.AdminLevel = eAdminLevel.hAdminLevelNormal;
          account.Save();
 
          var newApplication = new Application();
          newApplication.Authenticate("user@example.test", "test");
-         Database database = newApplication.Database;
+         var database = newApplication.Database;
 
          var ex = Assert.Throws<COMException>(() => database.ExecuteSQL("select"));
          StringAssert.Contains("You do not have access to this property / method.", ex.Message);
@@ -121,11 +121,11 @@ namespace RegressionTests.API
       [Test]
       public void TestNormalUserAccessOtherAccount()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
          account.AdminLevel = eAdminLevel.hAdminLevelNormal;
          account.Save();
 
-         Account secondAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "second@example.test", "test");
+         var secondAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "second@example.test", "test");
          secondAccount.AdminLevel = eAdminLevel.hAdminLevelNormal;
          secondAccount.Save();
 
@@ -134,11 +134,11 @@ namespace RegressionTests.API
          Assert.AreEqual(1, newApplication.Domains.Count);
          Assert.AreEqual(1, newApplication.Domains[0].Accounts.Count);
 
-         Account myAccount = newApplication.Domains[0].Accounts.get_ItemByAddress("user@example.test");
+         var myAccount = newApplication.Domains[0].Accounts.get_ItemByAddress("user@example.test");
 
          try
          {
-            Account otherAccount = newApplication.Domains[0].Accounts.get_ItemByAddress("second@example.test");
+            var otherAccount = newApplication.Domains[0].Accounts.get_ItemByAddress("second@example.test");
 
             Assert.Fail();
          }
@@ -147,14 +147,14 @@ namespace RegressionTests.API
             Assert.IsTrue(ex.Message.Contains("Invalid index."));
          }
 
-         Domains domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
+         var domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
          Assert.AreEqual(2, domains[0].Accounts.Count);
       }
 
       [Test]
       public void TestNormalUserAccessOtherDomain()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
          account.AdminLevel = eAdminLevel.hAdminLevelNormal;
          account.Save();
 
@@ -164,12 +164,12 @@ namespace RegressionTests.API
          newApplication.Authenticate("user@example.test", "test");
          Assert.AreEqual(1, newApplication.Domains.Count);
 
-         Domains domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
+         var domains = SingletonProvider<TestSetup>.Instance.GetApp().Domains;
          Assert.AreEqual(2, domains.Count);
 
          try
          {
-            Domain secondDomain = newApplication.Domains.get_ItemByName("example.com");
+            var secondDomain = newApplication.Domains.get_ItemByName("example.com");
             Assert.Fail();
          }
          catch (COMException ex)
@@ -181,7 +181,7 @@ namespace RegressionTests.API
       [Test]
       public void TestNormalUserAccessSettings()
       {
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "user@example.test", "test");
          account.AdminLevel = eAdminLevel.hAdminLevelNormal;
          account.Save();
 
@@ -189,7 +189,7 @@ namespace RegressionTests.API
          newApplication.Authenticate("user@example.test", "test");
          var ex = Assert.Throws<COMException>(() =>
          {
-            Settings settings = newApplication.Settings;
+            var settings = newApplication.Settings;
          });
          StringAssert.Contains("You do not have access to this property / method.", ex.Message);
 

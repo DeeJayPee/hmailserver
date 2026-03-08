@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
@@ -19,14 +17,14 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["user@example.test"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
             server.StartListen();
 
             // Add a route pointing at localhost
-            Route route = _settings.Routes.Add();
+            var route = _settings.Routes.Add();
             route.DomainName = "example.test";
             route.TargetSMTPHost = "localhost";
             route.TargetSMTPPort = smtpServerPort;
@@ -38,7 +36,7 @@ namespace RegressionTests.SMTP
             route.Save();
 
             // Make sure only the specific user is valid.
-            RouteAddress routeAddress = route.Addresses.Add();
+            var routeAddress = route.Addresses.Add();
             routeAddress.Address = "user@" + _domain.Name;
             routeAddress.Save();
 
@@ -67,14 +65,14 @@ namespace RegressionTests.SMTP
          // address matches a route set up (test.com).
          _application.Settings.SMTPRelayer = "example.com";
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
             server.StartListen();
 
             // Add a route pointing at localhost
-            Route route = _settings.Routes.Add();
+            var route = _settings.Routes.Add();
             route.DomainName = "example.test";
             route.TargetSMTPHost = "localhost";
             route.TargetSMTPPort = smtpServerPort;
@@ -86,7 +84,7 @@ namespace RegressionTests.SMTP
             route.Save();
 
             // Make sure only the specific user is valid.
-            RouteAddress routeAddress = route.Addresses.Add();
+            var routeAddress = route.Addresses.Add();
             routeAddress.Address = "user@" + _domain.Name;
             routeAddress.Save();
 
@@ -113,14 +111,14 @@ namespace RegressionTests.SMTP
          deliveryResults["user3@example.test"] = 250;
          deliveryResults["user4@example.test"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
             server.StartListen();
 
             // Add a route pointing at localhost
-            Route route = _settings.Routes.Add();
+            var route = _settings.Routes.Add();
             route.DomainName = "example.test";
             route.TargetSMTPHost = "localhost";
             route.TargetSMTPPort = smtpServerPort;
@@ -158,14 +156,14 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["user@stuff.example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
             server.StartListen();
 
             // Add a route pointing at localhost
-            Route route = _settings.Routes.Add();
+            var route = _settings.Routes.Add();
             route.DomainName = "*.example.com";
             route.TargetSMTPHost = "localhost";
             route.TargetSMTPPort = smtpServerPort;
@@ -177,7 +175,7 @@ namespace RegressionTests.SMTP
             route.Save();
 
             // Make sure only the specific user is valid.
-            RouteAddress routeAddress = route.Addresses.Add();
+            var routeAddress = route.Addresses.Add();
             routeAddress.Address = "user@" + _domain.Name;
             routeAddress.Save();
 
@@ -196,7 +194,7 @@ namespace RegressionTests.SMTP
       public void RecipientNotInListShouldReturnError()
       {
          // Add a route pointing at localhost
-         Route route = _settings.Routes.Add();
+         var route = _settings.Routes.Add();
          route.DomainName = "example.test";
          route.TargetSMTPHost = "localhost";
          route.TargetSMTPPort = 255;
@@ -209,7 +207,7 @@ namespace RegressionTests.SMTP
 
          var smtpClient = new SmtpClientSimulator();
 
-         string resultMessage = "";
+         var resultMessage = "";
          CustomAsserts.Throws<DeliveryFailedException>(() => smtpClient.Send("example@example.com", "user1@example.test", "Test", "Test message", out resultMessage));
          Assert.AreEqual("550 Recipient not in route list.", resultMessage);
       }
@@ -221,13 +219,13 @@ namespace RegressionTests.SMTP
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["test@dummy-example.com"] = 250;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var server = new SmtpServerSimulator(1, smtpServerPort))
          {
             server.AddRecipientResult(deliveryResults);
             server.StartListen();
 
-            Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, true, eConnectionSecurity.eCSNone);
+            var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, true, eConnectionSecurity.eCSNone);
             route.TargetSMTPHost = "127.0.0.1";
             route.Save();
           
@@ -250,7 +248,7 @@ namespace RegressionTests.SMTP
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          // Add a route pointing at localhost
-         Route route = _settings.Routes.Add();
+         var route = _settings.Routes.Add();
          route.DomainName = "example.test";
          route.TargetSMTPHost = "localhost";
          route.TargetSMTPPort = 255;

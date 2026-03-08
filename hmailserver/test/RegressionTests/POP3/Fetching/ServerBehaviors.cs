@@ -2,13 +2,10 @@
 // http://www.hmailserver.com
 
 using System.Collections.Generic;
-using System.IO;
-using System.Threading;
+using hMailServer;
 using NUnit.Framework;
 using RegressionTests.POP3.Fetching;
-using RegressionTests.SMTP;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.POP3
 {
@@ -37,7 +34,7 @@ namespace RegressionTests.POP3
 
       private FetchAccount CreateFetchAccount()
       {
-         FetchAccount fa = _account.FetchAccounts.Add();
+         var fa = _account.FetchAccounts.Add();
 
          fa.Enabled = true;
          fa.MinutesBetweenFetch = 10;
@@ -128,7 +125,7 @@ namespace RegressionTests.POP3
 
             Pop3ClientSimulator.AssertMessageCount(_account.Address, "test", 2);
 
-            string downloadedMessage = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
+            var downloadedMessage = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
 
             StringAssert.Contains("Received: from example.com", downloadedMessage);
             StringAssert.Contains("Hello!", downloadedMessage);
@@ -167,7 +164,7 @@ namespace RegressionTests.POP3
          }
 
          Pop3ClientSimulator.AssertMessageCount(_account.Address, "test", 2);
-         string downloadedMessage = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
+         var downloadedMessage = Pop3ClientSimulator.AssertGetFirstMessageText(_account.Address, "test");
 
          StringAssert.Contains("Received: from example.com", downloadedMessage);
          StringAssert.Contains("Hello!", downloadedMessage);

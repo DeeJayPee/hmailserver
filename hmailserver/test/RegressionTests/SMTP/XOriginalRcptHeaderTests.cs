@@ -24,10 +24,7 @@ namespace RegressionTests.SMTP
             where line.StartsWith("AddXOriginalRcptTo") && line.EndsWith("1")
             select line).Any();
 
-         if (!isEnabled)
-         {
-            Assert.Inconclusive("Setting AddXOriginalRcptTo is not set to 1.");
-         }
+         if (!isEnabled) Assert.Inconclusive("Setting AddXOriginalRcptTo is not set to 1.");
       }
 
       [Test]
@@ -138,7 +135,7 @@ namespace RegressionTests.SMTP
       {
          var accountAddresses = new List<string>();
 
-         for (int i = 0; i < 25; i++)
+         for (var i = 0; i < 25; i++)
          {
             var address = "test" + i +  "-" + GenerateRandomNumberString() + "@example.test";
             var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, address, Password);
@@ -152,22 +149,16 @@ namespace RegressionTests.SMTP
             var headerEnd = text.IndexOf("From: ");
             var header = text.Substring(headerStart, headerEnd - headerStart);
 
-            foreach (var recipient in accountAddresses)
-            {
-               StringAssert.Contains(recipient, header);
-            }
+            foreach (var recipient in accountAddresses) StringAssert.Contains(recipient, header);
          }
       }
 
       public static string GenerateRandomNumberString()
       {
-         int length = random.Next(0, 41); // length between 0 and 40 inclusive
-         char[] digits = new char[length];
+         var length = random.Next(0, 41); // length between 0 and 40 inclusive
+         var digits = new char[length];
 
-         for (int i = 0; i < length; i++)
-         {
-            digits[i] = (char)('0' + random.Next(0, 10));
-         }
+         for (var i = 0; i < length; i++) digits[i] = (char)('0' + random.Next(0, 10));
 
          return new string(digits);
       }

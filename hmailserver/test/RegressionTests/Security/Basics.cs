@@ -2,7 +2,6 @@
 // http://www.hmailserver.com
 
 using System.Security.Authentication;
-using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
 using RegressionTests.Shared;
@@ -15,7 +14,7 @@ namespace RegressionTests.Security
       [Test]
       public void TestEmptyPassword()
       {
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "");
 
          string message;
          var sim = new Pop3ClientSimulator();

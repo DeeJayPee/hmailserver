@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using hMailServer;
 
 namespace RegressionTests.Shared
 {
@@ -16,15 +15,15 @@ namespace RegressionTests.Shared
       [Description("Test usage of algorithm MD5.")]
       public void TestMD5Hashing()
       {
-         Utilities utilities = _application.Utilities;
+         var utilities = _application.Utilities;
 
-         string passwordHash = utilities.MD5("Password");
+         var passwordHash = utilities.MD5("Password");
       }
 
       [Test]
       public void TestStrongPasswords()
       {
-         Utilities utilities = _application.Utilities;
+         var utilities = _application.Utilities;
 
          // The password should not be a part of a user name.
          Assert.IsFalse(utilities.IsStrongPassword("testar@example.test", "testar"));

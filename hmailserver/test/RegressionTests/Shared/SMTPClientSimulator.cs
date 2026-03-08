@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Security.Authentication;
 using System.Text;
-using NUnit.Framework;
 
 namespace RegressionTests.Shared
 {
@@ -104,7 +103,7 @@ namespace RegressionTests.Shared
       public string GetWelcomeMessage()
       {
          _tcpConnection.Connect(_port);
-         string sData = _tcpConnection.Receive();
+         var sData = _tcpConnection.Receive();
 
          _tcpConnection.Disconnect();
          return sData;
@@ -118,7 +117,7 @@ namespace RegressionTests.Shared
          }
 
          // Receive welcome message.
-         string sData = _tcpConnection.Receive();
+         var sData = _tcpConnection.Receive();
 
          _tcpConnection.Send("HELO 127.0.0.1\r\n");
          sData = _tcpConnection.Receive();
@@ -127,8 +126,8 @@ namespace RegressionTests.Shared
          _tcpConnection.Send("MAIL FROM:<" + sFrom + ">\r\n");
          sData = _tcpConnection.Receive();
 
-         string sCommaSeparatedRecipients = "";
-         foreach (string sRecipient in lstRecipients)
+         var sCommaSeparatedRecipients = "";
+         foreach (var sRecipient in lstRecipients)
          {
             _tcpConnection.Send("RCPT TO:<" + sRecipient + ">\r\n");
             sData = _tcpConnection.Receive();
@@ -180,7 +179,7 @@ namespace RegressionTests.Shared
 
       public void Send(string sFrom, string sTo, string sSubject, string sBody)
       {
-         string result = "";
+         var result = "";
 
          Send(false, "", "", sFrom, sTo, sSubject, sBody, out result);
       }
@@ -290,7 +289,7 @@ namespace RegressionTests.Shared
             throw new DeliveryFailedException("Unable to connect.");
 
          // Receive welcome message.
-         string sData = _tcpConnection.Receive();
+         var sData = _tcpConnection.Receive();
 
          _tcpConnection.Send("HELO 127.0.0.1\r\n");
          sData = _tcpConnection.Receive();
@@ -316,7 +315,7 @@ namespace RegressionTests.Shared
          // Wait for OK.
          sData = _tcpConnection.Receive();
 
-         bool success = sData.Substring(0, 3) == "250";
+         var success = sData.Substring(0, 3) == "250";
          if (!success)
             throw new DeliveryFailedException("Unexpected response from server: " + sData);
 
@@ -351,7 +350,7 @@ namespace RegressionTests.Shared
 
       private string EncodeBase64(string s)
       {
-         byte[] bytes = Encoding.UTF8.GetBytes(s);
+         var bytes = Encoding.UTF8.GetBytes(s);
          return Convert.ToBase64String(bytes);
       }
 
@@ -359,9 +358,9 @@ namespace RegressionTests.Shared
 
       private static string GetCurrentMIMEDateTime()
       {
-         DateTime now = DateTime.Now;
+         var now = DateTime.Now;
 
-         string dayOfWeek = "";
+         var dayOfWeek = "";
          switch (now.DayOfWeek)
          {
             case DayOfWeek.Monday:
@@ -387,7 +386,7 @@ namespace RegressionTests.Shared
                break;
          }
 
-         string monthName = "";
+         var monthName = "";
          switch (now.Month)
          {
             case 1:
@@ -428,8 +427,8 @@ namespace RegressionTests.Shared
                break;
          }
 
-         string timeString = now.ToString("HH':'mm':'ss");
-         string dateString = string.Format("{0}, {1} {2} {3} {4} +0100", dayOfWeek, now.Day, monthName, now.Year,
+         var timeString = now.ToString("HH':'mm':'ss");
+         var dateString = string.Format("{0}, {1} {2} {3} {4} +0100", dayOfWeek, now.Day, monthName, now.Year,
                                            timeString);
 
          return dateString;

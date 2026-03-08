@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using RegressionTests.Shared;
 
 namespace RegressionTests.Infrastructure
@@ -28,7 +25,7 @@ namespace RegressionTests.Infrastructure
          _settings.Cache.AccountCacheMaxSizeKb = 20;
 
 
-         for (int i = 0; i < 41; i++)
+         for (var i = 0; i < 41; i++)
          {
             var domain = _application.Domains.Add();
             domain.Name = string.Format("{0}.example.com", i);

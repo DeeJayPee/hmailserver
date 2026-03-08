@@ -2,7 +2,6 @@
 // http://www.hmailserver.com
 
 using System.Collections.Generic;
-using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
 using RegressionTests.Shared;
@@ -26,7 +25,7 @@ namespace RegressionTests.Security
       [Description("Local to local")]
       public void TestBlockingDeliveries()
       {
-         SecurityRange range =
+         var range =
             SingletonProvider<TestSetup>.Instance.GetApp().Settings.SecurityRanges.get_ItemByName("My computer");
          range.RequireSMTPAuthLocalToLocal = false;
          range.RequireSMTPAuthLocalToExternal = false;
@@ -40,7 +39,7 @@ namespace RegressionTests.Security
 
          range.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
 
@@ -62,13 +61,13 @@ namespace RegressionTests.Security
       [Description("Test require SMTP auth is not happening if we're trying to deliver from external to external.")]
       public void TestSMTPAuthExternalToExternal()
       {
-         SecurityRange range =
+         var range =
             SingletonProvider<TestSetup>.Instance.GetApp().Settings.SecurityRanges.get_ItemByName("My computer");
          range.RequireSMTPAuthExternalToExternal = true;
          range.Save();
 
          var smtpClientSimulator = new SmtpClientSimulator();
-         string result = "";
+         var result = "";
          CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send("externaladdress@example.com", "someexternaladdress@example.com", "Mail 1",
                                    "Mail 1", out result));
          Assert.IsTrue(result.Contains("SMTP authentication is required."));
@@ -86,12 +85,12 @@ namespace RegressionTests.Security
       [Description("External to local")]
       public void TestSMTPAuthExternalToLocal()
       {
-         SecurityRange range =
+         var range =
             SingletonProvider<TestSetup>.Instance.GetApp().Settings.SecurityRanges.get_ItemByName("My computer");
          range.RequireSMTPAuthExternalToLocal = true;
          range.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
          CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send("someexternaladdress@example.com", account1.Address, "Mail 1", "Mail 1"));
@@ -108,14 +107,14 @@ namespace RegressionTests.Security
       public void TestSMTPAuthExternalToRouteConfiguredAsLocal()
       {
          // First, make sure hMailServer requires auth.
-         SecurityRange range =
+         var range =
             SingletonProvider<TestSetup>.Instance.GetApp().Settings.SecurityRanges.get_ItemByName("My computer");
          range.RequireSMTPAuthExternalToExternal = true;
          range.RequireSMTPAuthLocalToExternal = true;
          range.Save();
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
-         Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
+         var smtpServerPort = TestSetup.GetNextFreePort();
+         var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
          route.TreatRecipientAsLocalDomain = true;
          route.TreatSenderAsLocalDomain = true;
          route.Save();
@@ -144,15 +143,15 @@ namespace RegressionTests.Security
       [Description("Test require SMTP auth when sending from local address to external address.")]
       public void TestSMTPAuthLocalToExternal()
       {
-         SecurityRange range =
+         var range =
             SingletonProvider<TestSetup>.Instance.GetApp().Settings.SecurityRanges.get_ItemByName("My computer");
          range.RequireSMTPAuthLocalToExternal = true;
          range.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
-         string result = "";
+         var result = "";
          CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send(account1.Address, "someexternaladdress@example.com", "Mail 1", "Mail 1",
                                    out result));
          Assert.IsTrue(result.Contains("SMTP authentication is required"));
@@ -162,15 +161,15 @@ namespace RegressionTests.Security
       [Description("Local to local")]
       public void TestSMTPAuthLocalToLocal()
       {
-         SecurityRange range =
+         var range =
             SingletonProvider<TestSetup>.Instance.GetApp().Settings.SecurityRanges.get_ItemByName("My computer");
          range.RequireSMTPAuthLocalToLocal = true;
          range.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
-         string result = "";
+         var result = "";
          CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send(account1.Address, account1.Address, "Mail 1", "Mail 1", out result));
          Assert.IsTrue(result.Contains("SMTP authentication is required."));
 
@@ -187,17 +186,17 @@ namespace RegressionTests.Security
          )]
       public void TestSenderAsExternalDomainSendToLocalAccountFail()
       {
-         int smtpServerPort = TestSetup.GetNextFreePort();
-         Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
+         var smtpServerPort = TestSetup.GetNextFreePort();
+         var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
          route.TreatSenderAsLocalDomain = false;
          route.Save();
 
-         SecurityRange range =
+         var range =
             SingletonProvider<TestSetup>.Instance.GetApp().Settings.SecurityRanges.get_ItemByName("My computer");
          range.RequireSMTPAuthExternalToLocal = true;
          range.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
          string result;
@@ -210,23 +209,23 @@ namespace RegressionTests.Security
          )]
       public void TestSenderAsExternalDomainSendToLocalAccountPass()
       {
-         int smtpServerPort = TestSetup.GetNextFreePort();
-         Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
+         var smtpServerPort = TestSetup.GetNextFreePort();
+         var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
          route.TreatSenderAsLocalDomain = false;
          route.Save();
 
-         SecurityRange range =
+         var range =
             SingletonProvider<TestSetup>.Instance.GetApp().Settings.SecurityRanges.get_ItemByName("My computer");
          range.RequireSMTPAuthLocalToLocal = true;
          range.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
          string result;
          smtpClientSimulator.Send("someone@dummy-example.com", account1.Address, "Mail 1", "Mail 1", out result);
 
-         string text = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
+         var text = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
          Assert.IsTrue(text.Contains("Mail 1"));
       }
 
@@ -236,18 +235,18 @@ namespace RegressionTests.Security
          )]
       public void TestSenderAsLocalDomainSendToExternal()
       {
-         int smtpServerPort = TestSetup.GetNextFreePort();
-         Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
+         var smtpServerPort = TestSetup.GetNextFreePort();
+         var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
          route.TreatSenderAsLocalDomain = true;
          route.Save();
 
-         SecurityRange range =
+         var range =
             SingletonProvider<TestSetup>.Instance.GetApp().Settings.SecurityRanges.get_ItemByName("My computer");
          range.RequireSMTPAuthLocalToExternal = true;
          range.Save();
 
          var smtpClientSimulator = new SmtpClientSimulator();
-         string result = "";
+         var result = "";
          CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send("someone@dummy-example.com", "test@example.com", "Mail 1", "Mail 1", out result));
          Assert.IsTrue(result.Contains("530 SMTP authentication is required."));
       }
@@ -258,20 +257,20 @@ namespace RegressionTests.Security
          )]
       public void TestSenderAsLocalDomainSendToLocalAccount()
       {
-         int smtpServerPort = TestSetup.GetNextFreePort();
-         Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
+         var smtpServerPort = TestSetup.GetNextFreePort();
+         var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
          route.TreatSenderAsLocalDomain = true;
          route.Save();
 
-         SecurityRange range =
+         var range =
             SingletonProvider<TestSetup>.Instance.GetApp().Settings.SecurityRanges.get_ItemByName("My computer");
          range.RequireSMTPAuthLocalToLocal = true;
          range.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
-         string result = "";
+         var result = "";
          CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send("someone@dummy-example.com", account1.Address, "Mail 1", "Mail 1", out result));
          Assert.IsTrue(result.Contains("530 SMTP authentication is required."));
       }
@@ -282,23 +281,23 @@ namespace RegressionTests.Security
          )]
       public void TestSenderAsLocalDomainSendToLocalAccountPass()
       {
-         int smtpServerPort = TestSetup.GetNextFreePort();
-         Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
+         var smtpServerPort = TestSetup.GetNextFreePort();
+         var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
          route.TreatSenderAsLocalDomain = true;
          route.Save();
 
-         SecurityRange range =
+         var range =
             SingletonProvider<TestSetup>.Instance.GetApp().Settings.SecurityRanges.get_ItemByName("My computer");
          range.RequireSMTPAuthLocalToLocal = false;
          range.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
          string result;
          smtpClientSimulator.Send("someone@dummy-example.com", account1.Address, "Mail 1", "Mail 1", out result);
 
-         string text = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
+         var text = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
          Assert.IsTrue(text.Contains("Mail 1"));
       }
 
@@ -307,8 +306,8 @@ namespace RegressionTests.Security
       [Description("Use case 3: Delivery from external user to route (backup MX case).")]
       public void TestUseCase3DeliveryFromExternalUserToPrimaryViaBackup()
       {
-         int smtpServerPort = TestSetup.GetNextFreePort();
-         Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
+         var smtpServerPort = TestSetup.GetNextFreePort();
+         var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
          route.TreatRecipientAsLocalDomain = true;
          route.TreatSenderAsLocalDomain = false;
          route.Save();
@@ -336,19 +335,19 @@ namespace RegressionTests.Security
          "Use case 2: Delivery from primary MX to backup server. For example someone@customer to someone@hoster.")]
       public void TestUseCaseDeliveryFromPrimaryMXToBackupMX()
       {
-         int smtpServerPort = TestSetup.GetNextFreePort();
-         Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
+         var smtpServerPort = TestSetup.GetNextFreePort();
+         var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
          route.TreatRecipientAsLocalDomain = true;
          route.TreatSenderAsLocalDomain = false;
          route.Save();
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "sales@example.test", "test");
 
          var smtpClientSimulator = new SmtpClientSimulator();
          string result;
          smtpClientSimulator.Send("someone@dummy-example.com", account1.Address, "Mail 1", "Mail 1", out result);
 
-         string text = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
+         var text = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
          Assert.IsTrue(text.Contains("Mail 1"));
       }
 
@@ -358,8 +357,8 @@ namespace RegressionTests.Security
          )]
       public void TestUseCaseDeliveryToLocalRoute()
       {
-         int smtpServerPort = TestSetup.GetNextFreePort();
-         Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
+         var smtpServerPort = TestSetup.GetNextFreePort();
+         var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
          route.TreatRecipientAsLocalDomain = true;
          route.TreatSenderAsLocalDomain = false;
          route.Save();
@@ -390,13 +389,13 @@ namespace RegressionTests.Security
          )]
       public void TreatRecipientAsExternalDomain()
       {
-         int smtpServerPort = TestSetup.GetNextFreePort();
-         Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
+         var smtpServerPort = TestSetup.GetNextFreePort();
+         var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
          route.TreatRecipientAsLocalDomain = false;
          route.Save();
 
          var smtpClientSimulator = new SmtpClientSimulator();
-         string result = "";
+         var result = "";
          CustomAsserts.Throws<DeliveryFailedException>(() => smtpClientSimulator.Send("someone@example.com", "test@dummy-example.com", "Mail 1", "Mail 1", out result));
          Assert.IsTrue(result.Contains("530 SMTP authentication is required."));
       }
@@ -408,12 +407,12 @@ namespace RegressionTests.Security
          )]
       public void TreatRecipientAsExternalDomainPermitted()
       {
-         int smtpServerPort = TestSetup.GetNextFreePort();
-         Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
+         var smtpServerPort = TestSetup.GetNextFreePort();
+         var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
          route.TreatRecipientAsLocalDomain = false;
          route.Save();
 
-         SecurityRange range =
+         var range =
             SingletonProvider<TestSetup>.Instance.GetApp().Settings.SecurityRanges.get_ItemByName("My computer");
          range.AllowDeliveryFromRemoteToRemote = true;
          range.RequireSMTPAuthExternalToExternal = false;
@@ -443,8 +442,8 @@ namespace RegressionTests.Security
          )]
       public void TreatRecipientAsLocalDomain()
       {
-         int smtpServerPort = TestSetup.GetNextFreePort();
-         Route route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
+         var smtpServerPort = TestSetup.GetNextFreePort();
+         var route = TestSetup.AddRoutePointingAtLocalhost(1, smtpServerPort, false);
          route.TreatRecipientAsLocalDomain = true;
          route.Save();
 

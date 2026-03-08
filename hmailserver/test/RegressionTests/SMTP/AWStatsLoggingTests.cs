@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
@@ -16,7 +15,7 @@ namespace RegressionTests.SMTP
       [OneTimeSetUp]
       public void OneTimeSetUp()
       {
-         Settings settings = SingletonProvider<TestSetup>.Instance.GetApp().Settings;
+         var settings = SingletonProvider<TestSetup>.Instance.GetApp().Settings;
          _logging = settings.Logging;
 
          _logging.AWStatsEnabled = true;
@@ -35,7 +34,7 @@ namespace RegressionTests.SMTP
       {
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
-         IPAddress localAddress = TestSetup.GetLocalIpAddress();
+         var localAddress = TestSetup.GetLocalIpAddress();
          var smtpClientSimulator = new SmtpClientSimulator(false, 25, localAddress);
 
          // Delivery from external to local.
@@ -43,9 +42,9 @@ namespace RegressionTests.SMTP
          Pop3ClientSimulator.AssertMessageCount("test@example.test", "test", 1);
          
          // Verify that the delivery is logged
-         string contents = TestSetup.ReadExistingTextFile(_logging.CurrentAwstatsLog);
+         var contents = TestSetup.ReadExistingTextFile(_logging.CurrentAwstatsLog);
          CustomAsserts.AssertDeleteFile(_logging.CurrentAwstatsLog);
-         string expectedString = string.Format("\ttest@external.com\ttest@example.test\t{0}\t127.0.0.1\tSMTP\t?\t250\t", localAddress);
+         var expectedString = string.Format("\ttest@external.com\ttest@example.test\t{0}\t127.0.0.1\tSMTP\t?\t250\t", localAddress);
          StringAssert.Contains(expectedString, contents);
          
          // Verify there's just 1 logged line
@@ -57,7 +56,7 @@ namespace RegressionTests.SMTP
       {
          SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
-         IPAddress localAddress = TestSetup.GetLocalIpAddress();
+         var localAddress = TestSetup.GetLocalIpAddress();
          var smtpClientSimulator = new SmtpClientSimulator(false, 25, localAddress);
 
          // Failed delivery from local to local.
@@ -65,9 +64,9 @@ namespace RegressionTests.SMTP
             smtpClientSimulator.Send("test@example.test", "test@example.test", "Mail 1", "Mail 1"));
 
          // Verify that the failed delivery is logged
-         string contents = TestSetup.ReadExistingTextFile(_logging.CurrentAwstatsLog);
+         var contents = TestSetup.ReadExistingTextFile(_logging.CurrentAwstatsLog);
          CustomAsserts.AssertDeleteFile(_logging.CurrentAwstatsLog);
-         string expectedString = string.Format("\ttest@example.test\ttest@example.test\t{0}\t127.0.0.1\tSMTP\t?\t530\t", localAddress);
+         var expectedString = string.Format("\ttest@example.test\ttest@example.test\t{0}\t127.0.0.1\tSMTP\t?\t530\t", localAddress);
          StringAssert.Contains(expectedString, contents);
 
          // Verify there's just 1 logged line
@@ -85,9 +84,9 @@ namespace RegressionTests.SMTP
          SmtpClientSimulator.StaticSend("test@example.test", "test@example.test", "Mail 1", "Mail 1");
 
          // Verify that the failed delivery is logged
-         string contents = TestSetup.ReadExistingTextFile(_logging.CurrentAwstatsLog);
+         var contents = TestSetup.ReadExistingTextFile(_logging.CurrentAwstatsLog);
          CustomAsserts.AssertDeleteFile(_logging.CurrentAwstatsLog);
-         string expectedString = string.Format("\ttest@example.test\ttest@example.test\t127.0.0.1\t127.0.0.1\tSMTP\t?\t550\t");
+         var expectedString = string.Format("\ttest@example.test\ttest@example.test\t127.0.0.1\t127.0.0.1\tSMTP\t?\t550\t");
          StringAssert.Contains(expectedString, contents);
 
          // Verify there's just 1 logged line
@@ -96,11 +95,11 @@ namespace RegressionTests.SMTP
 
       private void CreateDeleteAllMailRule()
       {
-         Rule rule = SingletonProvider<TestSetup>.Instance.GetApp().Rules.Add();
+         var rule = SingletonProvider<TestSetup>.Instance.GetApp().Rules.Add();
          rule.Name = "Global rule test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTMessageSize;
          ruleCriteria.MatchType = eRuleMatchType.eMTGreaterThan;
@@ -108,7 +107,7 @@ namespace RegressionTests.SMTP
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRADeleteEmail;
          ruleAction.Save();
 

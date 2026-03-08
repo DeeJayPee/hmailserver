@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO.Ports;
 using System.Text;
 using hMailServer;
 using RegressionTests.SSL;
@@ -78,7 +77,7 @@ namespace RegressionTests.Shared
             // Remove the messages...
             DeletedMessages.Sort();
             DeletedMessages.Reverse();
-            foreach (int deletedMessage in DeletedMessages)
+            foreach (var deletedMessage in DeletedMessages)
             {
                _messages.RemoveAt(deletedMessage - 1);
             }
@@ -94,13 +93,13 @@ namespace RegressionTests.Shared
 
          if (command.ToLower().StartsWith("capa"))
          {
-            string capabilities = "USER\r\nUIDL\r\nTOP\r\n";
+            var capabilities = "USER\r\nUIDL\r\nTOP\r\n";
 
             if (_connectionSecurity == eConnectionSecurity.eCSSTARTTLSRequired ||
                 _connectionSecurity == eConnectionSecurity.eCSSTARTTLSOptional)
                capabilities += "STLS\r\n";
 
-            string response = "+OK CAPA list follows\r\n" + capabilities + "." + "\r\n";
+            var response = "+OK CAPA list follows\r\n" + capabilities + "." + "\r\n";
             Send(response);
             return true;
          }
@@ -130,7 +129,7 @@ namespace RegressionTests.Shared
 
             var builder = new StringBuilder();
 
-            for (int i = 0; i < _messages.Count; i++)
+            for (var i = 0; i < _messages.Count; i++)
             {
                builder.Append(string.Format("{0} UniqueID-{1}\r\n", i + 1, _messages[i].GetHashCode()));
             }
@@ -147,11 +146,11 @@ namespace RegressionTests.Shared
             command = command.TrimEnd('\n');
             command = command.TrimEnd('\r');
 
-            int messageID = Convert.ToInt32(command);
+            var messageID = Convert.ToInt32(command);
 
             RetrievedMessages.Add(messageID);
 
-            string message = _messages[messageID - 1];
+            var message = _messages[messageID - 1];
 
             switch (SendBufferMode)
             {
@@ -188,7 +187,7 @@ namespace RegressionTests.Shared
             command = command.TrimEnd('\n');
             command = command.TrimEnd('\r');
 
-            int messageID = Convert.ToInt32(command);
+            var messageID = Convert.ToInt32(command);
 
             DeletedMessages.Add(messageID);
 

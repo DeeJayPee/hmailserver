@@ -3,6 +3,7 @@
 
 using System;
 using System.Threading;
+using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Shared;
 using RegressionTests.SSL;
@@ -12,7 +13,7 @@ namespace RegressionTests.SMTP
    [TestFixture]
    public class ReceivedHeaders : TestFixtureBase
    {
-      private hMailServer.Account _account;
+      private Account _account;
       [OneTimeSetUp]
       public new void TestFixtureSetUp()
       {

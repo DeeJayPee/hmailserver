@@ -5,13 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.Remoting;
 using System.Text.RegularExpressions;
+using hMailServer;
 using NUnit.Framework;
 using RegressionTests.Infrastructure;
-using RegressionTests.SMTP;
 using RegressionTests.Shared;
-using hMailServer;
 
 namespace RegressionTests.Rules
 {
@@ -20,18 +18,18 @@ namespace RegressionTests.Rules
    {
       private void CreatePrintRecipientCountRule(hMailServer.Rules rules)
       {
-         Rule rule = rules.Add();
+         var rule = rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTMessageSize;
          ruleCriteria.MatchType = eRuleMatchType.eMTGreaterThan;
          ruleCriteria.MatchValue = "0";
          ruleCriteria.Save();
 
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRARunScriptFunction;
          ruleAction.ScriptFunction = "PrintRecipientCount";
          ruleAction.Save();
@@ -49,15 +47,15 @@ namespace RegressionTests.Rules
       [Test]
       public void ActionAccountRuleMoveToExistingPublicFolder()
       {
-         Application application = SingletonProvider<TestSetup>.Instance.GetApp();
+         var application = SingletonProvider<TestSetup>.Instance.GetApp();
 
          // Add an account
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
-         IMAPFolders publicFolders = _settings.PublicFolders;
-         IMAPFolder folder = publicFolders.Add("Share1");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var publicFolders = _settings.PublicFolders;
+         var folder = publicFolders.Add("Share1");
          folder.Save();
 
-         IMAPFolderPermission permission = folder.Permissions.Add();
+         var permission = folder.Permissions.Add();
          permission.PermissionAccountID = account1.ID;
          permission.PermissionType = eACLPermissionType.ePermissionTypeUser;
          permission.set_Permission(eACLPermission.ePermissionInsert, true);
@@ -65,11 +63,11 @@ namespace RegressionTests.Rules
          permission.set_Permission(eACLPermission.ePermissionExpunge, true);
          permission.Save();
 
-         Rule rule = account1.Rules.Add();
+         var rule = account1.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTMessageSize;
          ruleCriteria.MatchType = eRuleMatchType.eMTGreaterThan;
@@ -77,7 +75,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "#public.Share1";
          ruleAction.Save();
@@ -97,15 +95,15 @@ namespace RegressionTests.Rules
       [Test]
       public void ActionAccountRuleMoveToExistingPublicFolderSubStructureWithCreatePermission()
       {
-         Application application = SingletonProvider<TestSetup>.Instance.GetApp();
+         var application = SingletonProvider<TestSetup>.Instance.GetApp();
 
          // Add an account
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account1@example.test", "test");
-         IMAPFolders publicFolders = _settings.PublicFolders;
-         IMAPFolder folder = publicFolders.Add("Share1");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "account1@example.test", "test");
+         var publicFolders = _settings.PublicFolders;
+         var folder = publicFolders.Add("Share1");
          folder.Save();
 
-         IMAPFolderPermission permission = folder.Permissions.Add();
+         var permission = folder.Permissions.Add();
          permission.PermissionAccountID = account1.ID;
          permission.PermissionType = eACLPermissionType.ePermissionTypeUser;
          permission.set_Permission(eACLPermission.ePermissionInsert, true);
@@ -114,11 +112,11 @@ namespace RegressionTests.Rules
          permission.set_Permission(eACLPermission.ePermissionLookup, true);
          permission.Save();
 
-         Rule rule = account1.Rules.Add();
+         var rule = account1.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTMessageSize;
          ruleCriteria.MatchType = eRuleMatchType.eMTGreaterThan;
@@ -126,7 +124,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "#public.Share1.Sub";
          ruleAction.Save();
@@ -146,17 +144,17 @@ namespace RegressionTests.Rules
       [Test]
       public void ActionAccountRuleMoveToNonExistingPublicFolder()
       {
-         Application application = SingletonProvider<TestSetup>.Instance.GetApp();
+         var application = SingletonProvider<TestSetup>.Instance.GetApp();
 
          // Add an account
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
-         IMAPFolders publicFolders = _settings.PublicFolders;
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var publicFolders = _settings.PublicFolders;
 
-         Rule rule = account1.Rules.Add();
+         var rule = account1.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTMessageSize;
          ruleCriteria.MatchType = eRuleMatchType.eMTGreaterThan;
@@ -164,7 +162,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "#public.Share1";
          ruleAction.Save();
@@ -186,13 +184,13 @@ namespace RegressionTests.Rules
       public void ActionBindToAddress()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
-         Rule rule = SingletonProvider<TestSetup>.Instance.GetApp().Rules.Add();
+         var rule = SingletonProvider<TestSetup>.Instance.GetApp().Rules.Add();
          rule.Name = "Global rule test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTEquals;
@@ -200,7 +198,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRABindToAddress;
          ruleAction.Value = "255.254.253.252";
          ruleAction.Save();
@@ -214,7 +212,7 @@ namespace RegressionTests.Rules
 
          CustomAsserts.AssertRecipientsInDeliveryQueue(0);
 
-         string errorLog = LogHandler.ReadAndDeleteErrorLog();
+         var errorLog = LogHandler.ReadAndDeleteErrorLog();
 
          Assert.IsTrue(errorLog.Contains("Failed to bind to IP address 255.254.253.252."));
       }
@@ -224,13 +222,13 @@ namespace RegressionTests.Rules
       public void ActionDelete()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTContains;
@@ -238,7 +236,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRADeleteEmail;
          ruleAction.Save();
 
@@ -255,16 +253,16 @@ namespace RegressionTests.Rules
 
          ImapClientSimulator.AssertMessageCount("ruletest@example.test", "test", "Inbox", 2);
 
-         int fileCount = 0;
-         string domainDir = Path.Combine(_application.Settings.Directories.DataDirectory, "example.test");
-         string userDir = Path.Combine(domainDir, "ruletest");
+         var fileCount = 0;
+         var domainDir = Path.Combine(_application.Settings.Directories.DataDirectory, "example.test");
+         var userDir = Path.Combine(domainDir, "ruletest");
 
          RetryHelper.TryAction(TimeSpan.FromSeconds(10), () =>
             {
-               string[] dirs = Directory.GetDirectories(userDir);
-               foreach (string dir in dirs)
+               var dirs = Directory.GetDirectories(userDir);
+               foreach (var dir in dirs)
                {
-                  string[] files = Directory.GetFiles(dir);
+                  var files = Directory.GetFiles(dir);
                   fileCount += files.Length;
                }
 
@@ -274,7 +272,7 @@ namespace RegressionTests.Rules
          RetryHelper.TryAction(TimeSpan.FromSeconds(10), delegate
             {
                var logContent = LogHandler.ReadCurrentDefaultLog();
-               int loggedDeletionCount = new Regex(Regex.Escape("Delivery to this account was canceled by an account rule")).Matches(logContent).Count;
+               var loggedDeletionCount = new Regex(Regex.Escape("Delivery to this account was canceled by an account rule")).Matches(logContent).Count;
 
                RetryableAssert.AreEqual(2, loggedDeletionCount);
             });
@@ -284,15 +282,15 @@ namespace RegressionTests.Rules
       public void ActionGlobalMoveToIMAPFolder()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
                                                                              "ActionGlobalMoveToIMAPFolder@example.test",
                                                                              "test");
 
-         Rule rule = SingletonProvider<TestSetup>.Instance.GetApp().Rules.Add();
+         var rule = SingletonProvider<TestSetup>.Instance.GetApp().Rules.Add();
          rule.Name = "Global rule test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTNotEquals;
@@ -300,7 +298,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "INBOX.GlobalBox";
          ruleAction.Save();
@@ -325,15 +323,15 @@ namespace RegressionTests.Rules
       [Test]
       public void ActionGlobalRuleMoveToIMAPFolderPublicFolder()
       {
-         Application application = SingletonProvider<TestSetup>.Instance.GetApp();
+         var application = SingletonProvider<TestSetup>.Instance.GetApp();
 
          // Add an account
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
-         IMAPFolders publicFolders = _settings.PublicFolders;
-         IMAPFolder folder = publicFolders.Add("Share1");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var publicFolders = _settings.PublicFolders;
+         var folder = publicFolders.Add("Share1");
          folder.Save();
 
-         IMAPFolderPermission permission = folder.Permissions.Add();
+         var permission = folder.Permissions.Add();
          permission.PermissionAccountID = account1.ID;
          permission.PermissionType = eACLPermissionType.ePermissionTypeUser;
          permission.set_Permission(eACLPermission.ePermissionInsert, true);
@@ -341,11 +339,11 @@ namespace RegressionTests.Rules
          permission.set_Permission(eACLPermission.ePermissionExpunge, true);
          permission.Save();
 
-         Rule rule = application.Rules.Add();
+         var rule = application.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTMessageSize;
          ruleCriteria.MatchType = eRuleMatchType.eMTGreaterThan;
@@ -353,7 +351,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "#public.Share1";
          ruleAction.Save();
@@ -372,14 +370,14 @@ namespace RegressionTests.Rules
       [Test]
       public void ActionGlobalRuleMoveToIMAPFolderPublicFolderNonExistant()
       {
-         Application application = SingletonProvider<TestSetup>.Instance.GetApp();
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var application = SingletonProvider<TestSetup>.Instance.GetApp();
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
-         Rule rule = application.Rules.Add();
+         var rule = application.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTMessageSize;
          ruleCriteria.MatchType = eRuleMatchType.eMTGreaterThan;
@@ -387,7 +385,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "#public.MyFolder";
          ruleAction.Save();
@@ -402,7 +400,7 @@ namespace RegressionTests.Rules
                                   "Detta ska hamna i public folder.");
 
          // Wait for the folder to be created.
-         IMAPFolder folder = CustomAsserts.AssertFolderExists(_settings.PublicFolders, "MyFolder");
+         var folder = CustomAsserts.AssertFolderExists(_settings.PublicFolders, "MyFolder");
 
          // Wait for the message to appear.
          CustomAsserts.AssertFolderMessageCount(folder, 1);
@@ -414,7 +412,7 @@ namespace RegressionTests.Rules
          Assert.Throws<ArgumentException>(() =>  imap.GetMessageCount("#public.MyFolder"));
 
          // Set permissions on this folder.
-         IMAPFolderPermission permission = folder.Permissions.Add();
+         var permission = folder.Permissions.Add();
          permission.PermissionAccountID = account1.ID;
          permission.PermissionType = eACLPermissionType.ePermissionTypeUser;
          permission.set_Permission(eACLPermission.ePermissionInsert, true);
@@ -430,13 +428,13 @@ namespace RegressionTests.Rules
       public void ActionMoveToIMAPFolder()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTNotEquals;
@@ -444,7 +442,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "INBOX.NotEquals";
          ruleAction.Save();
@@ -470,26 +468,26 @@ namespace RegressionTests.Rules
       public void ActionOverrideMoveToIMAPFolder()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
-         Rule rule = SingletonProvider<TestSetup>.Instance.GetApp().Rules.Add();
+         var rule = SingletonProvider<TestSetup>.Instance.GetApp().Rules.Add();
          rule.Name = "Global rule test";
          rule.Active = true;
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTNotEquals;
          ruleCriteria.MatchValue = "SomeString";
          ruleCriteria.Save();
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "INBOX.GlobalBox";
          ruleAction.Save();
          rule.Save();
 
          // Account-level rule
-         Rule accountRule = account.Rules.Add();
+         var accountRule = account.Rules.Add();
          accountRule.Name = "Criteria test";
          accountRule.Active = true;
 
@@ -526,20 +524,20 @@ namespace RegressionTests.Rules
       [Test]
       public void ActionSendUsingRoute()
       {
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
 
          // add an account to send from
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
 
          // Add a route so we can conenct to localhost.
-         Route route = TestSetup.AddRoutePointingAtLocalhost(5, smtpServerPort, false);
+         var route = TestSetup.AddRoutePointingAtLocalhost(5, smtpServerPort, false);
 
          // Add a global send-using-route rule
-         Rule rule = _application.Rules.Add();
+         var rule = _application.Rules.Add();
          rule.Name = "Send using route";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTContains;
@@ -547,7 +545,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRASendUsingRoute;
          ruleAction.RouteID = route.ID;
          ruleAction.Save();
@@ -560,7 +558,7 @@ namespace RegressionTests.Rules
          recipients.Add("test@example.test");
          smtp.Send("test@example.test", recipients, "Test", "Test message");
 
-         string message = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
+         var message = Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
          Assert.IsTrue(message.Contains("Test message"));
 
          // Send a message and confirm that the rule affects it.
@@ -596,13 +594,13 @@ namespace RegressionTests.Rules
       public void ActionSetHeaderContents()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTContains;
@@ -610,7 +608,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRASetHeaderValue;
          ruleAction.HeaderName = "SomeHeader";
          ruleAction.Value = "SomeValue";
@@ -624,7 +622,7 @@ namespace RegressionTests.Rules
          // Spam folder
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "TestString", "Test 1");
 
-         string sContents = Pop3ClientSimulator.AssertGetFirstMessageText("ruletest@example.test", "test");
+         var sContents = Pop3ClientSimulator.AssertGetFirstMessageText("ruletest@example.test", "test");
 
          if (sContents.IndexOf("SomeHeader: SomeValue") <= 0)
             throw new Exception("Message header not set");
@@ -634,13 +632,13 @@ namespace RegressionTests.Rules
       public void ActionSetHeaderContents_MACRO_ORIGINAL_HEADER()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTContains;
@@ -648,7 +646,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRASetHeaderValue;
          ruleAction.HeaderName = "Subject";
          ruleAction.Value = "Foo: %MACRO_ORIGINAL_HEADER%";
@@ -662,7 +660,7 @@ namespace RegressionTests.Rules
          // Spam folder
          smtpClientSimulator.Send("ruletest@example.test", "ruletest@example.test", "TestString", "Test 1");
 
-         string sContents = Pop3ClientSimulator.AssertGetFirstMessageText("ruletest@example.test", "test");
+         var sContents = Pop3ClientSimulator.AssertGetFirstMessageText("ruletest@example.test", "test");
 
          StringAssert.Contains("Foo: TestString", sContents, sContents);
       }
@@ -674,13 +672,13 @@ namespace RegressionTests.Rules
          watch.Start();
 
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTContains;
@@ -688,7 +686,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "INBOX.Wildcard";
          ruleAction.Save();
@@ -717,13 +715,13 @@ namespace RegressionTests.Rules
       public void CriteriaContainsHTMLBody()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTBody;
          ruleCriteria.MatchType = eRuleMatchType.eMTContains;
@@ -731,7 +729,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "INBOX.Wildcard";
          ruleAction.Save();
@@ -741,11 +739,11 @@ namespace RegressionTests.Rules
 
          var smtpClientSimulator = new SmtpClientSimulator();
 
-         string message = "From: Someone <Someone@example.org>" + Environment.NewLine +
-                          "Content-Type: text/html; charset=\"Windows-1251\"" + Environment.NewLine +
-                          "Content-Transfer-Encoding: quoted-printable" + Environment.NewLine +
-                          Environment.NewLine +
-                          "<HTML><Center>MyHTMLBody</Center></HTML>" + Environment.NewLine;
+         var message = "From: Someone <Someone@example.org>" + Environment.NewLine +
+                       "Content-Type: text/html; charset=\"Windows-1251\"" + Environment.NewLine +
+                       "Content-Transfer-Encoding: quoted-printable" + Environment.NewLine +
+                       Environment.NewLine +
+                       "<HTML><Center>MyHTMLBody</Center></HTML>" + Environment.NewLine;
 
          smtpClientSimulator.SendRaw("someone@example.org", account.Address, message);
 
@@ -758,13 +756,13 @@ namespace RegressionTests.Rules
       public void CriteriaEquals()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTEquals;
@@ -772,7 +770,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "INBOX.Wildcard";
          ruleAction.Save();
@@ -800,13 +798,13 @@ namespace RegressionTests.Rules
       public void CriteriaGreaterThan()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTGreaterThan;
@@ -814,7 +812,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "INBOX.GreaterThan";
          ruleAction.Save();
@@ -839,13 +837,13 @@ namespace RegressionTests.Rules
       public void CriteriaLessThan()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTLessThan;
@@ -853,7 +851,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "INBOX.LessThan";
          ruleAction.Save();
@@ -877,13 +875,13 @@ namespace RegressionTests.Rules
       public void CriteriaNotEquals()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTNotEquals;
@@ -891,7 +889,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "INBOX.NotEquals";
          ruleAction.Save();
@@ -917,13 +915,13 @@ namespace RegressionTests.Rules
       public void CriteriaRegEx()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTRegExMatch;
@@ -931,7 +929,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "INBOX.RegEx";
          ruleAction.Save();
@@ -957,13 +955,13 @@ namespace RegressionTests.Rules
       public void CriteriaWildcardExactMatch()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTWildcard;
@@ -971,7 +969,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "INBOX.Wildcard";
          ruleAction.Save();
@@ -994,15 +992,15 @@ namespace RegressionTests.Rules
       public void CriteriaWildcardNoCase()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
                                                                              "CriteriaWildcardNoCase@example.test",
                                                                              "test");
 
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTWildcard;
@@ -1010,7 +1008,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "INBOX.Wildcard";
          ruleAction.Save();
@@ -1031,13 +1029,13 @@ namespace RegressionTests.Rules
       public void CriteriaWildcardPartialMatch()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTWildcard;
@@ -1045,7 +1043,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "INBOX.Wildcard";
          ruleAction.Save();
@@ -1068,17 +1066,17 @@ namespace RegressionTests.Rules
       [Test]
       public void MovedToRenamedPublicFolder()
       {
-         Application application = SingletonProvider<TestSetup>.Instance.GetApp();
+         var application = SingletonProvider<TestSetup>.Instance.GetApp();
 
          _settings.IMAPPublicFolderName = "Public";
 
          // Add an account
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
-         IMAPFolders publicFolders = _settings.PublicFolders;
-         IMAPFolder folder = publicFolders.Add("Share1");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var publicFolders = _settings.PublicFolders;
+         var folder = publicFolders.Add("Share1");
          folder.Save();
 
-         IMAPFolderPermission permission = folder.Permissions.Add();
+         var permission = folder.Permissions.Add();
          permission.PermissionAccountID = account1.ID;
          permission.PermissionType = eACLPermissionType.ePermissionTypeUser;
          permission.set_Permission(eACLPermission.ePermissionInsert, true);
@@ -1086,11 +1084,11 @@ namespace RegressionTests.Rules
          permission.set_Permission(eACLPermission.ePermissionExpunge, true);
          permission.Save();
 
-         Rule rule = application.Rules.Add();
+         var rule = application.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTMessageSize;
          ruleCriteria.MatchType = eRuleMatchType.eMTGreaterThan;
@@ -1098,7 +1096,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "Public.Share1";
          ruleAction.Save();
@@ -1120,7 +1118,7 @@ namespace RegressionTests.Rules
          // Fetch the default domain
 
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
 
          // Add a rule to this account.
          AddSpamRule(account);
@@ -1153,8 +1151,8 @@ namespace RegressionTests.Rules
 
          // Test move to imap with mail with multiple recipients.
 
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest-m1@example.test", "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest-m2@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest-m1@example.test", "test");
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest-m2@example.test", "test");
          AddSpamRule(account1);
 
          // Send email to both recipients
@@ -1177,17 +1175,17 @@ namespace RegressionTests.Rules
       public void TestCreateCopyAccountRule()
       {
          // Add an account
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest1@example.test", "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest2@example.test", "test");
-         Account account3 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest3@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest1@example.test", "test");
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest2@example.test", "test");
+         var account3 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest3@example.test", "test");
 
          // Set up a rule to forward from account1 to 2 and 3.
-         Rule rule = account1.Rules.Add();
+         var rule = account1.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
          rule.UseAND = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTMessageSize;
          ruleCriteria.MatchType = eRuleMatchType.eMTGreaterThan;
@@ -1203,7 +1201,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Set up the actions to forward.
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRACreateCopy;
          ruleAction.To = "ruletest2@example.test";
          ruleAction.Save();
@@ -1218,14 +1216,14 @@ namespace RegressionTests.Rules
          CustomAsserts.AssertRecipientsInDeliveryQueue(0, true);
          ImapClientSimulator.AssertMessageCount(account1.Address, "test", "Inbox", 2);
 
-         string firstTemp = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
-         string secondTemp = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
+         var firstTemp = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
+         var secondTemp = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
 
          // This is where it gets really ugly. The order of the two deliveries
          // are not defined. The message created by the rule could be delivered
          // before the first message.
-         string first = "";
-         string second = "";
+         var first = "";
+         var second = "";
 
          if (secondTemp.Contains("X-hMailServer-LoopCount"))
          {
@@ -1249,16 +1247,16 @@ namespace RegressionTests.Rules
       public void TestCreateCopyGlobalRule()
       {
          // Add an account
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest1@example.test", "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest2@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest1@example.test", "test");
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest2@example.test", "test");
 
          // Set up a rule to forward from account1 to 2 and 3.
-         Rule rule = _application.Rules.Add();
+         var rule = _application.Rules.Add();
          rule.Name = "CriteriaTest";
          rule.Active = true;
          rule.UseAND = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTMessageSize;
          ruleCriteria.MatchType = eRuleMatchType.eMTGreaterThan;
@@ -1274,7 +1272,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Set up the actions to create a copy
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRACreateCopy;
          ruleAction.Save();
 
@@ -1294,8 +1292,8 @@ namespace RegressionTests.Rules
           * before the original message. Check both situations.
           * 
           */
-         string first = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
-         string second = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
+         var first = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
+         var second = Pop3ClientSimulator.AssertGetFirstMessageText(account1.Address, "test");
 
          if (first.Contains("X-hMailServer-LoopCount: 1"))
          {
@@ -1328,16 +1326,16 @@ namespace RegressionTests.Rules
       public void TestDeliveryAttempts()
       {
          // Add an account
-         Account account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
-         Account adminAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "admin@example.test", "test");
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         var adminAccount = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "admin@example.test", "test");
 
          // Set up a rule to forward from account1 to 2 and 3.
-         Rule rule = _application.Rules.Add();
+         var rule = _application.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
          rule.UseAND = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTDeliveryAttempts;
          ruleCriteria.MatchType = eRuleMatchType.eMTEquals;
@@ -1345,7 +1343,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // The second time we try to deliver an email, forward a copy to the admin!
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAForwardEmail;
          ruleAction.To = adminAccount.Address;
          ruleAction.Save();
@@ -1362,7 +1360,7 @@ namespace RegressionTests.Rules
          var deliveryResults = new Dictionary<string, int>();
          deliveryResults["ahem@dummy-example.com"] = 452;
 
-         int smtpServerPort = TestSetup.GetNextFreePort();
+         var smtpServerPort = TestSetup.GetNextFreePort();
          using (var smtpServer = new SmtpServerSimulator(1, smtpServerPort))
          {
             smtpServer.AddRecipientResult(deliveryResults);
@@ -1381,7 +1379,7 @@ namespace RegressionTests.Rules
 
          CustomAsserts.AssertRecipientsInDeliveryQueue(0, true);
 
-         string first = Pop3ClientSimulator.AssertGetFirstMessageText(adminAccount.Address, "test");
+         var first = Pop3ClientSimulator.AssertGetFirstMessageText(adminAccount.Address, "test");
 
          Assert.IsTrue(first.Contains("X-hMailServer-LoopCount: 1"), first);
 
@@ -1393,16 +1391,16 @@ namespace RegressionTests.Rules
       public void TestForward()
       {
          // Add an account
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest1@example.test", "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest2@example.test", "test");
-         Account account3 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest3@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest1@example.test", "test");
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest2@example.test", "test");
+         var account3 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest3@example.test", "test");
 
          // Set up a rule to forward from account1 to 2 and 3.
-         Rule rule = account1.Rules.Add();
+         var rule = account1.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTMessageSize;
          ruleCriteria.MatchType = eRuleMatchType.eMTGreaterThan;
@@ -1410,12 +1408,12 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Set up the actions to forward.
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAForwardEmail;
          ruleAction.To = "ruletest2@example.test";
          ruleAction.Save();
 
-         RuleAction ruleAction2 = rule.Actions.Add();
+         var ruleAction2 = rule.Actions.Add();
          ruleAction2.Type = eRuleActionType.eRAForwardEmail;
          ruleAction2.To = "ruletest3@example.test";
          ruleAction2.Save();
@@ -1438,15 +1436,15 @@ namespace RegressionTests.Rules
       [Description("Test to move to a public folder without permission.")]
       public void TestMoveToPublicFolderWithoutPermission()
       {
-         Application application = SingletonProvider<TestSetup>.Instance.GetApp();
+         var application = SingletonProvider<TestSetup>.Instance.GetApp();
 
          // Add an account
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
-         IMAPFolders publicFolders = _settings.PublicFolders;
-         IMAPFolder folder = publicFolders.Add("Share1");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest@example.test", "test");
+         var publicFolders = _settings.PublicFolders;
+         var folder = publicFolders.Add("Share1");
          folder.Save();
 
-         IMAPFolderPermission permission = folder.Permissions.Add();
+         var permission = folder.Permissions.Add();
          permission.PermissionAccountID = account1.ID;
          permission.PermissionType = eACLPermissionType.ePermissionTypeUser;
          permission.set_Permission(eACLPermission.ePermissionInsert, true);
@@ -1454,11 +1452,11 @@ namespace RegressionTests.Rules
          permission.set_Permission(eACLPermission.ePermissionExpunge, true);
          permission.Save();
 
-         Rule rule = account1.Rules.Add();
+         var rule = account1.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTMessageSize;
          ruleCriteria.MatchType = eRuleMatchType.eMTGreaterThan;
@@ -1466,7 +1464,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "#public.Share1.Sub";
          ruleAction.Save();
@@ -1490,8 +1488,8 @@ namespace RegressionTests.Rules
          _settings.Scripting.Enabled = true;
 
          // Add an account
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest1@example.test", "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest2@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest1@example.test", "test");
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest2@example.test", "test");
 
          CreatePrintRecipientCountRule(account1.Rules);
 
@@ -1499,7 +1497,7 @@ namespace RegressionTests.Rules
                                         "Detta ska inte hamna i mappen Inbox.Overriden.Test");
          CustomAsserts.AssertRecipientsInDeliveryQueue(0);
          // This should print a single list.
-         string eventLogText = TestSetup.ReadExistingTextFile(LogHandler.GetEventLogFileName());
+         var eventLogText = TestSetup.ReadExistingTextFile(LogHandler.GetEventLogFileName());
          CustomAsserts.AssertDeleteFile(LogHandler.GetEventLogFileName());
          Assert.IsTrue(eventLogText.Contains("\"1\""), eventLogText);
 
@@ -1521,8 +1519,8 @@ namespace RegressionTests.Rules
          _settings.Scripting.Enabled = true;
 
          // Add an account
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest1@example.test", "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest2@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest1@example.test", "test");
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest2@example.test", "test");
 
          CreatePrintRecipientCountRule(_application.Rules);
 
@@ -1531,7 +1529,7 @@ namespace RegressionTests.Rules
          CustomAsserts.AssertRecipientsInDeliveryQueue(0);
          // This should print a single list.
          
-         string eventLogText = TestSetup.ReadExistingTextFile(LogHandler.GetEventLogFileName());
+         var eventLogText = TestSetup.ReadExistingTextFile(LogHandler.GetEventLogFileName());
          CustomAsserts.AssertDeleteFile(LogHandler.GetEventLogFileName());
          Assert.IsTrue(eventLogText.Contains("\"1\""), eventLogText);
 
@@ -1551,15 +1549,15 @@ namespace RegressionTests.Rules
       public void TestReply()
       {
          // Add accounts
-         Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest1@example.test", "test");
-         Account account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest2@example.test", "test");
+         var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest1@example.test", "test");
+         var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest2@example.test", "test");
 
          // Set up a rule to reply to any message sent to account2.
-         Rule rule = account2.Rules.Add();
+         var rule = account2.Rules.Add();
          rule.Name = "Criteria test";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = true;
          ruleCriteria.PredefinedField = eRulePredefinedField.eFTMessageSize;
          ruleCriteria.MatchType = eRuleMatchType.eMTGreaterThan;
@@ -1567,7 +1565,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Set up the actions to forward.
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAReply;
          ruleAction.FromAddress = account2.Address;
          ruleAction.FromName = "Rule Test 2";
@@ -1585,7 +1583,7 @@ namespace RegressionTests.Rules
 
          // Make sure a reply is sent back to account 1.
          CustomAsserts.AssertRecipientsInDeliveryQueue(0);
-         Message message = CustomAsserts.AssertGetFirstMessage(account1, "Inbox");
+         var message = CustomAsserts.AssertGetFirstMessage(account1, "Inbox");
 
          Assert.AreEqual("ruletest2@example.test", message.FromAddress);
          Assert.AreEqual("auto-replied", message.get_HeaderValue("Auto-Submitted"));
@@ -1593,11 +1591,11 @@ namespace RegressionTests.Rules
 
       private void AddExactMatchRule(Account account)
       {
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "TestRule 3";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTEquals;
@@ -1605,7 +1603,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "INBOX.Corporate";
          ruleAction.Save();
@@ -1616,11 +1614,11 @@ namespace RegressionTests.Rules
 
       public void AddCorporateRule(Account account)
       {
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "TestRule 2";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTContains;
@@ -1628,7 +1626,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "INBOX.Corporate";
          ruleAction.Save();
@@ -1639,11 +1637,11 @@ namespace RegressionTests.Rules
 
       public void AddSpamRule(Account account)
       {
-         Rule rule = account.Rules.Add();
+         var rule = account.Rules.Add();
          rule.Name = "TestRule 1";
          rule.Active = true;
 
-         RuleCriteria ruleCriteria = rule.Criterias.Add();
+         var ruleCriteria = rule.Criterias.Add();
          ruleCriteria.UsePredefined = false;
          ruleCriteria.HeaderField = "Subject";
          ruleCriteria.MatchType = eRuleMatchType.eMTContains;
@@ -1651,7 +1649,7 @@ namespace RegressionTests.Rules
          ruleCriteria.Save();
 
          // Add action
-         RuleAction ruleAction = rule.Actions.Add();
+         var ruleAction = rule.Actions.Add();
          ruleAction.Type = eRuleActionType.eRAMoveToImapFolder;
          ruleAction.IMAPFolder = "INBOX.Spam";
          ruleAction.Save();
