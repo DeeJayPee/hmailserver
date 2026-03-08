@@ -25,7 +25,8 @@ Write-Host "  Assembly: $testAssembly"
 # Add helpful NUnit arguments to show test names as they run
 $nunitArgs = @(
     $testAssembly,
-    '--labels=All'
+    '--labels=All',
+    '/stoponerror'
 )
 $nunitArgString = [string]::Join(' ', $nunitArgs)
 
