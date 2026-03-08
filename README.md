@@ -30,7 +30,7 @@ Environment set up
    * An installed version of hMailServer 5.7 (configured with a database)
    * Visual Studio 2019 Community edition
    * InnoSetup 5.5.4a (non-unicode version)
-   * [Perl ActiveState ActivePerl Community Edition 32 bit works fine](https://www.activestate.com/activeperl/downloads)
+   * Perl 5 (https://strawberryperl.com/)
    
 **NOTE**
 
