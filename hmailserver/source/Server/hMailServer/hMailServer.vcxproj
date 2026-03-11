@@ -105,11 +105,7 @@ EXIT 0
     </Link>
     <PostBuildEvent>
       <Message>Performing registration</Message>
-      <Command>xcopy /F /Y $(hMailServerLibs)\openssl-1.1.1u\out64\bin\libcrypto-1_1-x64.dll $(OutDir)
-xcopy /F /Y $(hMailServerLibs)\openssl-1.1.1u\out64\bin\libssl-1_1-x64.dll $(OutDir)
-xcopy /F /Y $(ProjectDir)..\..\..\..\libraries\libpq-12.2\x64\*.dll $(OutDir)
-"$(TargetPath)" /Register
-</Command>
+      <Command>call "$(ProjectDir)post-build.bat" "$(hMailServerLibs)" "$(OutDir)" "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -159,11 +155,7 @@ EXIT 0
     </Link>
     <PostBuildEvent>
       <Message>Performing registration</Message>
-      <Command>xcopy /F /Y $(hMailServerLibs)\openssl-1.1.1u\out64\bin\libcrypto-1_1-x64.dll $(OutDir)
-xcopy /F /Y $(hMailServerLibs)\openssl-1.1.1u\out64\bin\libssl-1_1-x64.dll $(OutDir)
-xcopy /F /Y $(ProjectDir)..\..\..\..\libraries\libpq-12.2\x64\*.dll $(OutDir)
-"$(TargetPath)" /Register
-</Command>
+      <Command>call "$(ProjectDir)post-build.bat" "$(hMailServerLibs)" "$(OutDir)" "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

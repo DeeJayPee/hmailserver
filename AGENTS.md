@@ -191,22 +191,9 @@ Vendored third-party C++ libraries checked directly into the repository. Large e
 
 # Running builds and tests
 
-The below scripts will automatically locate prerequisites.
+The below scripts will automatically locate prerequisites. They must be run using `powershell.exe` (not bash/sh). Use the `powershell.exe -NoProfile -ExecutionPolicy Bypass -File <script>` invocation from bash.
 
-Use `build/build.ps1` to build hMailServer server. It must be run with Administrator elevation. 
-
-```
-Start-Process powershell -Verb runAs -ArgumentList '-NoProfile','-ExecutionPolicy','Bypass','-File',(Join-Path (Get-Location) "build\build.ps1")
-```
-
-Use `build/build-tests.ps1` to build the regression test solution.
-
-```
-Start-Process powershell -ArgumentList '-NoProfile','-ExecutionPolicy','Bypass','-File',(Join-Path (Get-Location) "build\build-tests.ps1")
-```
-
-Use `build/run-tests.ps1` to run the regression tests solution.
-
-```
-Start-Process powershell -ArgumentList '-NoProfile','-ExecutionPolicy','Bypass','-File',(Join-Path (Get-Location) "build\run-tests.ps1")
-```
+* Use `build/build.ps1` to build hMailServer server.
+* Use `build/post-build.ps1` to copy DLLs and register the COM server after a successful build. It requires Administrator elevation and will prompt via UAC automatically.
+* Use `build/build-tests.ps1` to build the regression test solution.
+* Use `build/run-tests.ps1` to run the regression tests solution.

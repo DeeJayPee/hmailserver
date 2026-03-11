@@ -31,6 +31,8 @@ $msbuildArgs = @(
 	'/m'
 	"/p:Configuration=$Configuration"
 	'/p:Platform=x64'
+	'/p:PreBuildEventUseInBuild=false'
+	'/p:PostBuildEventUseInBuild=false'
 )
 
 & "$msbuild" @msbuildArgs *>&1
