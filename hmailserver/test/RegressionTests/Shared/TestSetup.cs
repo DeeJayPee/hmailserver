@@ -636,12 +636,21 @@ namespace RegressionTests.Shared
          // Connect to another local address.
          var iphostentry = Dns.GetHostEntry(Dns.GetHostName());
 
-         foreach (var ipaddress in iphostentry.AddressList)
-            if (ipaddress.AddressFamily == AddressFamily.InterNetwork)
-               if (ipaddress.ToString().Contains("192.168."))
-                  return ipaddress;
+         var allAddresses = new StringBuilder();
 
-         Assert.Fail("No local internet address found.");
+         foreach (var ipaddress in iphostentry.AddressList)
+         {
+            allAddresses.AppendLine($"Family: {ipaddress.AddressFamily}, Address: {ipaddress}");
+
+            if (ipaddress.AddressFamily == AddressFamily.InterNetwork)
+            {
+               if (ipaddress.ToString().Contains("192.168.") ||
+                   ipaddress.ToString().Contains("172.26."))
+                  return ipaddress;
+            }
+         }
+
+         Assert.Fail($"No local internet address found. Addresses: {allAddresses}");
          return null;
       }
 

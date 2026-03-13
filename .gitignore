@@ -40,8 +40,8 @@ hmailserver/source/Server/hMailServer.Minidump/Release/*
 hmailserver/test/RegressionTests/TestResult.xml
 hmailserver/source/Server/hMailServer.Minidump/x64/*
 /hmailserver/installation/Output/*
-/hmailserver/source/Server/hMailServer/.vs/*
 /hmailserver/test/packages/*
 /hmailserver/test/RegressionTests/packages/*
 /TestResult.xml
 /.claude/*
+**/.vs/*
