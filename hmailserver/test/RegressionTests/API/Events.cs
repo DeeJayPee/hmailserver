@@ -482,6 +482,34 @@ namespace RegressionTests.API
       }
 
       [Test]
+      public void TestOnDeliveryStart_SetHtmlBodyEmpty()
+      {
+         LogHandler.DeleteEventLog();
+
+         var app = SingletonProvider<TestSetup>.Instance.GetApp();
+         var scripting = app.Settings.Scripting;
+
+         var script = "Sub OnDeliveryStart(message) " + Environment.NewLine +
+                      " message.HTMLBody = \"\" " + Environment.NewLine +
+                      " EventLog.Write(\"HTMLBody: '\" & message.HTMLBody & \"'\")" + Environment.NewLine +
+                      "End Sub" + Environment.NewLine + Environment.NewLine;
+
+         File.WriteAllText(scripting.CurrentScriptFile, script);
+
+         scripting.Enabled = true;
+         scripting.Reload();
+
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "SampleBody");
+
+         // Wait for the message to be delivered.
+         Pop3ClientSimulator.AssertGetFirstMessageText(account.Address, "test");
+
+         var eventLogText = TestSetup.ReadExistingTextFile(app.Settings.Logging.CurrentEventLog);
+         StringAssert.Contains("HTMLBody: ''", eventLogText);
+      }
+
+      [Test]
       public void TestOnErrorJScript()
       {
          LogHandler.DeleteEventLog();
