@@ -83,7 +83,7 @@ namespace HM
 
       // Create a copy of the message
       std::shared_ptr<Message> pNewMessage = PersistentMessage::CopyToQueue(pRecipientAccount, pOriginalMessage);
-     
+
       String sMailerDaemonAddress = MailerDaemonAddressDeterminer::GetMailerDaemonAddress(pNewMessage);
       if (pNewMessage->GetFromAddress().IsEmpty())
          pNewMessage->SetFromAddress(sMailerDaemonAddress);
@@ -91,7 +91,7 @@ namespace HM
          pNewMessage->SetFromAddress(pRecipientAccount->GetAddress());
 
       pNewMessage->SetState(Message::Delivering);
-      
+
       // Increase the number of rule-deliveries made.
       std::shared_ptr<MessageData> pNewMsgData = std::shared_ptr<MessageData>(new MessageData());
       const String newFileName = PersistentMessage::GetFileName(pNewMessage);
