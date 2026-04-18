@@ -247,28 +247,26 @@ namespace HM
    {
    }
    
-   bool
+   void
    MimeTester::Test()
    {
       if (!TestFindStringEdgeCases())
-         return false;
+         throw;
 
       if (!TestMultipartWithoutFinalCrlf())
-         return false;
+         throw;
 
       if (!TestMultipartWithFinalCrlf())
-         return false;
+         throw;
 
       if (!TestMultipartWithoutClosingBoundary())
-         return false;
+         throw;
 
       if (!TestMultipartWithClosingBoundaryMissingSeparator())
-         return false;
+         throw;
 
       if (!TestMultipartWithPartBoundaryMissingCrlf())
-         return false;
-
-      return true;
+         throw;
    }
 
 

@@ -1674,9 +1674,15 @@ namespace HM
             }
 
             // Preserve EOF exactly as it appeared on disk when the closing
-            // boundary is the final bytes in the file.
-            last_multipart_end_ = pszAfterClosingBoundary - pszDataBegin;
-            return (int)(pszAfterClosingBoundary - pszDataBegin);
+            // boundary is the final bytes in the file, but reject any extra
+            // trailing bytes such as "--boundary--garbage".
+            if (pszAfterClosingBoundary == pszEnd)
+            {
+               last_multipart_end_ = pszAfterClosingBoundary - pszDataBegin;
+               return (int)(pszAfterClosingBoundary - pszDataBegin);
+            }
+
+            break;
          }
 
          // A non-closing part boundary must be followed by CRLF before the
