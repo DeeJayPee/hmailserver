@@ -380,7 +380,7 @@ namespace HM
          // Add HEADER
          AnsiString sHeaderContents = pBodyPart->GetHeaderContents();
          GetBytesToSend_(sHeaderContents.GetLength(), oPart, iByteStart, iByteCount);
-         sHeaderContents.Mid(iByteStart, iByteCount);
+         sHeaderContents = sHeaderContents.Mid(iByteStart, iByteCount);
          pOutBuf->Add((BYTE*) sHeaderContents.GetBuffer(0), sHeaderContents.GetLength());
       }      
       else if (oPart.GetShowBodyText())
@@ -463,9 +463,7 @@ namespace HM
          sResponse += "\r\n";
 
          GetBytesToSend_(sResponse.GetLength(), oPart, iByteStart, iByteCount);
-         sResponse.Mid(iByteStart, iByteCount);
-
-         AnsiString sAS = sResponse;
+         AnsiString sAS = sResponse.Mid(iByteStart, iByteCount);
          pOutBuf->Add((BYTE*) sAS.GetBuffer(0), sAS.GetLength());
 
       }
@@ -523,9 +521,7 @@ namespace HM
          sResponse += "\r\n";
 
          GetBytesToSend_(sResponse.GetLength(), oPart, iByteStart, iByteCount);
-         sResponse.Mid(iByteStart,iByteCount);
-
-         AnsiString sAS = sResponse;
+         AnsiString sAS = sResponse.Mid(iByteStart, iByteCount);
          pOutBuf->Add((BYTE*) sAS.GetBuffer(0), sAS.GetLength());
 
       }
