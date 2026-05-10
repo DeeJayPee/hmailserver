@@ -167,6 +167,8 @@ namespace RegressionTests.Infrastructure
       [Description("Test account reply when spam flagged")]
       public void TestAutoReplyAbortSpamFlagged()
       {
+         CustomAsserts.AssertSpamAssassinIsRunning();
+
          // Create a test account
          // Fetch the default domain
          var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain,
@@ -347,6 +349,8 @@ namespace RegressionTests.Infrastructure
       [Description("Test account forwarding when spam flagged")]
       public void TestForwardingAbortSpamFlagged()
       {
+         CustomAsserts.AssertSpamAssassinIsRunning();
+
          // Create a test account
          // Fetch the default domain
          var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "Forward1@example.test", "test");

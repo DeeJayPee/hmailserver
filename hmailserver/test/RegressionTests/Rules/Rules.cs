@@ -1463,6 +1463,8 @@ namespace RegressionTests.Rules
       [Description("Test forward rule when spam flagged.")]
       public void TestForwardAbortSpamFlagged()
       {
+         CustomAsserts.AssertSpamAssassinIsRunning();
+
          // Add an account
          var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest1@example.test", "test");
          var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest2@example.test", "test");
@@ -1748,6 +1750,8 @@ namespace RegressionTests.Rules
       [Description("Test reply rule when spam flagged.")]
       public void TestReplyAbortSpamFlagged()
       {
+         CustomAsserts.AssertSpamAssassinIsRunning();
+
          // Add accounts
          var account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest1@example.test", "test");
          var account2 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "ruletest2@example.test", "test");
