@@ -295,6 +295,45 @@ namespace RegressionTests.IMAP
       }
 
       [Test]
+      [Description("Issue 524: BODY[TEXT] partial fetch where offset >= part size must return empty string, not crash")]
+      public void PartialFetch_BodyText_StartBeyondEndReturnsEmptyString()
+      {
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "Body");
+         ImapClientSimulator.AssertMessageCount(account.Address, "test", "Inbox", 1);
+
+         var sim = new ImapClientSimulator();
+         sim.ConnectAndLogon(account.Address, "test");
+         sim.SelectFolder("INBOX");
+
+         var result = sim.Fetch("1 BODY.PEEK[TEXT]<393216.393216>");
+         Assert.IsTrue(result.Contains("BODY[TEXT]<393216>"), result);
+         Assert.IsTrue(result.Contains("\"\""), result);
+
+         sim.Disconnect();
+      }
+
+      [Test]
+      [Description("Issue 524: BODY[1] partial fetch where offset >= part size must return empty string, not crash (Thunderbird chunked fetch scenario)")]
+      public void PartialFetch_BodyPart_StartBeyondEndReturnsEmptyString()
+      {
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test", "Body");
+         ImapClientSimulator.AssertMessageCount(account.Address, "test", "Inbox", 1);
+
+         var sim = new ImapClientSimulator();
+         sim.ConnectAndLogon(account.Address, "test");
+         sim.SelectFolder("INBOX");
+
+         // Reproduces the exact Thunderbird chunked-fetch scenario from issue #524.
+         var result = sim.Fetch("1 BODY.PEEK[1]<393216.393216>");
+         Assert.IsTrue(result.Contains("BODY[1]<393216>"), result);
+         Assert.IsTrue(result.Contains("\"\""), result);
+
+         sim.Disconnect();
+      }
+
+      [Test]
       [Description("RFC 3501: partial fetch where requested count exceeds remaining bytes must truncate")]
       public void PartialFetch_RequestedSizeExceedingRemainderTruncates()
       {
@@ -551,6 +590,44 @@ namespace RegressionTests.IMAP
          Assert.IsTrue(result5.Contains("{10}"), result5);
          var content5Start = result5.IndexOf("{10}") + 6;
          Assert.AreEqual(fullHeader.Substring(5, 10), result5.Substring(content5Start, 10));
+
+         sim.Disconnect();
+      }
+
+      [Test]
+      [Description("Valid partial fetch of a numbered body part (BODY[1]) must return the correct byte slice")]
+      public void PartialFetch_BodyPart_ValidRangeReturnsCorrectBytes()
+      {
+         var account = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@example.test", "test");
+         SmtpClientSimulator.StaticSend(account.Address, account.Address, "Test subject", "SampleBodyContent");
+         ImapClientSimulator.AssertMessageCount(account.Address, "test", "Inbox", 1);
+
+         var sim = new ImapClientSimulator();
+         sim.ConnectAndLogon(account.Address, "test");
+         sim.SelectFolder("INBOX");
+
+         // Fetch full body part to establish baseline.
+         var fullResult = sim.Fetch("1 BODY.PEEK[1]");
+         var literalStart = fullResult.IndexOf('{');
+         var literalEnd = fullResult.IndexOf('}', literalStart);
+         var fullSize = int.Parse(fullResult.Substring(literalStart + 1, literalEnd - literalStart - 1));
+         Assert.IsTrue(fullSize > 5, $"Body part too short ({fullSize} bytes) for a meaningful partial test");
+         var contentStart = fullResult.IndexOf("\r\n", literalEnd) + 2;
+         var fullContent = fullResult.Substring(contentStart, fullSize);
+
+         // <0.5>: 5 bytes from the start.
+         var result0 = sim.Fetch("1 BODY.PEEK[1]<0.5>");
+         Assert.IsTrue(result0.Contains("BODY[1]<0>"), result0);
+         Assert.IsTrue(result0.Contains("{5}"), result0);
+         var partial0Start = result0.IndexOf("{5}") + 5;
+         Assert.AreEqual(fullContent.Substring(0, 5), result0.Substring(partial0Start, 5));
+
+         // <5.5>: 5 bytes starting at offset 5.
+         var result5 = sim.Fetch("1 BODY.PEEK[1]<5.5>");
+         Assert.IsTrue(result5.Contains("BODY[1]<5>"), result5);
+         Assert.IsTrue(result5.Contains("{5}"), result5);
+         var partial5Start = result5.IndexOf("{5}") + 5;
+         Assert.AreEqual(fullContent.Substring(5, 5), result5.Substring(partial5Start, 5));
 
          sim.Disconnect();
       }
