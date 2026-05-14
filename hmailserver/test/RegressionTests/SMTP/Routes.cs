@@ -273,5 +273,49 @@ namespace RegressionTests.SMTP
          SmtpClientSimulator.StaticSend("test@example.test", "other@example.test", "A", "B");
          Pop3ClientSimulator.AssertMessageCount("test@example.test", "test", 1);
       }
+
+      [Test]
+      public void RecipientInRouteAndDomainHasCatchAll_EmailShouldNotGoToCatchAll()
+      {
+         // catchall is a local account; exchange-user is not a local account (lives on the remote server via route)
+         SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "catchall@example.test", "test");
+
+         var deliveryResults = new Dictionary<string, int>();
+         deliveryResults["exchange-user@example.test"] = 250;
+
+         var smtpServerPort = TestSetup.GetNextFreePort();
+         using (var server = new SmtpServerSimulator(1, smtpServerPort))
+         {
+            server.AddRecipientResult(deliveryResults);
+            server.StartListen();
+
+            var route = _settings.Routes.Add();
+            route.DomainName = "example.test";
+            route.TargetSMTPHost = "localhost";
+            route.TargetSMTPPort = smtpServerPort;
+            route.NumberOfTries = 1;
+            route.MinutesBetweenTry = 5;
+            route.TreatRecipientAsLocalDomain = true;
+            route.TreatSenderAsLocalDomain = true;
+            route.AllAddresses = false;
+            route.Save();
+
+            var routeAddress = route.Addresses.Add();
+            routeAddress.Address = "exchange-user@example.test";
+            routeAddress.Save();
+            route.Save();
+
+            _domain.Postmaster = "catchall@example.test";
+            _domain.Save();
+
+            // exchange-user@example.test is in the route list — should follow route only, not catchall
+            SmtpClientSimulator.StaticSend("sender@example.test", "exchange-user@example.test", "Subject", "Body");
+
+            server.WaitForCompletion();
+
+            Assert.IsTrue(server.MessageData.Contains("Body"));
+            Pop3ClientSimulator.AssertMessageCount("catchall@example.test", "test", 0);
+         }
+      }
    }
 }
