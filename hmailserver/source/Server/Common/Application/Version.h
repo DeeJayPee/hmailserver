@@ -19,6 +19,6 @@
 [*]Added: Allow unauthenticated local to local e-mail delivery on SPF Pass controlled with INI setting LocalToLocalByPassAuthOnSPFPass=1, see: [url=https://www.hmailserver.com/forum/viewtopic.php?p=258436]this[/url] forum topic
 [*]Fix: Prevent EHLO/HELO bypass via SMTP RSET, see: [url=https://github.com/cybercode3/hmailserver/commit/88ec404b05550bd4879e153439bf6a7f14eb6638]this[/url] commit
 [*]Fix: POP3 Return -ERR instead of +ERR when inbox message fetch fails, see: [url=https://github.com/cybercode3/hmailserver/commit/bc31f5eedd2d39ac320caf9870e5191eb835067c]this[/url] commit
-[*]Fix: SMTP disconnect after STARTTLS handshake failure [url=https://github.com/cybercode3/hmailserver/commit/0c58dc25d2ccb665f52666261aab431ae86b361a]this[/url] commit
+[*]Fix: SMTP disconnect after STARTTLS handshake failure, see: [url=https://github.com/cybercode3/hmailserver/commit/0c58dc25d2ccb665f52666261aab431ae86b361a] this[/url] commit
 [/list]
 */

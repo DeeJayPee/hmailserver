@@ -93,9 +93,8 @@ namespace HM
 #else
       if (GetConnectionSecurity() == CSSTARTTLSOptional)
       {
-         for (std::shared_ptr<MessageRecipient> recipient : recipients_)
-            for (const std::shared_ptr<MessageRecipient>& recipient : recipients_)
-               recipient->SetDeliveryResult(MessageRecipient::ResultOptionalHandshakeFailed);
+         for (const std::shared_ptr<MessageRecipient>& recipient : recipients_)
+            recipient->SetDeliveryResult(MessageRecipient::ResultOptionalHandshakeFailed);
 
          EnqueueDisconnect();
          return;
