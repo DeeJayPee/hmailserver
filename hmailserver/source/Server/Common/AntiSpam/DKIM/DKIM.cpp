@@ -33,8 +33,6 @@ namespace HM
    void 
    DKIM::Initialize()
    {
-      ERR_load_EVP_strings();
-
       recommendedHeaderFields_.push_back("From");
       recommendedHeaderFields_.push_back("Sender");
       recommendedHeaderFields_.push_back("Reply-To");
@@ -71,6 +69,8 @@ namespace HM
 
       // Addition for CSA-Compliant Mail Headers
       recommendedHeaderFields_.push_back("X-CSA-Complaints");
+      // Addition for Google Feedback Loop
+      recommendedHeaderFields_.push_back("Feedback-ID");
    }
 
    // helper.
@@ -110,7 +110,7 @@ namespace HM
 
       if (FileUtilities::FileSize(fileName) > MaxFileSize)
       {
-         LOG_DEBUG("Message was not signed using DKIM since the size of the message exceeded the max DKIM size of 10MB.");
+         LOG_DEBUG("Message was not signed using DKIM since the size of the message exceeded the max DKIM size of 50MB.");
          return true;
       }
 
@@ -204,7 +204,7 @@ namespace HM
       unsigned int siglen = EVP_PKEY_size(private_key);
       unsigned char *sig = (unsigned char*) OPENSSL_malloc(siglen);
       
-	  EVP_MD_CTX* headerSigningContext = EVP_MD_CTX_create();
+      EVP_MD_CTX* headerSigningContext = EVP_MD_CTX_create();
       EVP_SignInit( headerSigningContext, hashType == HashCreator::SHA256 ? EVP_sha256() : EVP_sha1());
       
       String result;
@@ -226,7 +226,7 @@ namespace HM
       }
 
       EVP_PKEY_free(private_key);
-	  EVP_MD_CTX_destroy(headerSigningContext);
+      EVP_MD_CTX_destroy(headerSigningContext);
       OPENSSL_free(sig);
 
       return result;
@@ -390,7 +390,7 @@ namespace HM
          return result;
       }
 
-	  EVP_MD_CTX* hdr__ctx = EVP_MD_CTX_create();
+      EVP_MD_CTX* hdr__ctx = EVP_MD_CTX_create();
       EVP_MD_CTX_init( hdr__ctx );
 
       if (tagA == "rsa-sha256")
@@ -638,7 +638,7 @@ namespace HM
             }
          }
       }
-      
+
       return Pass;
    }
 

@@ -23,7 +23,8 @@ namespace HM
 
    private:
 
-      String GenerateReceivedHeader_(const String &overriden_received_ip);
+      String GenerateReceivedSPFHeader_(const String &sHostname);
+      String GenerateReceivedHeader_(const String &local_computer_name, const String &overriden_received_ip);
       String JoinWithFolding_(const std::set<String> &items, const String &separator, int initialLineLength);
 
       String username_;

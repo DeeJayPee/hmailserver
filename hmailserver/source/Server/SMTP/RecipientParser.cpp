@@ -76,7 +76,7 @@ namespace HM
          const String primaryDomain = StringParser::ExtractDomain(primaryAddressWithoutPlusaddressing);
          
          std::shared_ptr<const Domain> pDomain = CacheContainer::Instance()->GetDomain(primaryDomain);
-         bDomainIsLocal = pDomain != 0;
+         bDomainIsLocal = pDomain != nullptr;
 
          // Apply plus addressing on the recipient address
          const String primaryAddress = PlusAddressing::ExtractAccountAddress(primaryAddressWithoutPlusaddressing, pDomain); 
@@ -387,8 +387,8 @@ namespace HM
          String sFormattedRequiredSender = pDA->ApplyAliasesOnAddress(pList->GetRequireAddress());
          if (sFormattedSender.CompareNoCase(sFormattedRequiredSender) != 0)
          {
-	    // Let's adjust reason to better explain sender is not seen as OWNER
-	    // and differentiate from SENDER like list member etc
+            // Let's adjust reason to better explain sender is not seen as OWNER
+            // and differentiate from SENDER like list member etc
             sErrMsg = "Not authorized owner.";
             return DP_PermissionDenied;
          }

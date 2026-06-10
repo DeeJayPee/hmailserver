@@ -80,7 +80,7 @@ public:
    STDMETHOD(put_UseSSL)(/*[in]*/ VARIANT_BOOL newVal);
    STDMETHOD(Delete)();
    STDMETHOD(get_NextDownloadTime)(BSTR* pVal);
-	STDMETHOD(get_IsLocked)(VARIANT_BOOL* pVal);
+   STDMETHOD(get_IsLocked)(VARIANT_BOOL* pVal);
    STDMETHOD(get_UseAntiSpam)(/*[out, retval]*/ VARIANT_BOOL *pVal);
    STDMETHOD(put_UseAntiSpam)(/*[in]*/ VARIANT_BOOL newVal);
    STDMETHOD(get_UseAntiVirus)(/*[out, retval]*/ VARIANT_BOOL *pVal);

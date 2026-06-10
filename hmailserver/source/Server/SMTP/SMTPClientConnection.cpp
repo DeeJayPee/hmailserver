@@ -84,11 +84,26 @@ namespace HM
    void
    SMTPClientConnection::HandleHandshakeFailed_() 
    {
+#ifdef TEST_BUILD // RvdH
       if (GetConnectionSecurity() == CSSTARTTLSOptional)
       {
-         for(std::shared_ptr<MessageRecipient> recipient : recipients_)
+         for (std::shared_ptr<MessageRecipient> recipient : recipients_)
             recipient->SetDeliveryResult(MessageRecipient::ResultOptionalHandshakeFailed);
       }
+#else
+      if (GetConnectionSecurity() == CSSTARTTLSOptional)
+      {
+         for (std::shared_ptr<MessageRecipient> recipient : recipients_)
+            for (const std::shared_ptr<MessageRecipient>& recipient : recipients_)
+               recipient->SetDeliveryResult(MessageRecipient::ResultOptionalHandshakeFailed);
+
+         EnqueueDisconnect();
+         return;
+      }
+
+      UpdateAllRecipientsWithError_(0, "TLS handshake failed.", true);
+      EnqueueDisconnect();
+#endif // TEST_BUILD
    }
 
    AnsiString 

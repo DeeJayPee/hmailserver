@@ -147,8 +147,8 @@ create table hm_domains
 	domainmaxnoofdistributionlists int not null,
 	domainlimitationsenabled int not null,
 	domainmaxaccountsize int not null,
-   domaindkimselector varchar(255) not null,
-   domaindkimprivatekeyfile varchar(255) not null   
+	domaindkimselector varchar(255) not null,
+	domaindkimprivatekeyfile varchar(255) not null   
 );
 
 CREATE INDEX idx_hm_domains ON hm_domains (domainname);
@@ -174,7 +174,7 @@ create table hm_messages
 	messageflags smallint not null,
 	messagecreatetime timestamp not null,
 	messagelocked smallint not null,
-   messageuid bigint not null
+	messageuid bigint not null
 );
 
 CREATE INDEX idx_hm_messages ON hm_messages (messageaccountid, messagefolderid);
@@ -183,15 +183,15 @@ CREATE INDEX idx_hm_messages_type ON hm_messages (messagetype);
 
 create table hm_message_metadata 
 (
-   metadata_id bigserial not null primary key,
-   metadata_accountid int not null,
-   metadata_folderid int not null,
-   metadata_messageid bigint  not null,
-   metadata_dateutc timestamp null,
-   metadata_from varchar(255) not null,
-   metadata_subject varchar(255) not null,
-   metadata_to varchar(255) not null,
-   metadata_cc varchar(255) not null
+	metadata_id bigserial not null primary key,
+	metadata_accountid int not null,
+	metadata_folderid int not null,
+	metadata_messageid bigint  not null,
+	metadata_dateutc timestamp null,
+	metadata_from varchar(255) not null,
+	metadata_subject varchar(255) not null,
+	metadata_to varchar(255) not null,
+	metadata_cc varchar(255) not null
 );
 
 CREATE UNIQUE INDEX idx_message_metadata_unique ON hm_message_metadata (metadata_accountid, metadata_folderid, metadata_messageid);
@@ -217,7 +217,7 @@ create table hm_distributionlists
 	distributionlistdomainid int not null,
 	distributionlistaddress varchar(255) not null unique,
 	distributionlistenabled smallint not null,
-   distributionlistrequireauth smallint not null,
+	distributionlistrequireauth smallint not null,
 	distributionlistrequireaddress varchar(255) not null,
 	distributionlistmode smallint not null
 );
@@ -246,13 +246,13 @@ CREATE INDEX idx_hm_messagerecipients ON hm_messagerecipients (recipientmessagei
 
 create table hm_imapfolders 
 (
-  folderid bigserial not null primary key,
-  folderaccountid int NOT NULL,
-  folderparentid int NOT NULL,
-  foldername varchar(255) NOT NULL,
-  folderissubscribed smallint NOT NULL,
-  foldercreationtime timestamp NOT NULL,
-  foldercurrentuid bigint NOT NULL
+	folderid bigserial not null primary key,
+	folderaccountid int NOT NULL,
+	folderparentid int NOT NULL,
+	foldername varchar(255) NOT NULL,
+	folderissubscribed smallint NOT NULL,
+	foldercreationtime timestamp NOT NULL,
+	foldercurrentuid bigint NOT NULL
 );
 
 CREATE INDEX idx_hm_imapfolders ON hm_imapfolders (folderaccountid);
@@ -261,42 +261,41 @@ CREATE UNIQUE INDEX idx_hm_imapfolders_unique ON hm_imapfolders (folderaccountid
 
 create table hm_routes
 (
-  routeid bigserial not null primary key,
-  routedomainname varchar(255) NOT NULL,
-  routedescription varchar(255) NOT NULL,
-  routetargetsmthost varchar(255) NOT NULL,
-  routetargetsmtport int NOT NULL,
-  routenooftries int NOT NULL,
-  routeminutesbetweentry int NOT NULL,
-  routealladdresses smallint NOT NULL,
-  routeuseauthentication smallint NOT NULL,
-  routeauthenticationusername varchar(255) NOT NULL,
-  routeauthenticationpassword varchar(255) NOT NULL,
-  routetreatsecurityaslocal smallint NOT NULL,
-  routeconnectionsecurity smallint not null,
-  routetreatsenderaslocaldomain smallint NOT NULL
+	routeid bigserial not null primary key,
+	routedomainname varchar(255) NOT NULL,
+	routedescription varchar(255) NOT NULL,
+	routetargetsmthost varchar(255) NOT NULL,
+	routetargetsmtport int NOT NULL,
+	routenooftries int NOT NULL,
+	routeminutesbetweentry int NOT NULL,
+	routealladdresses smallint NOT NULL,
+	routeuseauthentication smallint NOT NULL,
+	routeauthenticationusername varchar(255) NOT NULL,
+	routeauthenticationpassword varchar(255) NOT NULL,
+	routetreatsecurityaslocal smallint NOT NULL,
+	routeconnectionsecurity smallint not null,
+	routetreatsenderaslocaldomain smallint NOT NULL
 );
 
 create table hm_routeaddresses
 (
-  routeaddressid bigserial not null primary key,
-  routeaddressrouteid int NOT NULL,
-  routeaddressaddress varchar(255) NOT NULL
+	routeaddressid bigserial not null primary key,
+	routeaddressrouteid int NOT NULL,
+	routeaddressaddress varchar(255) NOT NULL
 );
 
 create table hm_securityranges
 (
 	rangeid bigserial not null primary key,
-   rangepriorityid int not null,
+	rangepriorityid int not null,
 	rangelowerip1 bigint not null,
-   rangelowerip2 bigint null,
+	rangelowerip2 bigint null,
 	rangeupperip1 bigint not null,
-   rangeupperip2 bigint null,
+	rangeupperip2 bigint null,
 	rangeoptions int not null,
 	rangename varchar(100) not null unique,
-   rangeexpires smallint not null,
+	rangeexpires smallint not null,
 	rangeexpirestime timestamp not null
-   
 );
 
 create table hm_dnsbl
@@ -364,7 +363,6 @@ create table hm_rule_criterias
 	criteriaheadername varchar(255) not null,
 	criteriamatchtype smallint not null,
 	criteriamatchvalue varchar(255) not null
-	
 );
 
 CREATE INDEX idx_rules_criterias ON hm_rule_criterias (criteriaruleid);
@@ -407,7 +405,7 @@ create table hm_greylisting_triplets
 	glblockendtime timestamp not null,
 	gldeletetime timestamp not null,
 	glipaddress1 bigint not null,
-   glipaddress2 bigint null,
+	glipaddress2 bigint null,
 	glsenderaddress varchar(200) not null,
 	glrecipientaddress varchar(200) not null,
 	glblockedcount int not null,
@@ -452,9 +450,9 @@ create table hm_whitelist
 (
 	whiteid bigserial not null primary key,
 	whiteloweripaddress1 bigint not null,
-   whiteloweripaddress2 bigint null,
+	whiteloweripaddress2 bigint null,
 	whiteupperipaddress1 bigint not null,
-   whiteupperipaddress2 bigint null,
+	whiteupperipaddress2 bigint null,
 	whiteemailaddress varchar(255) not null,
 	whitedescription varchar(255) not null
 );
@@ -464,8 +462,7 @@ create table hm_sslcertificates
 	sslcertificateid bigserial not null primary key,
 	sslcertificatename varchar(255) not null,
 	sslcertificatefile varchar(255) not null,
-	sslprivatekeyfile varchar(255) not null
-	
+	sslprivatekeyfile varchar(255) not null	
 );
 
 create table hm_groups
@@ -484,7 +481,7 @@ create table hm_group_members
 create table hm_acl
 (
 	aclid bigserial not null primary key,
-   aclsharefolderid bigint not null,
+	aclsharefolderid bigint not null,
 	aclpermissiontype smallint not null,
 	aclpermissiongroupid bigint not null,
 	aclpermissionaccountid bigint not null,

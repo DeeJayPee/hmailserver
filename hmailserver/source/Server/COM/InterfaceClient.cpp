@@ -80,7 +80,7 @@ STDMETHODIMP InterfaceClient::get_Authenticated(VARIANT_BOOL *pVal)
    }
 }
 
-STDMETHODIMP InterfaceClient::get_EncryptedConnection(VARIANT_BOOL* pVal)
+STDMETHODIMP InterfaceClient::get_EncryptedConnection(VARIANT_BOOL *pVal)
 {
    try
    {
@@ -93,7 +93,7 @@ STDMETHODIMP InterfaceClient::get_EncryptedConnection(VARIANT_BOOL* pVal)
    }
 }
 
-STDMETHODIMP InterfaceClient::get_CipherVersion(BSTR* pVal)
+STDMETHODIMP InterfaceClient::get_CipherVersion(BSTR *pVal)
 {
    try
    {
@@ -106,7 +106,7 @@ STDMETHODIMP InterfaceClient::get_CipherVersion(BSTR* pVal)
    }
 }
 
-STDMETHODIMP InterfaceClient::get_CipherName(BSTR* pVal)
+STDMETHODIMP InterfaceClient::get_CipherName(BSTR *pVal)
 {
    try
    {
@@ -119,7 +119,7 @@ STDMETHODIMP InterfaceClient::get_CipherName(BSTR* pVal)
    }
 }
 
-STDMETHODIMP InterfaceClient::get_CipherBits(long* pVal)
+STDMETHODIMP InterfaceClient::get_CipherBits(long *pVal)
 {
    try
    {
@@ -132,7 +132,7 @@ STDMETHODIMP InterfaceClient::get_CipherBits(long* pVal)
    }
 }
 
-STDMETHODIMP InterfaceClient::get_SessionID(long* pVal)
+STDMETHODIMP InterfaceClient::get_SessionID(long *pVal)
 {
    try
    {

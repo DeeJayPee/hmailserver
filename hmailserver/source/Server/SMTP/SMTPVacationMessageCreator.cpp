@@ -105,7 +105,8 @@ namespace HM
       pNewMsgData->SetTo(sToAddress);
       pNewMsgData->SetSubject(sModifiedSubject);
       pNewMsgData->SetBody(sModifiedBody);
-	  pNewMsgData->SetAutoReplied();
+      pNewMsgData->SetAutoReplied();
+      pNewMsgData->SetFieldValue("X-Auto-Response-Suppress", "All");
       pNewMsgData->IncreaseRuleLoopCount();
       
       // Write message data

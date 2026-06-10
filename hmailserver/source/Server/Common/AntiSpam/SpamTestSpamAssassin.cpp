@@ -69,7 +69,7 @@ namespace HM
       String sEnvelopeFrom = pTestData->GetEnvelopeFrom();
       AnsiString sReturnPath = sEnvelopeFrom.IsEmpty() ? "<>" : "<" + sEnvelopeFrom + ">";
       fieldsToWrite.push_back(std::make_pair("Return-Path", sReturnPath));
-         
+
       TraceHeaderWriter writer;
       writer.Write(sFilename, pMessage, fieldsToWrite);
       

@@ -33,10 +33,10 @@ namespace HM
       void SetIsEncryptedConnection(bool bNewVal) { is_encryptedconnection_ = bNewVal; };
       bool GetIsEncryptedConnection() const { return is_encryptedconnection_; }
 
-      void SetCipherVersion(const String& sCipherVersion) { cipher_version_ = sCipherVersion; }
+      void SetCipherVersion(const String &sCipherVersion) { cipher_version_ = sCipherVersion; }
       String GetCipherVersion() const { return cipher_version_; }
 
-      void SetCipherName(const String& sCipherName) { cipher_name_ = sCipherName; }
+      void SetCipherName(const String &sCipherName) { cipher_name_ = sCipherName; }
       String GetCipherName() const { return cipher_name_; }
 
       void SetCipherBits(long lNewVal) { cipher_bits_ = lNewVal; }
@@ -54,6 +54,5 @@ namespace HM
       String cipher_version_;
       String cipher_name_;
       long cipher_bits_;
-
    };
 }

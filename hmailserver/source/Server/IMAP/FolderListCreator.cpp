@@ -71,7 +71,7 @@ namespace HM
 
       bool publicFolderAccessible = false;
 
-	  ACLManager aclManager;
+      ACLManager aclManager;
       for(std::shared_ptr<IMAPFolder> currentFolder : pStartFolders->GetVector())
       {
          // Check if the user has access to this folder. Otherwise just skip it.

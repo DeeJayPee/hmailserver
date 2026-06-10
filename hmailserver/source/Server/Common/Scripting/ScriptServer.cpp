@@ -34,7 +34,7 @@ namespace HM
       has_on_client_logon_(false),
       has_on_client_validate_password_(false),
       has_on_recipient_unknown_(false),
-      has_on_too_many_invalid_comands_(false)
+      has_on_too_many_invalid_commands_(false)
    {
       
    }
@@ -106,7 +106,7 @@ namespace HM
          has_on_client_logon_ = DoesFunctionExist_("OnClientLogon");
          has_on_client_validate_password_ = DoesFunctionExist_("OnClientValidatePassword");
          has_on_recipient_unknown_ = DoesFunctionExist_("OnRecipientUnknown");
-         has_on_too_many_invalid_comands_ = DoesFunctionExist_("OnTooManyInvalidCommands");
+         has_on_too_many_invalid_commands_ = DoesFunctionExist_("OnTooManyInvalidCommands");
       }
       catch (...)
       {
@@ -204,8 +204,8 @@ namespace HM
       if (!Configuration::Instance()->GetUseScriptServer())
          return;
 
-	  // JDR: stores the name of the method that is fired in the script. http://www.hmailserver.com/forum/viewtopic.php?f=2&t=25497
-	  String event_name = _T("Unknown");
+      // JDR: stores the name of the method that is fired in the script. http://www.hmailserver.com/forum/viewtopic.php?f=2&t=25497
+      String event_name = _T("Unknown");
 
       switch (e)
       {
@@ -280,7 +280,7 @@ namespace HM
          event_name = _T("OnRecipientUnknown");
          break;
       case EventOnTooManyInvalidCommands:
-         if (!has_on_too_many_invalid_comands_)
+         if (!has_on_too_many_invalid_commands_)
             return;
          event_name = _T("OnTooManyInvalidCommands");
          break;
@@ -292,7 +292,7 @@ namespace HM
          }
       }
 
-	   LOG_DEBUG("Executing event " + event_name);
+      LOG_DEBUG("Executing event " + event_name);
 
       String sScript;
 

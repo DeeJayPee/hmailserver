@@ -208,7 +208,7 @@ namespace HM
    void 
    MessageData::SetReturnPath(const String &sReturnPath)
    {
-      SetFieldValue("Return-Path", "<" + sReturnPath + ">");
+      SetFieldValue("Return-Path", sReturnPath.IsEmpty() ? "<>" : "<" + sReturnPath + ">");
    }
 
    String
