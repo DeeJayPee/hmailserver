@@ -24,7 +24,7 @@
 // Common utilities
 #include "../Common/Util/ByteBuffer.h"
 #include "../Common/Util/PasswordRemover.h"
-#include <Boost/Regex.hpp>
+#include <boost/regex.hpp>
 
 // Commands
 #include "IMAPCommandAppend.h"

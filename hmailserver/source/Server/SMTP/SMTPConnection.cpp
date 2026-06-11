@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 
-#include <Boost/Regex.hpp>
+#include <boost/regex.hpp>
 
 #include "../common/bo/MessageData.h"
 
