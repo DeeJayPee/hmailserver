@@ -20,6 +20,7 @@ namespace HM
       void Pop(IOOperation::OperationType type);
 
       bool ContainsQueuedSendOperation();
+      size_t GetPendingWriteBytes();
 
    private:
 

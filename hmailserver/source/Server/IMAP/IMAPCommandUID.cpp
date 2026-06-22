@@ -8,9 +8,11 @@
 
 
 #include "IMAPFetch.h"
+#include "IMAPFetchScheduler.h"
 #include "IMAPCopy.h"
 #include "IMAPStore.h"
 #include "IMAPCommandSearch.h"
+#include "../Common/BO/Account.h"
 
 #ifdef _DEBUG
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
@@ -122,6 +124,34 @@ namespace HM
 
       // Execute the command. If we have gotten this far, it means that the syntax
       // of the command is correct. If we fail now, we should return NO. 
+      if (sTypeOfUID.CompareNoCase(_T("FETCH")) == 0 &&
+          IMAPFetchScheduler::Instance()->GetEnabled() &&
+          IMAPFetchScheduler::Instance()->IsHeavyFetch(sShowPart))
+      {
+         __int64 accountID = pConnection->GetAccount()->GetID();
+         std::shared_ptr<IMAPCommandRangeAction> command = command_;
+         bool queued = IMAPFetchScheduler::Instance()->QueueFetch(
+            accountID,
+            [command, pConnection, sMailNo, pArgument]() -> IMAPResult
+            {
+               return command->DoForMails(pConnection, sMailNo, pArgument);
+            },
+            [pConnection, pArgument](IMAPResult result)
+            {
+               if (result.GetResult() == IMAPResult::ResultOK)
+                  pConnection->SendAsciiData(pArgument->Tag() + " OK UID completed\r\n");
+               else if (result.GetResult() == IMAPResult::ResultBad)
+                  pConnection->SendAsciiData(pArgument->Tag() + " BAD " + result.GetMessage() + "\r\n");
+               else if (result.GetResult() == IMAPResult::ResultNo)
+                  pConnection->SendAsciiData(pArgument->Tag() + " NO " + result.GetMessage() + "\r\n");
+
+               pConnection->EnqueueRead();
+            });
+
+         if (queued)
+            return IMAPResult(IMAPResult::ResultOKSupressRead, "");
+      }
+
       IMAPResult result = command_->DoForMails(pConnection, sMailNo, pArgument);
 
       if (result.GetResult() == IMAPResult::ResultOK)

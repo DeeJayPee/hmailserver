@@ -55,6 +55,8 @@ namespace HM
          return;
 
       std::vector<std::pair<__int64, std::shared_ptr<IMAPFolder> > > vecIMAPFolders;
+      std::map<__int64, std::shared_ptr<IMAPFolder> > foldersByID;
+      std::map<__int64, __int64> parentByID;
 
       if (!pRS->IsEOF())
       {
@@ -86,62 +88,140 @@ namespace HM
             pFolder->SetCreationTime(creationTime);
 
             vecIMAPFolders.push_back(std::make_pair(iParentID, pFolder));
+            foldersByID[iFolderID] = pFolder;
+            parentByID[iFolderID] = iParentID;
 
             pRS->MoveNext();
          }
 
-         // Sort theese folders into sub-folders.
-         long lPanicLevel = 0;
-         while (vecIMAPFolders.size() > 0)
+         __int64 inboxFolderID = -1;
+         for (auto folder : vecIMAPFolders)
          {
-            auto iterFolder = vecIMAPFolders.begin();
-
-            while (iterFolder != vecIMAPFolders.end())
+            std::shared_ptr<IMAPFolder> pFolder = folder.second;
+            if (pFolder->GetFolderName().CompareNoCase(_T("INBOX")) == 0)
             {
-               __int64 iFolderParentID = (*iterFolder).first;
-
-               if (iFolderParentID == (__int64) -1)
+               if (folder.first == -1)
                {
-                  vecObjects.push_back((*iterFolder).second);
-                  vecIMAPFolders.erase(iterFolder);
-                  
-                  break; 
-               }
-               else
-               {
-                  std::shared_ptr<IMAPFolder> pParent = GetItemByDBIDRecursive(iFolderParentID);
-
-                  if (pParent)
-                  {
-                     pParent->GetSubFolders()->AddItem((*iterFolder).second); // found
-                     vecIMAPFolders.erase(iterFolder);
-                     break;
-                  }
+                  inboxFolderID = pFolder->GetID();
+                  break;
                }
 
-               iterFolder++;
-            }  
-
-            lPanicLevel++;
-
-            if (lPanicLevel > 100000)
-            {
-               String sMessage;
-			   // NEED FOR IMPROVEMENT: User should be able to adjust max even if INI
-			   // User in forum had too many folders & this limit caused big issues
-			   // 
-			   // Better logging details so people understand what happened until fixed/adjustable
-			   sMessage.Format(_T("Unable to retrieve folder list for account. 100K+ loops trying to sort. Account: %I64d, Parent: %I64d"), account_id_, parent_folder_id_);
-               
-               ErrorManager::Instance()->ReportError(
-                  ErrorManager::Medium, 5125, "IMAPFolders::Refresh()", sMessage);       
-
-               return;
+               if (inboxFolderID == -1)
+                  inboxFolderID = pFolder->GetID();
             }
-
          }
 
-      
+         std::set<__int64> repairedFolderIDs;
+         for (auto folder : vecIMAPFolders)
+         {
+            std::shared_ptr<IMAPFolder> pFolder = folder.second;
+            __int64 folderID = pFolder->GetID();
+            __int64 parentID = parentByID[folderID];
+
+            if (parentID == 0)
+            {
+               if (inboxFolderID > 0 && inboxFolderID != folderID)
+                  parentID = inboxFolderID;
+               else
+                  parentID = -1;
+
+               parentByID[folderID] = parentID;
+               repairedFolderIDs.insert(folderID);
+            }
+
+            if (parentID == folderID)
+            {
+               parentByID[folderID] = -1;
+               repairedFolderIDs.insert(folderID);
+               continue;
+            }
+
+            if (parentID != -1 && foldersByID.find(parentID) == foldersByID.end())
+            {
+               parentByID[folderID] = -1;
+               repairedFolderIDs.insert(folderID);
+               continue;
+            }
+         }
+
+         std::map<__int64, int> folderVisitState;
+         for (auto folder : vecIMAPFolders)
+         {
+            std::shared_ptr<IMAPFolder> pFolder = folder.second;
+            __int64 folderID = pFolder->GetID();
+
+            std::vector<__int64> visitedFolderIDs;
+            __int64 currentFolderID = folderID;
+            while (currentFolderID != -1)
+            {
+               if (folderVisitState[currentFolderID] == 2)
+                  break;
+
+               if (folderVisitState[currentFolderID] == 1)
+               {
+                  parentByID[folderID] = -1;
+                  repairedFolderIDs.insert(folderID);
+                  break;
+               }
+
+               folderVisitState[currentFolderID] = 1;
+               visitedFolderIDs.push_back(currentFolderID);
+
+               auto iterParent = parentByID.find(currentFolderID);
+               if (iterParent == parentByID.end() || iterParent->second == currentFolderID)
+               {
+                  parentByID[folderID] = -1;
+                  repairedFolderIDs.insert(folderID);
+                  break;
+               }
+
+               currentFolderID = iterParent->second;
+            }
+
+            for (__int64 visitedFolderID : visitedFolderIDs)
+               folderVisitState[visitedFolderID] = 2;
+         }
+
+         for (auto folder : vecIMAPFolders)
+         {
+            std::shared_ptr<IMAPFolder> pFolder = folder.second;
+            __int64 folderID = pFolder->GetID();
+            __int64 parentID = parentByID[folderID];
+
+            pFolder->SetParentFolderID(parentID);
+
+            if (parentID == -1)
+            {
+               vecObjects.push_back(pFolder);
+               continue;
+            }
+
+            auto iterParent = foldersByID.find(parentID);
+            if (iterParent != foldersByID.end())
+               iterParent->second->GetSubFolders()->AddItem(pFolder);
+            else
+               vecObjects.push_back(pFolder);
+         }
+
+         if (repairedFolderIDs.size() > 0)
+         {
+            String repairedFolders;
+            bool addSeparator = false;
+            for (__int64 folderID : repairedFolderIDs)
+            {
+               if (addSeparator)
+                  repairedFolders += ", ";
+
+               repairedFolders += StringParser::IntToString(folderID);
+               addSeparator = true;
+            }
+
+            String sMessage;
+            sMessage.Format(_T("Malformed IMAP folder parent references were repaired in memory. Account: %I64d, Folders: %s"), account_id_, repairedFolders.c_str());
+
+            ErrorManager::Instance()->ReportError(
+               ErrorManager::Medium, 5125, "IMAPFolders::Refresh()", sMessage);
+         }
       }
 
    }
@@ -365,4 +445,3 @@ namespace HM
          return false;
    }
 }
-

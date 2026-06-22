@@ -620,6 +620,12 @@ namespace HM
       ProcessOperationQueue_(0);
    }
 
+   size_t
+   TCPConnection::GetPendingWriteBytes()
+   {
+      return operation_queue_.GetPendingWriteBytes();
+   }
+
    void 
    TCPConnection::AsyncWrite(std::shared_ptr<ByteBuffer> buffer)
    {

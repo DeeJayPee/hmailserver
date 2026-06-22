@@ -25,6 +25,10 @@ namespace HM
       no_of_dbconnection_attempts_(6),
       no_of_dbconnection_attempts_Delay(5),
       max_no_of_external_fetch_threads_(15),
+      enable_imap_fetch_isolation_(false),
+      max_no_of_imap_fetch_tasks_(2),
+      max_no_of_imap_fetch_tasks_per_account_(1),
+      imap_fetch_write_buffer_limit_kb_(4096),
       greylisting_enabled_during_record_expiration_(true),
       greylisting_expiration_interval_(240),
       preferred_hash_algorithm_(3),
@@ -141,6 +145,20 @@ namespace HM
       }
 
       max_no_of_external_fetch_threads_ = ReadIniSettingInteger_("Settings", "MaxNumberOfExternalFetchThreads", 15);
+      enable_imap_fetch_isolation_ = ReadIniSettingInteger_("Settings", "EnableIMAPFetchIsolation", 0) == 1;
+      max_no_of_imap_fetch_tasks_ = ReadIniSettingInteger_("Settings", "MaxNumberOfIMAPFetchTasks", 2);
+      if (max_no_of_imap_fetch_tasks_ < 1)
+         max_no_of_imap_fetch_tasks_ = 1;
+      if (max_no_of_imap_fetch_tasks_ > 100)
+         max_no_of_imap_fetch_tasks_ = 100;
+      max_no_of_imap_fetch_tasks_per_account_ = ReadIniSettingInteger_("Settings", "MaxNumberOfIMAPFetchTasksPerAccount", 1);
+      if (max_no_of_imap_fetch_tasks_per_account_ < 1)
+         max_no_of_imap_fetch_tasks_per_account_ = 1;
+      if (max_no_of_imap_fetch_tasks_per_account_ > 100)
+         max_no_of_imap_fetch_tasks_per_account_ = 100;
+      imap_fetch_write_buffer_limit_kb_ = ReadIniSettingInteger_("Settings", "IMAPFetchWriteBufferLimitKB", 4096);
+      if (imap_fetch_write_buffer_limit_kb_ < 0)
+         imap_fetch_write_buffer_limit_kb_ = 0;
       add_xauth_user_header_ = ReadIniSettingInteger_("Settings", "AddXAuthUserHeader", 0) == 1;
 
       daemonaddress_domain_ = ReadIniSettingString_("Settings", "DaemonAddressDomain", "");

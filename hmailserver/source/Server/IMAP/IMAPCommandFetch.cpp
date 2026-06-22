@@ -4,7 +4,9 @@
 #include "stdafx.h"
 #include "IMAPCommandFetch.h"
 #include "IMAPFetch.h"
+#include "IMAPFetchScheduler.h"
 #include "IMAPConnection.h"
+#include "../Common/BO/Account.h"
 
 #ifdef _DEBUG
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
@@ -54,6 +56,31 @@ namespace HM
 
       if (!StringParser::ValidateString(sMailNo, "01234567890,.:*"))
          return IMAPResult(IMAPResult::ResultBad, "Incorrect mail number");
+
+      if (IMAPFetchScheduler::Instance()->GetEnabled() && IMAPFetchScheduler::Instance()->IsHeavyFetch(sShowPart))
+      {
+         __int64 accountID = pConnection->GetAccount()->GetID();
+         bool queued = IMAPFetchScheduler::Instance()->QueueFetch(
+            accountID,
+            [pFetch, pConnection, sMailNo, pArgument]() -> IMAPResult
+            {
+               return pFetch->DoForMails(pConnection, sMailNo, pArgument);
+            },
+            [pConnection, pArgument](IMAPResult result)
+            {
+               if (result.GetResult() == IMAPResult::ResultOK)
+                  pConnection->SendAsciiData(pArgument->Tag() + " OK FETCH completed\r\n");
+               else if (result.GetResult() == IMAPResult::ResultBad)
+                  pConnection->SendAsciiData(pArgument->Tag() + " BAD " + result.GetMessage() + "\r\n");
+               else if (result.GetResult() == IMAPResult::ResultNo)
+                  pConnection->SendAsciiData(pArgument->Tag() + " NO " + result.GetMessage() + "\r\n");
+
+               pConnection->EnqueueRead();
+            });
+
+         if (queued)
+            return IMAPResult(IMAPResult::ResultOKSupressRead, "");
+      }
       
       IMAPResult result = pFetch->DoForMails(pConnection, sMailNo, pArgument);
 

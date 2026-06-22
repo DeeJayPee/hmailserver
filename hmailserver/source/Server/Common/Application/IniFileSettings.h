@@ -74,6 +74,10 @@ namespace HM
       String GetDaemonAddressDomain() const { return daemonaddress_domain_; }
       bool GetAddXOriginalRcptToHeader() { return add_xoriginal_rcpt_to_header_; }	  
       int GetMaxNumberOfExternalFetchThreads() {return max_no_of_external_fetch_threads_ ;}
+      bool GetEnableIMAPFetchIsolation() const { return enable_imap_fetch_isolation_; }
+      int GetMaxNumberOfIMAPFetchTasks() const { return max_no_of_imap_fetch_tasks_; }
+      int GetMaxNumberOfIMAPFetchTasksPerAccount() const { return max_no_of_imap_fetch_tasks_per_account_; }
+      int GetIMAPFetchWriteBufferLimitKB() const { return imap_fetch_write_buffer_limit_kb_; }
       bool GetGreylistingEnabledDuringRecordExpiration() {return greylisting_enabled_during_record_expiration_;}
       int GetGreylistingExpirationInterval() {return greylisting_expiration_interval_; }
       int GetPreferredHashAlgorithm() {return preferred_hash_algorithm_;}
@@ -151,6 +155,10 @@ namespace HM
       String daemonaddress_domain_;
       bool add_xoriginal_rcpt_to_header_;	  
       int max_no_of_external_fetch_threads_;
+      bool enable_imap_fetch_isolation_;
+      int max_no_of_imap_fetch_tasks_;
+      int max_no_of_imap_fetch_tasks_per_account_;
+      int imap_fetch_write_buffer_limit_kb_;
 
       bool greylisting_enabled_during_record_expiration_;
       bool is_internal_database_;

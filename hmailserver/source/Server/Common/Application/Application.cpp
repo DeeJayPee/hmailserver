@@ -35,6 +35,7 @@
 
 #include "../../SMTP/SMTPDeliveryManager.h"
 #include "../../IMAP/IMAPConfiguration.h"
+#include "../../IMAP/IMAPFetchScheduler.h"
 #include "../../ExternalFetcher/ExternalFetchManager.h"
 
 #include "../Threading/WorkQueueManager.h"
@@ -364,6 +365,7 @@ namespace HM
       if (Configuration::Instance()->GetUseIMAP())
       {
          io_service_->RegisterSessionType(STIMAP);
+         IMAPFetchScheduler::Instance()->Initialize();
       }
    }
 
@@ -420,6 +422,8 @@ namespace HM
       if (external_fetch_manager_) external_fetch_manager_.reset();
       LOG_DEBUG("Application::StopServers() - Destructing Scheduler");
       if (scheduler_) scheduler_.reset();
+
+      IMAPFetchScheduler::Instance()->Shutdown();
       
       LOG_DEBUG("Application::StopServers() - Destructing Rest");
       if (notification_server_) notification_server_.reset();

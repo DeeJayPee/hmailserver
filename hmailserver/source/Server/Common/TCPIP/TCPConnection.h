@@ -49,6 +49,7 @@ namespace HM
       void EnqueueShutdownSend();
       void EnqueueDisconnect();
       void EnqueueHandshake();
+      size_t GetPendingWriteBytes();
       
       IPAddress GetRemoteEndpointAddress();
       unsigned long GetLocalEndpointPort();

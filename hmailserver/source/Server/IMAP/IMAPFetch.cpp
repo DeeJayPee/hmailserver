@@ -7,6 +7,7 @@
 #include "IMAPConnection.h"
 
 #include "../Common/Application/FolderManager.h"
+#include "../Common/Application/IniFileSettings.h"
 #include "../Common/BO/IMAPFolder.h"
 #include "../Common/BO/Message.h"
 #include "../Common/Util/Charset.h"
@@ -213,6 +214,18 @@ namespace HM
 
                // Send the actual part
                pConnection->EnqueueWrite(pBuffer);
+
+               int writeBufferLimitKB = IniFileSettings::Instance()->GetIMAPFetchWriteBufferLimitKB();
+               if (IniFileSettings::Instance()->GetEnableIMAPFetchIsolation() && writeBufferLimitKB > 0)
+               {
+                  size_t writeBufferLimitBytes = (size_t) writeBufferLimitKB * 1024;
+                  int waitCount = 0;
+                  while (pConnection->GetPendingWriteBytes() > writeBufferLimitBytes && waitCount < 1200)
+                  {
+                     Sleep(25);
+                     waitCount++;
+                  }
+               }
             }
             else
             {
@@ -1190,4 +1203,3 @@ namespace HM
    }
 
 }
-

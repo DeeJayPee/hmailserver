@@ -5,6 +5,7 @@
 #include "StdAfx.h"
 #include "IOOperationQueue.h"
 #include "IOOperation.h"
+#include "../Util/ByteBuffer.h"
 
 #ifdef _DEBUG
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
@@ -76,6 +77,27 @@ namespace HM
       }
 
       return false;
+   }
+
+   size_t
+   IOOperationQueue::GetPendingWriteBytes()
+   {
+      boost::lock_guard<boost::recursive_mutex> guard(mutex_);
+
+      size_t bytes = 0;
+      for (std::shared_ptr<IOOperation> operation : queue_operations_)
+      {
+         if (operation->GetType() == IOOperation::BCTWrite && operation->GetBuffer())
+            bytes += operation->GetBuffer()->GetSize();
+      }
+
+      for (std::shared_ptr<IOOperation> operation : ongoing_operations_)
+      {
+         if (operation->GetType() == IOOperation::BCTWrite && operation->GetBuffer())
+            bytes += operation->GetBuffer()->GetSize();
+      }
+
+      return bytes;
    }
 
    std::shared_ptr<IOOperation>
